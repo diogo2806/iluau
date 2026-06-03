@@ -23,6 +23,7 @@ Todas as mudanças relevantes do iLuau serão registradas aqui.
 ### Alterado
 
 - Documentação informativa traduzida para pt-BR: `llms.txt`, `llms-full.txt`, templates de issue (bug, instalação, sugestão de recurso) e template de pull request
+- Contraste do painel do Studio e do dashboard aumentado: texto secundário e placeholders mais claros, fundos de cards/linhas levemente mais claros e bordas mais visíveis para melhor legibilidade
 
 ## [0.4.0] - 2026-06-03
 

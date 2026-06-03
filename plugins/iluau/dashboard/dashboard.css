@@ -4,10 +4,10 @@
   --panel: #111722;
   --panel-2: #171f2d;
   --text: #e8eef7;
-  --muted: #8b98ab;
+  --muted: #b6c2d6;
   --accent: #7cf7d4;
   --accent-2: #7aa7ff;
-  --border: rgba(255, 255, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.12);
 }
 
 * { box-sizing: border-box; }
