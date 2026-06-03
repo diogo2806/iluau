@@ -349,11 +349,15 @@ local selectionPropertyValueBox
 local selectionPropertyStatusLabel
 local selectionPropertyTypeLabel
 local selectionPropertyQuickRow
+local selectionPropertyQuickLabel
 local selectionPropertyHistoryList
 local selectionPropertyHistoryStatusLabel
 local selectionPropertyOutcomeLabel
 local selectionPropertyFavoriteRow
 local selectionPropertyFavoritesStatusLabel
+local selectionPropertyFavoritesHintLabel
+local propertiesCard
+local relayoutPropertiesCard
 local selectionAttributesBox
 local selectionTagsBox
 local selectionStatusLabel
@@ -731,6 +735,44 @@ local function applyTreeFilter(text)
 	refreshSelectionTree()
 end
 
+-- Layout constants for the lower (dynamic) half of the properties card. Both the
+-- favorites and quick-read rows use a 2-column UIGridLayout, so their height grows
+-- with the number of buttons; everything below them is repositioned to match.
+local FAVORITES_ROW_TOP = 310
+local FAVORITE_CELL_HEIGHT = 26
+local QUICK_CELL_HEIGHT = 30
+local GRID_CELL_PADDING = 8
+
+local function gridRowsHeight(count, cellHeight)
+	local rows = math.max(1, math.ceil(count / 2))
+	return rows * cellHeight + (rows - 1) * GRID_CELL_PADDING
+end
+
+function relayoutPropertiesCard()
+	if not propertiesCard or not selectionPropertyFavoriteRow or not selectionPropertyQuickRow then
+		return
+	end
+
+	local favoriteHeight = #propertyFavorites > 0 and gridRowsHeight(#propertyFavorites, FAVORITE_CELL_HEIGHT) or 0
+	selectionPropertyFavoriteRow.Size = UDim2.new(1, -20, 0, favoriteHeight)
+
+	local quickLabelY = FAVORITES_ROW_TOP + favoriteHeight + (favoriteHeight > 0 and 14 or 0)
+	selectionPropertyQuickLabel.Position = UDim2.new(0, 10, 0, quickLabelY)
+
+	local quickRowY = quickLabelY + 20
+	selectionPropertyQuickRow.Position = UDim2.new(0, 10, 0, quickRowY)
+	local quickHeight = gridRowsHeight(#QUICK_READ_PROPERTIES, QUICK_CELL_HEIGHT)
+	selectionPropertyQuickRow.Size = UDim2.new(1, -20, 0, quickHeight)
+
+	local historyLabelY = quickRowY + quickHeight + 20
+	selectionPropertyHistoryStatusLabel.Position = UDim2.new(0, 10, 0, historyLabelY)
+
+	local historyListY = historyLabelY + 22
+	selectionPropertyHistoryList.Position = UDim2.new(0, 10, 0, historyListY)
+
+	propertiesCard.Size = UDim2.new(1, 0, 0, historyListY + 96 + 20)
+end
+
 local function renderPropertyFavorites()
 	if not selectionPropertyFavoriteRow or not selectionPropertyFavoritesStatusLabel then
 		return
@@ -740,18 +782,16 @@ local function renderPropertyFavorites()
 
 	if #propertyFavorites == 0 then
 		selectionPropertyFavoritesStatusLabel.Text = "Propriedades fixadas"
-		local empty = Instance.new("TextLabel")
-		empty.BackgroundTransparency = 1
-		empty.Size = UDim2.new(1, -8, 0, 18)
-		empty.Font = Enum.Font.Gotham
-		empty.Text = "Salve uma propriedade com o botão de estrela para mantê-la aqui."
-		empty.TextColor3 = Color3.fromRGB(190, 201, 216)
-		empty.TextSize = 14
-		empty.TextXAlignment = Enum.TextXAlignment.Left
-		empty.Parent = selectionPropertyFavoriteRow
+		if selectionPropertyFavoritesHintLabel then
+			selectionPropertyFavoritesHintLabel.Text = "Salve uma propriedade com o botão de estrela para mantê-la aqui."
+		end
+		relayoutPropertiesCard()
 		return
 	end
 
+	if selectionPropertyFavoritesHintLabel then
+		selectionPropertyFavoritesHintLabel.Text = "Clique em um favorito para carregá-lo no editor."
+	end
 	selectionPropertyFavoritesStatusLabel.Text = string.format("Propriedades fixadas (%d)", #propertyFavorites)
 
 	local currentPropertyName = trim(selectionPropertyNameBox and selectionPropertyNameBox.Text or "")
@@ -768,6 +808,7 @@ local function renderPropertyFavorites()
 		button.Text = "★ " .. propertyName
 	end
 	fitGridButtons(selectionPropertyFavoriteRow)
+	relayoutPropertiesCard()
 end
 
 local function toggleCurrentPropertyFavorite()
@@ -1343,6 +1384,7 @@ local function renderPropertyQuickReads()
 		end)
 	end
 	fitGridButtons(selectionPropertyQuickRow)
+	relayoutPropertiesCard()
 end
 
 function refreshPropertyEditorState()
@@ -1851,7 +1893,7 @@ selectionLayout.Padding = UDim.new(0, 6)
 selectionLayout.SortOrder = Enum.SortOrder.LayoutOrder
 selectionLayout.Parent = selectionList
 
-local propertiesCard = makeCard(638)
+propertiesCard = makeCard(638)
 propertiesCard.LayoutOrder = 3
 propertiesCard.Parent = body
 makeSectionTitle(propertiesCard, "Propriedades")
@@ -1959,26 +2001,22 @@ selectionPropertyFavoritesStatusLabel.TextSize = 14
 selectionPropertyFavoritesStatusLabel.TextXAlignment = Enum.TextXAlignment.Left
 selectionPropertyFavoritesStatusLabel.Parent = propertiesCard
 
-local favoritesHintLabel = Instance.new("TextLabel")
-favoritesHintLabel.BackgroundTransparency = 1
-favoritesHintLabel.Position = UDim2.new(0, 10, 0, 290)
-favoritesHintLabel.Size = UDim2.new(1, -20, 0, 14)
-favoritesHintLabel.Font = Enum.Font.Gotham
-favoritesHintLabel.Text = "Clique em um favorito para carregá-lo no editor."
-favoritesHintLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
-favoritesHintLabel.TextSize = 13
-favoritesHintLabel.TextXAlignment = Enum.TextXAlignment.Left
-favoritesHintLabel.Parent = propertiesCard
+selectionPropertyFavoritesHintLabel = Instance.new("TextLabel")
+selectionPropertyFavoritesHintLabel.BackgroundTransparency = 1
+selectionPropertyFavoritesHintLabel.Position = UDim2.new(0, 10, 0, 290)
+selectionPropertyFavoritesHintLabel.Size = UDim2.new(1, -20, 0, 14)
+selectionPropertyFavoritesHintLabel.Font = Enum.Font.Gotham
+selectionPropertyFavoritesHintLabel.Text = "Salve uma propriedade com o botão de estrela para mantê-la aqui."
+selectionPropertyFavoritesHintLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
+selectionPropertyFavoritesHintLabel.TextSize = 13
+selectionPropertyFavoritesHintLabel.TextXAlignment = Enum.TextXAlignment.Left
+selectionPropertyFavoritesHintLabel.Parent = propertiesCard
 
-selectionPropertyFavoriteRow = Instance.new("ScrollingFrame")
+selectionPropertyFavoriteRow = Instance.new("Frame")
 selectionPropertyFavoriteRow.BackgroundTransparency = 1
 selectionPropertyFavoriteRow.BorderSizePixel = 0
 selectionPropertyFavoriteRow.Position = UDim2.new(0, 10, 0, 310)
-selectionPropertyFavoriteRow.Size = UDim2.new(1, -20, 0, 68)
-selectionPropertyFavoriteRow.CanvasSize = UDim2.new(0, 0, 0, 0)
-selectionPropertyFavoriteRow.ScrollBarThickness = 0
-selectionPropertyFavoriteRow.ScrollingDirection = Enum.ScrollingDirection.Y
-selectionPropertyFavoriteRow.AutomaticCanvasSize = Enum.AutomaticSize.Y
+selectionPropertyFavoriteRow.Size = UDim2.new(1, -20, 0, 0)
 selectionPropertyFavoriteRow.Parent = propertiesCard
 
 local favoriteLayout = Instance.new("UIGridLayout")
@@ -1987,26 +2025,22 @@ favoriteLayout.CellSize = UDim2.new(0.5, -4, 0, 26)
 favoriteLayout.SortOrder = Enum.SortOrder.LayoutOrder
 favoriteLayout.Parent = selectionPropertyFavoriteRow
 
-local quickReadLabel = Instance.new("TextLabel")
-quickReadLabel.BackgroundTransparency = 1
-quickReadLabel.Position = UDim2.new(0, 10, 0, 392)
-quickReadLabel.Size = UDim2.new(1, -20, 0, 16)
-quickReadLabel.Font = Enum.Font.GothamSemibold
-quickReadLabel.Text = "Leitura rápida"
-quickReadLabel.TextColor3 = Color3.fromRGB(232, 238, 247)
-quickReadLabel.TextSize = 14
-quickReadLabel.TextXAlignment = Enum.TextXAlignment.Left
-quickReadLabel.Parent = propertiesCard
+selectionPropertyQuickLabel = Instance.new("TextLabel")
+selectionPropertyQuickLabel.BackgroundTransparency = 1
+selectionPropertyQuickLabel.Position = UDim2.new(0, 10, 0, 392)
+selectionPropertyQuickLabel.Size = UDim2.new(1, -20, 0, 16)
+selectionPropertyQuickLabel.Font = Enum.Font.GothamSemibold
+selectionPropertyQuickLabel.Text = "Leitura rápida"
+selectionPropertyQuickLabel.TextColor3 = Color3.fromRGB(232, 238, 247)
+selectionPropertyQuickLabel.TextSize = 14
+selectionPropertyQuickLabel.TextXAlignment = Enum.TextXAlignment.Left
+selectionPropertyQuickLabel.Parent = propertiesCard
 
-selectionPropertyQuickRow = Instance.new("ScrollingFrame")
+selectionPropertyQuickRow = Instance.new("Frame")
 selectionPropertyQuickRow.BackgroundTransparency = 1
 selectionPropertyQuickRow.BorderSizePixel = 0
 selectionPropertyQuickRow.Position = UDim2.new(0, 10, 0, 412)
-selectionPropertyQuickRow.Size = UDim2.new(1, -20, 0, 68)
-selectionPropertyQuickRow.CanvasSize = UDim2.new(0, 0, 0, 0)
-selectionPropertyQuickRow.ScrollBarThickness = 0
-selectionPropertyQuickRow.ScrollingDirection = Enum.ScrollingDirection.Y
-selectionPropertyQuickRow.AutomaticCanvasSize = Enum.AutomaticSize.Y
+selectionPropertyQuickRow.Size = UDim2.new(1, -20, 0, 0)
 selectionPropertyQuickRow.Parent = propertiesCard
 
 local quickReadLayout = Instance.new("UIGridLayout")
