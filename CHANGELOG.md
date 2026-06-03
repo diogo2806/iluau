@@ -12,7 +12,7 @@ Todas as mudanças relevantes do iLuau serão registradas aqui.
 
 ### Corrigido
 
-- Forward reference quebrada de `refreshSelectionTree` que abortava o plugin do Studio antes de iniciar o loop de heartbeat, deixando a ponte sempre offline e os jobs presos em "queued"
+- Forward references quebradas no plugin do Studio (`refreshSelectionTree`, `trim`, `refreshPropertyEditorState`, `syncPropertyAssist`, `queuePanelJob`) que causavam "attempt to call a nil value" e abortavam o script antes de iniciar o loop de heartbeat, deixando a ponte sempre offline e os jobs presos em "queued"
 
 ## [0.4.0] - 2026-06-03
 

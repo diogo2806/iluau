@@ -348,6 +348,10 @@ local selectionAttributesBox
 local selectionTagsBox
 local selectionStatusLabel
 local refreshSelectionTree
+local trim
+local refreshPropertyEditorState
+local syncPropertyAssist
+local queuePanelJob
 local treeExpansion = {}
 local propertyHistory = {}
 local propertyHistoryByKey = {}
@@ -538,7 +542,7 @@ local function clearGuiRows(container)
 	end
 end
 
-local function trim(value)
+function trim(value)
 	if type(value) ~= "string" then
 		return ""
 	end
@@ -1288,12 +1292,12 @@ local function renderPropertyQuickReads()
 	end
 end
 
-local function refreshPropertyEditorState()
+function refreshPropertyEditorState()
 	syncPropertyAssist()
 	persistEditorState()
 end
 
-local function syncPropertyAssist()
+function syncPropertyAssist()
 	local target = getPrimarySelection()
 	local propertyName = trim(selectionPropertyNameBox and selectionPropertyNameBox.Text or "")
 
@@ -2388,7 +2392,7 @@ local function refreshPanel()
 	end
 end
 
-local function queuePanelJob(jobType, payload)
+function queuePanelJob(jobType, payload)
 	local response = safeRequest("POST", "/api/jobs", {
 		type = jobType,
 		payload = payload or {},
