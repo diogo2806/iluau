@@ -26,13 +26,13 @@ widget.Title = "iLuau"
 
 local root = Instance.new("Frame")
 root.Size = UDim2.fromScale(1, 1)
-root.BackgroundColor3 = Color3.fromRGB(16, 20, 28)
+root.BackgroundColor3 = Color3.fromRGB(20, 25, 35)
 root.BorderSizePixel = 0
 root.Parent = widget
 
 local topBar = Instance.new("Frame")
 topBar.Size = UDim2.new(1, 0, 0, 56)
-topBar.BackgroundColor3 = Color3.fromRGB(22, 27, 38)
+topBar.BackgroundColor3 = Color3.fromRGB(29, 36, 50)
 topBar.BorderSizePixel = 0
 topBar.Parent = root
 
@@ -59,7 +59,7 @@ subtitle.Size = UDim2.new(1, -24, 0, 18)
 subtitle.Position = UDim2.new(0, 12, 0, 30)
 subtitle.Font = Enum.Font.Gotham
 subtitle.Text = "Roblox Studio bridge and queue"
-subtitle.TextColor3 = Color3.fromRGB(145, 156, 171)
+subtitle.TextColor3 = Color3.fromRGB(190, 201, 216)
 subtitle.TextSize = 12
 subtitle.TextXAlignment = Enum.TextXAlignment.Left
 subtitle.Parent = topBar
@@ -101,7 +101,7 @@ layout.Parent = body
 local function makeCard(height)
 	local card = Instance.new("Frame")
 	card.Size = UDim2.new(1, 0, 0, height)
-	card.BackgroundColor3 = Color3.fromRGB(22, 27, 38)
+	card.BackgroundColor3 = Color3.fromRGB(29, 36, 50)
 	card.BorderSizePixel = 0
 
 	local corner = Instance.new("UICorner")
@@ -109,7 +109,7 @@ local function makeCard(height)
 	corner.Parent = card
 
 	local stroke = Instance.new("UIStroke")
-	stroke.Color = Color3.fromRGB(51, 63, 82)
+	stroke.Color = Color3.fromRGB(66, 80, 104)
 	stroke.Thickness = 1
 	stroke.Transparency = 0.35
 	stroke.Parent = card
@@ -138,7 +138,7 @@ local function makeStat(parent, text, value, topOffset)
 	titleLabel.Position = UDim2.new(0, 10, 0, topOffset)
 	titleLabel.Font = Enum.Font.Gotham
 	titleLabel.Text = text
-	titleLabel.TextColor3 = Color3.fromRGB(145, 156, 171)
+	titleLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
 	titleLabel.TextSize = 12
 	titleLabel.TextXAlignment = Enum.TextXAlignment.Left
 	titleLabel.Parent = parent
@@ -185,7 +185,7 @@ end
 
 local function stylePillButton(button, isActive, compact)
 	button.AutoButtonColor = true
-	button.BackgroundColor3 = isActive and Color3.fromRGB(124, 247, 212) or Color3.fromRGB(28, 34, 46)
+	button.BackgroundColor3 = isActive and Color3.fromRGB(124, 247, 212) or Color3.fromRGB(38, 46, 62)
 	button.TextColor3 = isActive and Color3.fromRGB(8, 16, 22) or Color3.fromRGB(232, 238, 247)
 	button.BorderSizePixel = 0
 
@@ -229,13 +229,13 @@ end
 local function makeTextBox(parent, placeholder, height)
 	local box = Instance.new("TextBox")
 	box.Size = UDim2.new(1, -20, 0, height)
-	box.BackgroundColor3 = Color3.fromRGB(16, 20, 28)
+	box.BackgroundColor3 = Color3.fromRGB(20, 25, 35)
 	box.BorderSizePixel = 0
 	box.ClearTextOnFocus = false
 	box.MultiLine = true
 	box.Text = ""
 	box.PlaceholderText = placeholder
-	box.PlaceholderColor3 = Color3.fromRGB(104, 115, 129)
+	box.PlaceholderColor3 = Color3.fromRGB(152, 164, 180)
 	box.Font = Enum.Font.Code
 	box.TextColor3 = Color3.fromRGB(240, 244, 248)
 	box.TextSize = 12
@@ -254,7 +254,7 @@ local function makeTextBox(parent, placeholder, height)
 	corner.Parent = box
 
 	local stroke = Instance.new("UIStroke")
-	stroke.Color = Color3.fromRGB(51, 63, 82)
+	stroke.Color = Color3.fromRGB(66, 80, 104)
 	stroke.Thickness = 1
 	stroke.Transparency = 0.35
 	stroke.Parent = box
@@ -694,7 +694,7 @@ local function renderPropertyFavorites()
 		empty.Size = UDim2.new(1, -8, 0, 18)
 		empty.Font = Enum.Font.Gotham
 		empty.Text = "Save a property with the star button to keep it here."
-		empty.TextColor3 = Color3.fromRGB(145, 156, 171)
+		empty.TextColor3 = Color3.fromRGB(190, 201, 216)
 		empty.TextSize = 12
 		empty.TextXAlignment = Enum.TextXAlignment.Left
 		empty.Parent = selectionPropertyFavoriteRow
@@ -736,7 +736,7 @@ local function toggleCurrentPropertyFavorite()
 			selectionPropertyOutcomeLabel.TextColor3 = Color3.fromRGB(124, 247, 212)
 		else
 			selectionPropertyOutcomeLabel.Text = string.format("Removed %s from favorites.", propertyName)
-			selectionPropertyOutcomeLabel.TextColor3 = Color3.fromRGB(145, 156, 171)
+			selectionPropertyOutcomeLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
 		end
 	end
 end
@@ -1059,7 +1059,7 @@ local function renderTreeNode(parent, instance, depth, maxDepth, filterText, sel
 
 	local row = Instance.new("Frame")
 	local isSelected = selectedInstance == instance
-	row.BackgroundColor3 = isSelected and Color3.fromRGB(35, 61, 58) or Color3.fromRGB(28, 34, 46)
+	row.BackgroundColor3 = isSelected and Color3.fromRGB(35, 61, 58) or Color3.fromRGB(38, 46, 62)
 	row.BorderSizePixel = 0
 	row.Size = UDim2.new(1, 0, 0, 30)
 	row.Parent = parent
@@ -1085,7 +1085,7 @@ local function renderTreeNode(parent, instance, depth, maxDepth, filterText, sel
 	toggleButton.Position = UDim2.new(0, 0, 0, 0)
 	toggleButton.Font = Enum.Font.GothamBold
 	toggleButton.TextSize = 12
-	toggleButton.TextColor3 = isSelected and Color3.fromRGB(124, 247, 212) or Color3.fromRGB(145, 156, 171)
+	toggleButton.TextColor3 = isSelected and Color3.fromRGB(124, 247, 212) or Color3.fromRGB(190, 201, 216)
 	toggleButton.TextXAlignment = Enum.TextXAlignment.Center
 	toggleButton.TextYAlignment = Enum.TextYAlignment.Center
 	toggleButton.Parent = row
@@ -1136,7 +1136,7 @@ local function renderTreeNode(parent, instance, depth, maxDepth, filterText, sel
 	classBadge.Size = UDim2.new(0, 96, 0, 20)
 	classBadge.Font = Enum.Font.GothamSemibold
 	classBadge.Text = instance.ClassName
-	classBadge.TextColor3 = isSelected and Color3.fromRGB(124, 247, 212) or Color3.fromRGB(145, 156, 171)
+	classBadge.TextColor3 = isSelected and Color3.fromRGB(124, 247, 212) or Color3.fromRGB(190, 201, 216)
 	classBadge.TextSize = 11
 	classBadge.TextTruncate = Enum.TextTruncate.AtEnd
 	classBadge.TextXAlignment = Enum.TextXAlignment.Center
@@ -1218,7 +1218,7 @@ local function refreshPropertyHistory()
 		empty.Size = UDim2.new(1, -8, 0, 18)
 		empty.Font = Enum.Font.Gotham
 		empty.Text = "Edits you apply will appear here."
-		empty.TextColor3 = Color3.fromRGB(145, 156, 171)
+		empty.TextColor3 = Color3.fromRGB(190, 201, 216)
 		empty.TextSize = 12
 		empty.TextXAlignment = Enum.TextXAlignment.Left
 		empty.Parent = selectionPropertyHistoryList
@@ -1229,7 +1229,7 @@ local function refreshPropertyHistory()
 
 	for index, entry in ipairs(propertyHistory) do
 		local row = Instance.new("Frame")
-		row.BackgroundColor3 = Color3.fromRGB(28, 34, 46)
+		row.BackgroundColor3 = Color3.fromRGB(38, 46, 62)
 		row.BorderSizePixel = 0
 		row.Size = UDim2.new(1, -2, 0, 44)
 		row.Parent = selectionPropertyHistoryList
@@ -1255,7 +1255,7 @@ local function refreshPropertyHistory()
 		meta.Size = UDim2.new(1, -95, 0, 14)
 		meta.Font = Enum.Font.Gotham
 		meta.Text = string.format("%s%s", entry.path ~= "" and (entry.path .. "  ") or "", entry.updatedAt or nowIso())
-		meta.TextColor3 = Color3.fromRGB(145, 156, 171)
+		meta.TextColor3 = Color3.fromRGB(190, 201, 216)
 		meta.TextSize = 10
 		meta.TextXAlignment = Enum.TextXAlignment.Left
 		meta.Parent = row
@@ -1396,7 +1396,7 @@ function refreshSelectionTree()
 		empty.Size = UDim2.new(1, -8, 0, 20)
 		empty.Font = Enum.Font.Gotham
 		empty.Text = "No selection."
-		empty.TextColor3 = Color3.fromRGB(145, 156, 171)
+		empty.TextColor3 = Color3.fromRGB(190, 201, 216)
 		empty.TextSize = 12
 		empty.TextXAlignment = Enum.TextXAlignment.Left
 		empty.Parent = selectionList
@@ -1703,7 +1703,7 @@ selectionSummaryLabel.Position = UDim2.new(0, 10, 0, 28)
 selectionSummaryLabel.Size = UDim2.new(1, -20, 0, 16)
 selectionSummaryLabel.Font = Enum.Font.Gotham
 selectionSummaryLabel.Text = "Nothing selected."
-selectionSummaryLabel.TextColor3 = Color3.fromRGB(145, 156, 171)
+selectionSummaryLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
 selectionSummaryLabel.TextSize = 12
 selectionSummaryLabel.TextXAlignment = Enum.TextXAlignment.Left
 selectionSummaryLabel.Parent = selectionCard
@@ -1789,7 +1789,7 @@ selectionPropertyStatusLabel.Position = UDim2.new(0, 10, 0, 28)
 selectionPropertyStatusLabel.Size = UDim2.new(1, -20, 0, 16)
 selectionPropertyStatusLabel.Font = Enum.Font.Gotham
 selectionPropertyStatusLabel.Text = "Pick a property name to read or edit."
-selectionPropertyStatusLabel.TextColor3 = Color3.fromRGB(145, 156, 171)
+selectionPropertyStatusLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
 selectionPropertyStatusLabel.TextSize = 12
 selectionPropertyStatusLabel.TextXAlignment = Enum.TextXAlignment.Left
 selectionPropertyStatusLabel.Parent = propertiesCard
@@ -1863,7 +1863,7 @@ selectionPropertyOutcomeLabel.Position = UDim2.new(0, 10, 0, 190)
 selectionPropertyOutcomeLabel.Size = UDim2.new(1, -20, 0, 16)
 selectionPropertyOutcomeLabel.Font = Enum.Font.Gotham
 selectionPropertyOutcomeLabel.Text = "Ready."
-selectionPropertyOutcomeLabel.TextColor3 = Color3.fromRGB(145, 156, 171)
+selectionPropertyOutcomeLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
 selectionPropertyOutcomeLabel.TextSize = 12
 selectionPropertyOutcomeLabel.TextXAlignment = Enum.TextXAlignment.Left
 selectionPropertyOutcomeLabel.Parent = propertiesCard
@@ -1885,7 +1885,7 @@ favoritesHintLabel.Position = UDim2.new(0, 10, 0, 198)
 favoritesHintLabel.Size = UDim2.new(1, -20, 0, 14)
 favoritesHintLabel.Font = Enum.Font.Gotham
 favoritesHintLabel.Text = "Click a favorite to load it into the editor."
-favoritesHintLabel.TextColor3 = Color3.fromRGB(145, 156, 171)
+favoritesHintLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
 favoritesHintLabel.TextSize = 11
 favoritesHintLabel.TextXAlignment = Enum.TextXAlignment.Left
 favoritesHintLabel.Parent = propertiesCard
@@ -1972,7 +1972,7 @@ selectionStatusLabel.Position = UDim2.new(0, 10, 0, 28)
 selectionStatusLabel.Size = UDim2.new(1, -20, 0, 16)
 selectionStatusLabel.Font = Enum.Font.Gotham
 selectionStatusLabel.Text = "Select an instance to edit attributes and tags."
-selectionStatusLabel.TextColor3 = Color3.fromRGB(145, 156, 171)
+selectionStatusLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
 selectionStatusLabel.TextSize = 12
 selectionStatusLabel.TextXAlignment = Enum.TextXAlignment.Left
 selectionStatusLabel.Parent = editorCard
@@ -2059,7 +2059,7 @@ messageLabel.Position = UDim2.new(0, 10, 0, 104)
 messageLabel.Size = UDim2.new(1, -20, 0, 16)
 messageLabel.Font = Enum.Font.Gotham
 messageLabel.Text = "Ready."
-messageLabel.TextColor3 = Color3.fromRGB(145, 156, 171)
+messageLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
 messageLabel.TextSize = 12
 messageLabel.TextXAlignment = Enum.TextXAlignment.Left
 messageLabel.Parent = actionCard
@@ -2121,7 +2121,7 @@ chatEmptyLabel.LayoutOrder = 0
 chatEmptyLabel.Size = UDim2.new(1, -4, 0, 18)
 chatEmptyLabel.Font = Enum.Font.Gotham
 chatEmptyLabel.Text = "No messages yet. Replies arrive from Codex."
-chatEmptyLabel.TextColor3 = Color3.fromRGB(104, 115, 129)
+chatEmptyLabel.TextColor3 = Color3.fromRGB(152, 164, 180)
 chatEmptyLabel.TextSize = 11
 chatEmptyLabel.TextXAlignment = Enum.TextXAlignment.Left
 chatEmptyLabel.Parent = chatHistory
@@ -2153,7 +2153,7 @@ local function renderChatMessages(messages)
 		bubble.LayoutOrder = index
 		bubble.AutomaticSize = Enum.AutomaticSize.Y
 		bubble.Size = UDim2.new(1, -4, 0, 0)
-		bubble.BackgroundColor3 = isAssistant and Color3.fromRGB(28, 40, 38) or Color3.fromRGB(28, 34, 46)
+		bubble.BackgroundColor3 = isAssistant and Color3.fromRGB(34, 54, 50) or Color3.fromRGB(38, 46, 62)
 		bubble.BorderSizePixel = 0
 		bubble.Parent = chatHistory
 
@@ -2179,7 +2179,7 @@ local function renderChatMessages(messages)
 		roleLabel.Size = UDim2.new(1, 0, 0, 14)
 		roleLabel.Font = Enum.Font.GothamSemibold
 		roleLabel.Text = isAssistant and "Codex" or "You"
-		roleLabel.TextColor3 = isAssistant and Color3.fromRGB(124, 247, 212) or Color3.fromRGB(145, 156, 171)
+		roleLabel.TextColor3 = isAssistant and Color3.fromRGB(124, 247, 212) or Color3.fromRGB(190, 201, 216)
 		roleLabel.TextSize = 11
 		roleLabel.TextXAlignment = Enum.TextXAlignment.Left
 		roleLabel.Parent = bubble
@@ -2272,7 +2272,7 @@ local function renderJobs(jobs)
 	clearJobs()
 	for _, job in ipairs(jobs or {}) do
 		local row = Instance.new("Frame")
-		row.BackgroundColor3 = Color3.fromRGB(28, 34, 46)
+		row.BackgroundColor3 = Color3.fromRGB(38, 46, 62)
 		row.BorderSizePixel = 0
 		row.Size = UDim2.new(1, -2, 0, 58)
 		row.Parent = jobList
@@ -2292,7 +2292,7 @@ local function renderJobs(jobs)
 		typeLabel.TextXAlignment = Enum.TextXAlignment.Left
 		typeLabel.Parent = row
 
-		local statusColor = Color3.fromRGB(145, 156, 171)
+		local statusColor = Color3.fromRGB(190, 201, 216)
 		if job.status == "done" then
 			statusColor = Color3.fromRGB(124, 247, 212)
 		elseif job.status == "failed" then
@@ -2317,7 +2317,7 @@ local function renderJobs(jobs)
 		metaLabel.Size = UDim2.new(1, -20, 0, 16)
 		metaLabel.Font = Enum.Font.Gotham
 		metaLabel.Text = tostring(job.id or "")
-		metaLabel.TextColor3 = Color3.fromRGB(145, 156, 171)
+		metaLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
 		metaLabel.TextSize = 11
 		metaLabel.TextXAlignment = Enum.TextXAlignment.Left
 		metaLabel.Parent = row
@@ -2337,7 +2337,7 @@ local function renderJobs(jobs)
 			detailLabel.TextColor3 = Color3.fromRGB(244, 104, 104)
 			detailLabel.Text = "Error: " .. tostring(job.error)
 		else
-			detailLabel.TextColor3 = Color3.fromRGB(145, 156, 171)
+			detailLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
 			detailLabel.Text = "Queued for bridge processing."
 		end
 		detailLabel.Parent = row
