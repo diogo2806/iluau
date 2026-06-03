@@ -9,6 +9,7 @@ Ele inclui:
 - árvore de seleção com filtro e expandir/colapsar
 - editor de propriedades com histórico e favoritos
 - edição de Attributes e Tags
+- chat do Codex embutido no painel (escreva sem sair do Studio)
 - dashboard local para status da ponte e fila de tarefas
 
 ## O que existe neste repositório
@@ -46,6 +47,13 @@ O dashboard local roda em `http://127.0.0.1:3099/`.
 - Editar Attributes e Tags.
 - Criar e remover instâncias.
 - Enfileirar ações do Studio pelo MCP.
+- Conversar com o Codex pelo card "Codex chat" sem sair do Studio.
+
+## Chat com o Codex dentro do Studio
+
+O painel do Studio tem um card **Codex chat**. Você digita um pedido ali (Enter envia) e ele vai para a fila de chat do servidor local. O Codex lê os pedidos com a tool `iluau.chat_inbox`, executa o que for preciso usando as outras tools do iLuau e responde com `iluau.chat_reply` — a resposta aparece no mesmo painel.
+
+Para o Codex acompanhar o chat, peça a ele (uma vez, no seu cliente Codex) algo como *"fique de olho no chat do iLuau: chame `iluau.chat_inbox` periodicamente, atenda os pedidos no Studio e responda com `iluau.chat_reply`"*.
 
 ## Arquivos principais
 
