@@ -1807,6 +1807,10 @@ makeSectionTitle(headerCard, "Conexão")
 local serverValue = makeStat(headerCard, "Servidor", "desconectado", 30)
 local bridgeValue = makeStat(headerCard, "Ponte", "desconectado", 48)
 
+-- These UI cards are built inside do/end blocks so their construction-only
+-- locals are released at the end of each block, keeping the main chunk under
+-- Luau's hard limit of 200 locals per scope.
+do
 local selectionCard = makeCard(320)
 selectionCard.LayoutOrder = 2
 selectionCard.Parent = body
@@ -1898,7 +1902,9 @@ local selectionLayout = Instance.new("UIListLayout")
 selectionLayout.Padding = UDim.new(0, 6)
 selectionLayout.SortOrder = Enum.SortOrder.LayoutOrder
 selectionLayout.Parent = selectionList
+end
 
+do
 propertiesCard = makeCard(638)
 propertiesCard.LayoutOrder = 3
 propertiesCard.Parent = body
@@ -2080,7 +2086,9 @@ local propertyHistoryLayout = Instance.new("UIListLayout")
 propertyHistoryLayout.Padding = UDim.new(0, 8)
 propertyHistoryLayout.SortOrder = Enum.SortOrder.LayoutOrder
 propertyHistoryLayout.Parent = selectionPropertyHistoryList
+end
 
+do
 local editorCard = makeCard(296)
 editorCard.LayoutOrder = 4
 editorCard.Parent = body
@@ -2160,6 +2168,7 @@ end)
 applyBatchButton.AutomaticSize = Enum.AutomaticSize.None
 applyBatchButton.Size = UDim2.fromScale(1, 1)
 fitGridButtons(editorButtonRow)
+end
 
 local actionCard = makeCard(154)
 actionCard.LayoutOrder = 5
