@@ -1,21 +1,21 @@
-name: Feature Request
-description: Suggest a new feature or improvement
+name: Sugestão de recurso
+description: Sugira um novo recurso ou melhoria
 labels: ["enhancement"]
 body:
   - type: textarea
     id: problem
     attributes:
-      label: What problem does this solve?
-      placeholder: "e.g. I can't easily do X with the current tools"
+      label: Que problema isso resolve?
+      placeholder: "ex.: não consigo fazer X facilmente com as ferramentas atuais"
     validations:
       required: true
   - type: textarea
     id: solution
     attributes:
-      label: Proposed solution
+      label: Solução proposta
     validations:
       required: true
   - type: textarea
     id: context
     attributes:
-      label: Additional context
+      label: Contexto adicional

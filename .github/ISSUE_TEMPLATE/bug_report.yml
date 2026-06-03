@@ -1,60 +1,60 @@
-name: Bug Report
-description: Something isn't working correctly
+name: Relato de bug
+description: Algo não está funcionando corretamente
 labels: ["bug"]
 body:
   - type: markdown
     attributes:
       value: |
-        Before reporting, check the [iLuau docs](https://github.com/diogo2806/iluau)
-        and [Discussions](https://github.com/diogo2806/iluau/discussions).
+        Antes de relatar, confira a [documentação do iLuau](https://github.com/diogo2806/iluau)
+        e as [Discussions](https://github.com/diogo2806/iluau/discussions).
   - type: input
     id: os
     attributes:
-      label: OS
+      label: Sistema operacional
       placeholder: "macOS 14 / Windows 11"
     validations:
       required: true
   - type: input
     id: node
     attributes:
-      label: Node.js version
-      placeholder: "node --version output"
+      label: Versão do Node.js
+      placeholder: "saída de node --version"
     validations:
       required: true
   - type: input
     id: ai-client
     attributes:
-      label: AI client
+      label: Cliente de IA
       placeholder: "Claude Code 1.x / Cursor 0.4x / Codex CLI"
     validations:
       required: true
   - type: input
     id: plugin-version
     attributes:
-      label: Plugin / MCP server version
+      label: Versão do plugin / servidor MCP
       placeholder: "v1.3.1"
     validations:
       required: true
   - type: textarea
     id: steps
     attributes:
-      label: Steps to reproduce
+      label: Passos para reproduzir
     validations:
       required: true
   - type: textarea
     id: expected
     attributes:
-      label: Expected behavior
+      label: Comportamento esperado
     validations:
       required: true
   - type: textarea
     id: actual
     attributes:
-      label: Actual behavior
+      label: Comportamento atual
     validations:
       required: true
   - type: textarea
     id: logs
     attributes:
-      label: Logs (if any)
+      label: Logs (se houver)
       render: shell

@@ -1,16 +1,16 @@
-## What does this PR do?
+## O que este PR faz?
 
-<!-- Brief description of the change -->
+<!-- Descrição breve da mudança -->
 
-## Type of change
+## Tipo de mudança
 
-- [ ] Documentation improvement
-- [ ] Example prompt or cookbook addition
-- [ ] Bug fix
-- [ ] Other
+- [ ] Melhoria de documentação
+- [ ] Adição de prompt de exemplo ou cookbook
+- [ ] Correção de bug
+- [ ] Outro
 
 ## Checklist
 
-- [ ] I've read [CONTRIBUTING.md](../CONTRIBUTING.md)
-- [ ] Changes are limited to docs or examples (plugin source is not in this repo)
-- [ ] Links and paths are correct
+- [ ] Li o [CONTRIBUTING.md](../CONTRIBUTING.md)
+- [ ] Links e caminhos estão corretos
+- [ ] Testei as mudanças localmente quando aplicável

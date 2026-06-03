@@ -20,6 +20,10 @@ Todas as mudanças relevantes do iLuau serão registradas aqui.
 - Instaladores e CI específicos do weppy (`install.sh`, `install.ps1`, `.github/workflows/install-test.yml`, `.github/scripts/mcp-smoke.mjs`)
 - Entradas do weppy nos `marketplace.json`; `Dockerfile`, `smithery.yaml`, `llms.txt` e `llms-full.txt` agora apontam para o fluxo local do iLuau
 
+### Alterado
+
+- Documentação informativa traduzida para pt-BR: `llms.txt`, `llms-full.txt`, templates de issue (bug, instalação, sugestão de recurso) e template de pull request
+
 ## [0.4.0] - 2026-06-03
 
 ### Adicionado
