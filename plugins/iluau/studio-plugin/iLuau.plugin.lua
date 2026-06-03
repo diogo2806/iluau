@@ -1847,7 +1847,7 @@ selectionLayout.Padding = UDim.new(0, 6)
 selectionLayout.SortOrder = Enum.SortOrder.LayoutOrder
 selectionLayout.Parent = selectionList
 
-local propertiesCard = makeCard(548)
+local propertiesCard = makeCard(568)
 propertiesCard.LayoutOrder = 3
 propertiesCard.Parent = body
 makeSectionTitle(propertiesCard, "Propriedades")
@@ -1886,6 +1886,7 @@ propertyNameLabel.TextXAlignment = Enum.TextXAlignment.Left
 propertyNameLabel.Parent = propertiesCard
 
 selectionPropertyNameBox = makeTextBox(propertiesCard, "Ex.: Transparency, Name, Parent", 28)
+selectionPropertyNameBox.Position = UDim2.new(0, 10, 0, 82)
 selectionPropertyNameBox.Size = UDim2.new(1, -20, 0, 30)
 
 local propertyValueLabel = Instance.new("TextLabel")
@@ -1900,11 +1901,12 @@ propertyValueLabel.TextXAlignment = Enum.TextXAlignment.Left
 propertyValueLabel.Parent = propertiesCard
 
 selectionPropertyValueBox = makeTextBox(propertiesCard, "Novo valor: 0.5, true, \"texto\" ou JSON", 36)
+selectionPropertyValueBox.Position = UDim2.new(0, 10, 0, 124)
 selectionPropertyValueBox.Size = UDim2.new(1, -20, 0, 40)
 
 local propertyButtonRow = Instance.new("Frame")
 propertyButtonRow.BackgroundTransparency = 1
-propertyButtonRow.Position = UDim2.new(0, 10, 0, 158)
+propertyButtonRow.Position = UDim2.new(0, 10, 0, 172)
 propertyButtonRow.Size = UDim2.new(1, -20, 0, 68)
 propertyButtonRow.Parent = propertiesCard
 
@@ -1933,7 +1935,7 @@ fitGridButtons(propertyButtonRow)
 
 selectionPropertyOutcomeLabel = Instance.new("TextLabel")
 selectionPropertyOutcomeLabel.BackgroundTransparency = 1
-selectionPropertyOutcomeLabel.Position = UDim2.new(0, 10, 0, 230)
+selectionPropertyOutcomeLabel.Position = UDim2.new(0, 10, 0, 244)
 selectionPropertyOutcomeLabel.Size = UDim2.new(1, -20, 0, 16)
 selectionPropertyOutcomeLabel.Font = Enum.Font.Gotham
 selectionPropertyOutcomeLabel.Text = "Pronto."
@@ -1944,7 +1946,7 @@ selectionPropertyOutcomeLabel.Parent = propertiesCard
 
 selectionPropertyFavoritesStatusLabel = Instance.new("TextLabel")
 selectionPropertyFavoritesStatusLabel.BackgroundTransparency = 1
-selectionPropertyFavoritesStatusLabel.Position = UDim2.new(0, 10, 0, 256)
+selectionPropertyFavoritesStatusLabel.Position = UDim2.new(0, 10, 0, 270)
 selectionPropertyFavoritesStatusLabel.Size = UDim2.new(1, -20, 0, 16)
 selectionPropertyFavoritesStatusLabel.Font = Enum.Font.GothamSemibold
 selectionPropertyFavoritesStatusLabel.Text = "Propriedades favoritas"
@@ -1955,7 +1957,7 @@ selectionPropertyFavoritesStatusLabel.Parent = propertiesCard
 
 local favoritesHintLabel = Instance.new("TextLabel")
 favoritesHintLabel.BackgroundTransparency = 1
-favoritesHintLabel.Position = UDim2.new(0, 10, 0, 276)
+favoritesHintLabel.Position = UDim2.new(0, 10, 0, 290)
 favoritesHintLabel.Size = UDim2.new(1, -20, 0, 14)
 favoritesHintLabel.Font = Enum.Font.Gotham
 favoritesHintLabel.Text = "Clique em um favorito para carregá-lo no editor."
@@ -1967,7 +1969,7 @@ favoritesHintLabel.Parent = propertiesCard
 selectionPropertyFavoriteRow = Instance.new("ScrollingFrame")
 selectionPropertyFavoriteRow.BackgroundTransparency = 1
 selectionPropertyFavoriteRow.BorderSizePixel = 0
-selectionPropertyFavoriteRow.Position = UDim2.new(0, 10, 0, 296)
+selectionPropertyFavoriteRow.Position = UDim2.new(0, 10, 0, 310)
 selectionPropertyFavoriteRow.Size = UDim2.new(1, -20, 0, 38)
 selectionPropertyFavoriteRow.CanvasSize = UDim2.new(0, 0, 0, 0)
 selectionPropertyFavoriteRow.ScrollBarThickness = 0
@@ -1983,7 +1985,7 @@ favoriteLayout.Parent = selectionPropertyFavoriteRow
 
 local quickReadLabel = Instance.new("TextLabel")
 quickReadLabel.BackgroundTransparency = 1
-quickReadLabel.Position = UDim2.new(0, 10, 0, 352)
+quickReadLabel.Position = UDim2.new(0, 10, 0, 366)
 quickReadLabel.Size = UDim2.new(1, -20, 0, 16)
 quickReadLabel.Font = Enum.Font.GothamSemibold
 quickReadLabel.Text = "Leitura rápida"
@@ -1995,7 +1997,7 @@ quickReadLabel.Parent = propertiesCard
 selectionPropertyQuickRow = Instance.new("ScrollingFrame")
 selectionPropertyQuickRow.BackgroundTransparency = 1
 selectionPropertyQuickRow.BorderSizePixel = 0
-selectionPropertyQuickRow.Position = UDim2.new(0, 10, 0, 372)
+selectionPropertyQuickRow.Position = UDim2.new(0, 10, 0, 386)
 selectionPropertyQuickRow.Size = UDim2.new(1, -20, 0, 40)
 selectionPropertyQuickRow.CanvasSize = UDim2.new(0, 0, 0, 0)
 selectionPropertyQuickRow.ScrollBarThickness = 0
@@ -2011,7 +2013,7 @@ quickReadLayout.Parent = selectionPropertyQuickRow
 
 selectionPropertyHistoryStatusLabel = Instance.new("TextLabel")
 selectionPropertyHistoryStatusLabel.BackgroundTransparency = 1
-selectionPropertyHistoryStatusLabel.Position = UDim2.new(0, 10, 0, 428)
+selectionPropertyHistoryStatusLabel.Position = UDim2.new(0, 10, 0, 442)
 selectionPropertyHistoryStatusLabel.Size = UDim2.new(1, -20, 0, 16)
 selectionPropertyHistoryStatusLabel.Font = Enum.Font.GothamSemibold
 selectionPropertyHistoryStatusLabel.Text = "Histórico local"
@@ -2023,7 +2025,7 @@ selectionPropertyHistoryStatusLabel.Parent = propertiesCard
 selectionPropertyHistoryList = Instance.new("ScrollingFrame")
 selectionPropertyHistoryList.BackgroundTransparency = 1
 selectionPropertyHistoryList.BorderSizePixel = 0
-selectionPropertyHistoryList.Position = UDim2.new(0, 10, 0, 450)
+selectionPropertyHistoryList.Position = UDim2.new(0, 10, 0, 464)
 selectionPropertyHistoryList.Size = UDim2.new(1, -20, 0, 88)
 selectionPropertyHistoryList.CanvasSize = UDim2.new(0, 0, 0, 0)
 selectionPropertyHistoryList.ScrollBarThickness = 6
@@ -2175,7 +2177,7 @@ chatStatusLabel.BackgroundTransparency = 1
 chatStatusLabel.Position = UDim2.new(0, 10, 0, 30)
 chatStatusLabel.Size = UDim2.new(1, -20, 0, 18)
 chatStatusLabel.Font = Enum.Font.Gotham
-chatStatusLabel.Text = "Digite uma mensagem; o Codex precisa buscar e responder pelo MCP."
+chatStatusLabel.Text = "Digite uma mensagem; ela fica no servidor ate o Codex buscar pelo MCP."
 chatStatusLabel.TextColor3 = Color3.fromRGB(152, 164, 180)
 chatStatusLabel.TextSize = 12
 chatStatusLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -2220,24 +2222,69 @@ chatEmptyLabel.TextXAlignment = Enum.TextXAlignment.Left
 chatEmptyLabel.Parent = chatHistory
 
 local chatSignature = ""
+local CHAT_PICKUP_WARNING_SECONDS = 30
+local CHAT_REPLY_WARNING_SECONDS = 120
+
+local function parseIsoTimestamp(timestamp)
+	if type(timestamp) ~= "string" then
+		return nil
+	end
+
+	local year, month, day, hour, minute, second = timestamp:match("^(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)")
+	if not year then
+		return nil
+	end
+
+	return os.time({
+		year = tonumber(year),
+		month = tonumber(month),
+		day = tonumber(day),
+		hour = tonumber(hour),
+		min = tonumber(minute),
+		sec = tonumber(second),
+	})
+end
+
+local function getMessageAgeSeconds(message)
+	local createdAt = parseIsoTimestamp(message and message.createdAt)
+	if not createdAt then
+		return 0
+	end
+	return math.max(0, os.time() - createdAt)
+end
 
 local function describeChatStatus(messages)
 	local pending = 0
 	local delivered = 0
 	local hasAssistant = false
+	local stalePending = false
+	local staleDelivered = false
 
 	for _, message in ipairs(messages or {}) do
+		local age = getMessageAgeSeconds(message)
 		if message.role == "assistant" then
 			hasAssistant = true
 		elseif message.status == "pending" then
 			pending = pending + 1
+			if age >= CHAT_PICKUP_WARNING_SECONDS then
+				stalePending = true
+			end
 		elseif message.status == "delivered" then
 			delivered = delivered + 1
+			if age >= CHAT_REPLY_WARNING_SECONDS then
+				staleDelivered = true
+			end
 		end
 	end
 
+	if stalePending then
+		return "Aviso: o servidor recebeu a mensagem, mas o Codex ainda nao buscou pelo MCP iLuau."
+	end
+	if staleDelivered then
+		return "Aviso: o Codex recebeu a mensagem, mas ainda nao respondeu."
+	end
 	if pending > 0 then
-		return "Mensagem enviada. Aguardando o Codex buscar no MCP."
+		return "Mensagem no servidor. Aguardando o Codex buscar pelo MCP iLuau."
 	end
 	if delivered > 0 then
 		return "Mensagem entregue ao Codex. Aguardando resposta no painel."
@@ -2245,17 +2292,24 @@ local function describeChatStatus(messages)
 	if hasAssistant then
 		return "Resposta recebida do Codex."
 	end
-	return "Digite uma mensagem; o Codex precisa buscar e responder pelo MCP."
+	return "Digite uma mensagem; ela fica no servidor ate o Codex buscar pelo MCP."
 end
 
 local function describeChatMessageStatus(message)
 	if message.role == "assistant" then
 		return "resposta"
 	end
+	local age = getMessageAgeSeconds(message)
 	if message.status == "pending" then
-		return "aguardando leitura"
+		if age >= CHAT_PICKUP_WARNING_SECONDS then
+			return "no servidor; Codex nao buscou"
+		end
+		return "aguardando busca do Codex"
 	end
 	if message.status == "delivered" then
+		if age >= CHAT_REPLY_WARNING_SECONDS then
+			return "sem resposta ainda"
+		end
 		return "entregue; aguardando resposta"
 	end
 	return tostring(message.status or "enviada")
@@ -2264,7 +2318,8 @@ end
 local function renderChatMessages(messages)
 	local signature = ""
 	for _, message in ipairs(messages or {}) do
-		signature = signature .. tostring(message.id) .. ":" .. tostring(message.status) .. ":" .. tostring(message.text) .. ";"
+		local ageBucket = math.floor(getMessageAgeSeconds(message) / 5)
+		signature = signature .. tostring(message.id) .. ":" .. tostring(message.status) .. ":" .. tostring(message.text) .. ":" .. tostring(ageBucket) .. ";"
 	end
 	if signature == chatSignature then
 		return
@@ -2359,7 +2414,7 @@ local function sendChatMessage()
 	if response and response.Success then
 		chatInputBox.Text = ""
 		messageLabel.Text = "Mensagem enviada. O Codex precisa buscar no MCP para responder."
-		chatStatusLabel.Text = "Mensagem enviada. Aguardando o Codex buscar no MCP."
+		chatStatusLabel.Text = "Mensagem no servidor. Aguardando o Codex buscar pelo MCP iLuau."
 		refreshChat()
 	else
 		messageLabel.Text = "Falha ao enviar a mensagem."
