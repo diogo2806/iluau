@@ -11,8 +11,8 @@ Use this skill to operate Roblox Studio through WEPPY Roblox MCP with the right 
 
 ## Workflow
 
-1. Check connection and tier before mutating Studio. Use Basic-safe status actions first when available.
-2. Choose the narrowest MCP action that matches the request. Read `references/mcp-actions.md` for exact action names, params, tier, route, and aliases.
+1. Check connection before mutating Studio. Use status actions first when available.
+2. Choose the narrowest MCP action that matches the request. Read `references/mcp-actions.md` for exact action names, params, route, and aliases.
 3. For UI work, run the UI Studio loop in `references/ui-studio.md` instead of ad hoc GUI mutation.
 4. For play mode, test scripts, logs, or dashboard reports, use `references/playtest.md`.
 5. Prefer purpose-built tools over `execute_luau`. Use arbitrary Luau only when no typed action covers the request.

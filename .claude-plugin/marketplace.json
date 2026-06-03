@@ -5,14 +5,14 @@
     "email": "hope841026@gmail.com"
   },
   "metadata": {
-    "description": "WEPPY Roblox AI Toolkit — WEPPY AI Agent Plugin and MCP setup for live Roblox Studio workflows with direct Studio control, sync, playtest, UI Studio, and dashboard monitoring",
+    "description": "WEPPY Roblox AI Toolkit and iLuau plugin marketplace for local Roblox Studio workflows.",
     "version": "2.7.13"
   },
   "plugins": [
     {
       "name": "weppy-roblox-ai-toolkit",
       "source": "./plugins/weppy-roblox-mcp",
-      "description": "WEPPY Roblox AI Toolkit — WEPPY AI Agent Plugin and MCP setup for live Roblox Studio workflows.",
+      "description": "WEPPY Roblox AI Toolkit for live Roblox Studio workflows.",
       "version": "2.7.13",
       "author": {
         "name": "hope1026"
@@ -36,6 +36,32 @@
         "roblox",
         "mcp",
         "game-dev",
+        "ai-tools"
+      ]
+    },
+    {
+      "name": "iluau",
+      "source": "./plugins/iluau",
+      "description": "iLuau local Roblox MCP plugin for Codex.",
+      "version": "0.4.0+codex.20260603131807",
+      "author": {
+        "name": "Local developer"
+      },
+      "homepage": "https://github.com/hope1026/weppy-roblox-mcp",
+      "repository": "https://github.com/hope1026/weppy-roblox-mcp",
+      "license": "AGPL-3.0",
+      "keywords": [
+        "mcp",
+        "roblox",
+        "roblox-studio",
+        "game-development",
+        "ai",
+        "codex"
+      ],
+      "category": "productivity",
+      "tags": [
+        "roblox",
+        "mcp",
         "ai-tools"
       ]
     }

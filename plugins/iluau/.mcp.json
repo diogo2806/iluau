@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "iluau-roblox-mcp": {
+      "command": "node",
+      "args": [
+        "./server/index.js"
+      ]
+    }
+  }
+}

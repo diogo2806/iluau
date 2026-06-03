@@ -1,0 +1,19 @@
+{
+  "name": "iluau",
+  "version": "0.4.0+codex.20260603131807",
+  "description": "iLuau local Roblox MCP plugin for Codex.",
+  "author": {
+    "name": "Local developer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "iLuau",
+    "shortDescription": "Local Roblox MCP for Codex.",
+    "longDescription": "iLuau is a local Codex plugin with an in-repo MCP backend for Roblox Studio workflows.",
+    "developerName": "Local developer",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": "Help me use iLuau."
+  },
+  "mcpServers": "./.mcp.json"
+}

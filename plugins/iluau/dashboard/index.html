@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>iLuau Dashboard</title>
+  <link rel="stylesheet" href="/assets/dashboard.css" />
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="mark">iL</div>
+        <div>
+          <div class="name">iLuau</div>
+          <div class="sub">Roblox MCP local</div>
+        </div>
+      </div>
+      <nav class="menu">
+        <button class="menu-item active" data-panel="overview">Overview</button>
+        <button class="menu-item" data-panel="bridge">Bridge</button>
+        <button class="menu-item" data-panel="jobs">Jobs</button>
+        <button class="menu-item" data-panel="tools">Tools</button>
+        <button class="menu-item" data-panel="settings">Settings</button>
+      </nav>
+      <div class="sidebar-card">
+        <div class="label">Dashboard</div>
+        <div class="value" id="dashboardUrl">loading...</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="hero">
+        <div>
+          <div class="eyebrow">Local Roblox Studio Bridge</div>
+          <h1>iLuau</h1>
+          <p>Servidor MCP local com fila de jobs, bridge para Studio e painel próprio.</p>
+        </div>
+        <div class="status-pill" id="bridgeBadge">connecting</div>
+      </header>
+
+      <section class="grid">
+        <article class="card">
+          <div class="card-title">Server</div>
+          <div class="metric" id="serverVersion">-</div>
+          <div class="muted" id="serverStarted">-</div>
+        </article>
+        <article class="card">
+          <div class="card-title">Bridge</div>
+          <div class="metric" id="bridgeState">-</div>
+          <div class="muted" id="bridgeSeen">-</div>
+        </article>
+        <article class="card">
+          <div class="card-title">Jobs</div>
+          <div class="metric" id="jobsCount">0</div>
+          <div class="muted">Queue and inspect Roblox actions.</div>
+        </article>
+      </section>
+
+      <section class="card panel" id="panel-overview">
+        <div class="card-title">Overview</div>
+        <p>Use this dashboard to monitor the local MCP server and push structured jobs to Roblox Studio.</p>
+      </section>
+
+      <section class="card panel hidden" id="panel-bridge">
+        <div class="card-title">Bridge</div>
+        <pre id="bridgeJson"></pre>
+      </section>
+
+      <section class="card panel hidden" id="panel-jobs">
+        <div class="card-title row">
+          <span>Jobs</span>
+          <button id="refreshJobs">Refresh</button>
+        </div>
+        <form id="jobForm" class="job-form">
+          <input name="type" placeholder="job type, e.g. inspect_selection" required />
+          <input name="payload" placeholder='payload JSON, e.g. {"path":"game.Workspace"}' />
+          <button type="submit">Queue Job</button>
+        </form>
+        <div id="jobsList" class="list"></div>
+      </section>
+
+      <section class="card panel hidden" id="panel-tools">
+        <div class="card-title">Available Tools</div>
+        <ul class="tool-list">
+          <li><code>iluau.ping</code></li>
+          <li><code>iluau.status</code></li>
+          <li><code>iluau.capabilities</code></li>
+          <li><code>iluau.inspect_selection</code></li>
+          <li><code>iluau.get_properties</code></li>
+          <li><code>iluau.get_attributes</code></li>
+          <li><code>iluau.set_attributes</code></li>
+          <li><code>iluau.get_tags</code></li>
+          <li><code>iluau.set_tags</code></li>
+          <li><code>iluau.set_property</code></li>
+          <li><code>iluau.set_properties</code></li>
+          <li><code>iluau.create_instance</code></li>
+          <li><code>iluau.delete_instance</code></li>
+          <li><code>iluau.sync_snapshot</code></li>
+          <li><code>iluau.dashboard_url</code></li>
+          <li><code>iluau.queue_job</code></li>
+          <li><code>iluau.list_jobs</code></li>
+          <li><code>iluau.bridge_state</code></li>
+        </ul>
+      </section>
+
+      <section class="card panel hidden" id="panel-settings">
+        <div class="card-title">Settings</div>
+        <div class="setting-row">
+          <span>Dashboard Port</span>
+          <strong id="dashboardPort">3099</strong>
+        </div>
+        <div class="setting-row">
+          <span>Transport</span>
+          <strong>stdio + local http</strong>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/assets/dashboard.js"></script>
+</body>
+</html>

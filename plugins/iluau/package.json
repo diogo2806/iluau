@@ -1,0 +1,11 @@
+{
+  "name": "iluau-roblox-mcp",
+  "version": "0.4.0+codex.20260603131807",
+  "private": true,
+  "description": "Local Roblox MCP server for the iLuau plugin.",
+  "type": "commonjs",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js"
+  }
+}

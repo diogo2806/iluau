@@ -25,7 +25,7 @@ Category keys:
 - `containers`
 - `services`
 
-Default direction is `forward`. Default apply mode is `manual`. Basic tier forces safer manual behavior; Pro enables broader bidirectional workflows.
+Default direction is `forward`. Default apply mode is `manual`. The workflow supports safer manual behavior by default and broader bidirectional workflows when needed.
 
 ## Multi-Place
 

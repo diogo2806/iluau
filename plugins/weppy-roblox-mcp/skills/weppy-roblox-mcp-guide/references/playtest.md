@@ -11,7 +11,7 @@ Use playtest actions when verifying runtime behavior, collecting logs, or creati
 - `system_info.stop`: stop a playtest.
 - `system_info.run_test`: inject a Luau test body, run playtest, collect logs, and write report files.
 
-Read `mcp-actions.md` for exact params and tiers.
+Read `mcp-actions.md` for exact params and routes.
 
 ## Automated Test Runner
 

@@ -12,7 +12,7 @@ so AI can directly create, read, modify, and delete instances, scripts, properti
 terrain, and more — inside a live Studio session.
 
 - Action-based MCP tools covering the full Roblox Studio API surface
-- Bidirectional project sync between Roblox Studio and local files (Pro)
+- Bidirectional project sync between Roblox Studio and local files
 - Automated playtest: AI starts/stops Play/Run, injects test scripts, collects logs
 - UI Studio: AI creates in-game UI that matches your game's style or analyzes existing UI and suggests improvements
 - Web dashboard: monitor AI actions, tool history, sync state, and changelog in real time at `http://localhost:3002`
@@ -59,15 +59,14 @@ codex plugin marketplace add hope1026/weppy-roblox-mcp
 
 After adding the Codex marketplace, restart Codex, open Plugin Directory, and install WEPPY Roblox AI Toolkit.
 
-## Tiers
+## Included features
 
-- Basic (Free): MCP tool execution + one-way Studio -> Local sync
-- Pro: Bidirectional sync, UI Studio, bulk actions, terrain generation, spatial analysis, multi-place support, advanced tools
+- MCP tool execution + one-way and bidirectional Studio <-> Local sync
+- UI Studio, bulk actions, terrain generation, spatial analysis, multi-place support, and advanced tools
 
 ## Detailed docs
 
 - Install and setup: https://weppyai.com/en/install
-- Pro upgrade: https://weppyai.com/plans/
 
 ## Requirements
 
@@ -78,7 +77,7 @@ After adding the Codex marketplace, restart Codex, open Plugin Directory, and in
 ## Optional
 
 - Roblox Explorer VSCode extension (browse synced instance tree)
-- Pro subscription for bidirectional sync, UI Studio, and advanced tools
+- Full access to bidirectional sync, UI Studio, and advanced tools
 
 ## Links
 

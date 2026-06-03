@@ -15,15 +15,6 @@ body:
       label: Proposed solution
     validations:
       required: true
-  - type: dropdown
-    id: tier
-    attributes:
-      label: Which tier would this apply to?
-      options:
-        - Basic
-        - Pro
-        - Both
-        - Not sure
   - type: textarea
     id: context
     attributes:

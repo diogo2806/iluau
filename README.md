@@ -104,8 +104,7 @@ AI can directly handle scripts, instances, properties, terrain, lighting, assets
 
 AI works from a synchronized local mirror, so multi-file updates stay consistent.
 
-- Basic: one-way sync (Studio -> Local)
-- Pro: bidirectional sync + per-type Direction/Apply Mode + history + multi-place
+- Sync: one-way and bidirectional workflows with per-type Direction/Apply Mode, history, and multi-place support
 
 ![Sync workflow - Studio and local files synchronized in real time](https://raw.githubusercontent.com/hope1026/weppy-roblox-mcp/main/docs/assets/screenshots/plugin/sync/sync-overview.png)
 
@@ -165,7 +164,7 @@ Install from [VS Code Marketplace](https://marketplace.visualstudio.com/items?it
 - Compress repetitive work: turn many manual edits into one request
 - Change related files together: not just one target file
 - Lower risk: rely on sync state and history before applying changes
-- Better token efficiency (Pro): reduce round trips with bulk actions
+- Better token efficiency: reduce round trips with bulk actions
 
 ## Docs
 
@@ -173,7 +172,6 @@ Detailed guides and app-specific setup now live on the web.
 
 - [Web Docs Hub](https://weppyai.com/ko/docs)
 - [Install Guide](https://weppyai.com/en/install)
-- [Pro Upgrade](https://weppyai.com/plans/)
 
 For app setup details, open the web docs hub and choose the relevant AI client guide.
 
@@ -199,8 +197,8 @@ Yes. Any MCP-compatible AI client works.
 ### Can AI build Roblox games with this?
 Yes. AI can create instances, write scripts, generate terrain, set up lighting, insert assets, configure physics, and more - all inside a live Roblox Studio session. It goes beyond code generation to executable actions.
 
-### What is the difference between Basic and Pro?
-Basic (Free) includes MCP tool execution and one-way sync (Studio -> Local). Pro adds bidirectional sync, UI Studio, bulk operations, terrain generation, spatial analysis, audio/animation control, and multi-place support. See the Pro upgrade page.
+### Are any features locked behind tiers?
+No. MCP tool execution, sync workflows, UI Studio, bulk operations, terrain generation, spatial analysis, audio/animation control, and multi-place support are all included.
 
 ### How is Weppy different from other Roblox MCP servers?
 Weppy uses action-based dispatching instead of separate tools for each function. This reduces AI token consumption significantly. It also provides bidirectional project sync and multi-place support, which most alternatives lack.
@@ -208,11 +206,9 @@ Weppy uses action-based dispatching instead of separate tools for each function.
 ### Is it safe? Can AI break my game?
 The server runs on localhost only (127.0.0.1:3002). Forbidden paths (CoreGui, CorePackages) are blocked. Rate limiting (450 req/min) and 30-second timeouts prevent runaway operations. All changes are trackable via sync history.
 
-## Pro Upgrade
+## Included Features
 
-Bidirectional Sync, UI Studio, advanced build capabilities, and AI token efficiency - all in one upgrade.
-
-[Pro Upgrade Guide](https://weppyai.com/plans/)
+Bidirectional Sync, UI Studio, advanced build capabilities, and AI token efficiency are included.
 
 ## License
 
