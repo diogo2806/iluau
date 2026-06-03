@@ -347,6 +347,7 @@ local selectionPropertyFavoritesStatusLabel
 local selectionAttributesBox
 local selectionTagsBox
 local selectionStatusLabel
+local refreshSelectionTree
 local treeExpansion = {}
 local propertyHistory = {}
 local propertyHistoryByKey = {}
@@ -1368,7 +1369,7 @@ local function refreshSelectionEditor()
 	end
 end
 
-local function refreshSelectionTree()
+function refreshSelectionTree()
 	if not selectionList then
 		return
 	end

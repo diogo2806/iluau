@@ -10,6 +10,10 @@ Todas as mudanças relevantes do iLuau serão registradas aqui.
 - Endpoints HTTP `POST /api/chat/send` e `GET /api/chat/messages` para a ponte de chat
 - Tools MCP `iluau.chat_inbox` e `iluau.chat_reply` para o Codex receber e responder mensagens do Studio
 
+### Corrigido
+
+- Forward reference quebrada de `refreshSelectionTree` que abortava o plugin do Studio antes de iniciar o loop de heartbeat, deixando a ponte sempre offline e os jobs presos em "queued"
+
 ## [0.4.0] - 2026-06-03
 
 ### Adicionado
