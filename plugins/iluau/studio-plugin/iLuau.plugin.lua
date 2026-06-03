@@ -614,6 +614,44 @@ local function getFilterText()
 	return ""
 end
 
+local DEFAULT_SELECTION_TREE_ROOTS = {
+	"Workspace",
+	"ReplicatedStorage",
+	"ReplicatedFirst",
+	"ServerScriptService",
+	"ServerStorage",
+	"StarterGui",
+	"StarterPack",
+	"StarterPlayer",
+	"Lighting",
+	"SoundService",
+}
+
+local function getDefaultSelectionTreeRoots()
+	local roots = {}
+	local seen = {}
+
+	for _, serviceName in ipairs(DEFAULT_SELECTION_TREE_ROOTS) do
+		local ok, service = pcall(function()
+			return game:GetService(serviceName)
+		end)
+		if ok and service and not seen[service] then
+			seen[service] = true
+			table.insert(roots, service)
+		end
+	end
+
+	return roots
+end
+
+local function getSelectionTreeRoots()
+	local current = Selection:Get()
+	if current and #current > 0 then
+		return current, true
+	end
+	return getDefaultSelectionTreeRoots(), false
+end
+
 local function nodeMatchesFilter(instance, filterText)
 	if not instance then
 		return false
@@ -654,7 +692,7 @@ local function nodeOrDescendantMatchesFilter(instance, filterText)
 end
 
 local function setTreeExpansionForSelection(expanded)
-	local roots = Selection:Get()
+	local roots = getSelectionTreeRoots()
 	local function walk(instance)
 		if not instance then
 			return
@@ -1381,16 +1419,21 @@ function refreshSelectionTree()
 	clearGuiRows(selectionList)
 
 	local target, selection = getPrimarySelection()
+	local roots = getSelectionTreeRoots()
 	local filterText = getFilterText()
 	if selectionTreeFilterStatusLabel then
 		if filterText == "" then
-			selectionTreeFilterStatusLabel.Text = "Mostrando todos os nós."
+			if #selection == 0 then
+				selectionTreeFilterStatusLabel.Text = "Mostrando servicos raiz."
+			else
+				selectionTreeFilterStatusLabel.Text = "Mostrando todos os nós."
+			end
 		else
 			selectionTreeFilterStatusLabel.Text = string.format("Filtro: %s", filterText)
 		end
 	end
 
-	if #selection == 0 then
+	if #roots == 0 then
 		local empty = Instance.new("TextLabel")
 		empty.BackgroundTransparency = 1
 		empty.Size = UDim2.new(1, -8, 0, 20)
@@ -1403,8 +1446,23 @@ function refreshSelectionTree()
 		return
 	end
 
-	for _, rootInstance in ipairs(selection) do
-		renderTreeNode(selectionList, rootInstance, 0, 20, filterText, target)
+	local renderedAny = false
+	for _, rootInstance in ipairs(roots) do
+		if renderTreeNode(selectionList, rootInstance, 0, 20, filterText, target) then
+			renderedAny = true
+		end
+	end
+
+	if not renderedAny then
+		local empty = Instance.new("TextLabel")
+		empty.BackgroundTransparency = 1
+		empty.Size = UDim2.new(1, -8, 0, 20)
+		empty.Font = Enum.Font.Gotham
+		empty.Text = "Nenhum no corresponde ao filtro."
+		empty.TextColor3 = Color3.fromRGB(190, 201, 216)
+		empty.TextSize = 14
+		empty.TextXAlignment = Enum.TextXAlignment.Left
+		empty.Parent = selectionList
 	end
 
 	if target and selectionStatusLabel then
