@@ -16,8 +16,8 @@
           <div class="sub">Roblox MCP local</div>
         </div>
       </div>
-      <nav class="menu">
-        <button class="menu-item active" data-panel="overview">Overview</button>
+      <nav class="menu" aria-label="Seções do dashboard">
+        <button class="menu-item active" data-panel="overview" aria-current="page">Overview</button>
         <button class="menu-item" data-panel="bridge">Bridge</button>
         <button class="menu-item" data-panel="jobs">Jobs</button>
         <button class="menu-item" data-panel="tools">Tools</button>
@@ -36,7 +36,7 @@
           <h1>iLuau</h1>
           <p>Servidor MCP local com fila de jobs, bridge para Studio e painel próprio.</p>
         </div>
-        <div class="status-pill" id="bridgeBadge">connecting</div>
+        <div class="status-pill" id="bridgeBadge" role="status" aria-live="polite">connecting</div>
       </header>
 
       <section class="grid">
@@ -73,8 +73,8 @@
           <button id="refreshJobs">Refresh</button>
         </div>
         <form id="jobForm" class="job-form">
-          <input name="type" placeholder="job type, e.g. inspect_selection" required />
-          <input name="payload" placeholder='payload JSON, e.g. {"path":"game.Workspace"}' />
+          <input name="type" placeholder="job type, e.g. inspect_selection" aria-label="Tipo do job" required />
+          <input name="payload" placeholder='payload JSON, e.g. {"path":"game.Workspace"}' aria-label="Payload do job (JSON)" />
           <button type="submit">Queue Job</button>
         </form>
         <div id="jobsList" class="list"></div>
