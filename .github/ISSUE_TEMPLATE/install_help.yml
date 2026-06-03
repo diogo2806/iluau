@@ -1,47 +1,47 @@
-name: Install Help
-description: Having trouble installing or connecting
+name: Ajuda com instalação
+description: Dificuldade para instalar ou conectar
 labels: ["question", "installation"]
 body:
   - type: markdown
     attributes:
       value: |
-        **First:** check the [iLuau README](https://github.com/diogo2806/iluau/blob/main/README.md).
-        For general questions, use [Discussions](https://github.com/diogo2806/iluau/discussions) instead.
+        **Primeiro:** confira o [README do iLuau](https://github.com/diogo2806/iluau/blob/main/README.md).
+        Para perguntas gerais, use as [Discussions](https://github.com/diogo2806/iluau/discussions).
   - type: dropdown
     id: ai-client
     attributes:
-      label: AI client
+      label: Cliente de IA
       options:
         - Claude Code
         - Claude Desktop
         - Cursor
         - Codex CLI
         - Gemini CLI
-        - Other
+        - Outro
     validations:
       required: true
   - type: input
     id: os
     attributes:
-      label: OS
+      label: Sistema operacional
       placeholder: "macOS 14 / Windows 11"
     validations:
       required: true
   - type: input
     id: node
     attributes:
-      label: Node.js version
-      placeholder: "node --version output"
+      label: Versão do Node.js
+      placeholder: "saída de node --version"
     validations:
       required: true
   - type: textarea
     id: issue
     attributes:
-      label: What's happening?
-      placeholder: "Describe the problem and any error messages"
+      label: O que está acontecendo?
+      placeholder: "Descreva o problema e quaisquer mensagens de erro"
     validations:
       required: true
   - type: textarea
     id: tried
     attributes:
-      label: What have you tried?
+      label: O que você já tentou?

@@ -1,33 +1,33 @@
-# iLuau — Canonical Docs
+# iLuau — Documentação canônica
 
-> iLuau is a local MCP plugin that lets the Codex AI agent control a live
-> Roblox Studio session and interact with the selection, properties, attributes,
-> tags, and instances, plus a chat panel embedded in Studio.
+> O iLuau é um plugin MCP local que permite ao agente de IA Codex controlar
+> uma sessão ao vivo do Roblox Studio e interagir com a seleção, propriedades,
+> attributes, tags e instâncias, além de um painel de chat embutido no Studio.
 
-## Components
+## Componentes
 
-- `plugins/iluau/server/` — local MCP server (stdio) and HTTP dashboard/bridge
-- `plugins/iluau/studio-plugin/iLuau.plugin.lua` — dockable Studio plugin
-- `plugins/iluau/dashboard/` — local dashboard UI
-- `plugins/iluau/skills/iluau-guide/` — usage guide for Codex
+- `plugins/iluau/server/` — servidor MCP local (stdio) e dashboard/ponte HTTP
+- `plugins/iluau/studio-plugin/iLuau.plugin.lua` — plugin encaixável do Studio
+- `plugins/iluau/dashboard/` — interface do dashboard local
+- `plugins/iluau/skills/iluau-guide/` — guia de uso para o Codex
 
-## Setup
+## Configuração
 
-1. Install Node.js 18 or higher.
-2. From `plugins/iluau/`, run `npm install` if needed.
-3. Configure Codex to launch the MCP server (stdio):
-   `node /path/to/plugins/iluau/server/index.js`
-4. Copy `studio-plugin/iLuau.plugin.lua` into the Roblox Studio plugins folder
-   and restart Studio.
-5. Enable Allow HTTP Requests in Studio so the plugin can reach the local
-   bridge at `http://127.0.0.1:3099/`.
+1. Instale o Node.js 18 ou superior.
+2. Em `plugins/iluau/`, rode `npm install` se necessário.
+3. Configure o Codex para iniciar o servidor MCP (stdio):
+   `node /caminho/para/plugins/iluau/server/index.js`
+4. Copie `studio-plugin/iLuau.plugin.lua` para a pasta de plugins do Roblox
+   Studio e reinicie o Studio.
+5. Habilite o Allow HTTP Requests no Studio para que o plugin consiga alcançar
+   a ponte local em `http://127.0.0.1:3099/`.
 
-## Chat with Codex inside Studio
+## Chat com o Codex dentro do Studio
 
-The Studio panel has a "Codex chat" card. Messages typed there go to the local
-chat queue; Codex reads them with `iluau.chat_inbox`, acts using the other
-iLuau tools, and replies with `iluau.chat_reply` so the answer appears back in
-the panel.
+O painel do Studio tem um card "Codex chat". As mensagens digitadas ali vão
+para a fila de chat local; o Codex as lê com `iluau.chat_inbox`, age usando as
+demais tools do iLuau e responde com `iluau.chat_reply` para que a resposta
+apareça de volta no painel.
 
 ## Links
 

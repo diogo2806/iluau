@@ -1,38 +1,39 @@
-# iLuau — Local MCP Plugin for Roblox Studio
+# iLuau — Plugin MCP local para Roblox Studio
 
-> iLuau is a local MCP plugin that lets the Codex AI agent control a live
-> Roblox Studio session — inspect the selection tree, read and edit properties,
-> attributes, and tags, create and delete instances, and chat with Codex from a
-> panel inside Studio.
+> O iLuau é um plugin MCP local que permite ao agente de IA Codex controlar
+> uma sessão ao vivo do Roblox Studio — inspecionar a árvore de seleção, ler e
+> editar propriedades, attributes e tags, criar e remover instâncias, e
+> conversar com o Codex por um painel dentro do Studio.
 
-## What it does
+## O que faz
 
-iLuau provides a local bridge between Codex and the Roblox Studio DataModel.
-A local MCP server (Node.js) exposes Studio actions as MCP tools and hosts a
-dashboard; a dockable Studio plugin executes the queued jobs in a live session.
+O iLuau fornece uma ponte local entre o Codex e o DataModel do Roblox Studio.
+Um servidor MCP local (Node.js) expõe as ações do Studio como tools de MCP e
+hospeda um dashboard; um plugin encaixável do Studio executa os jobs da fila em
+uma sessão ao vivo.
 
-- Local MCP server (stdio) for Codex
-- Dockable panel in Roblox Studio
-- Selection tree with filter and expand/collapse
-- Property editor with history and favorites
-- Attributes and Tags editing
-- Codex chat embedded in the Studio panel (no screen switching)
-- Local dashboard for bridge status and job queue
+- Servidor MCP local (stdio) para o Codex
+- Painel encaixável no Roblox Studio
+- Árvore de seleção com filtro e expandir/colapsar
+- Editor de propriedades com histórico e favoritos
+- Edição de Attributes e Tags
+- Chat do Codex embutido no painel do Studio (sem trocar de tela)
+- Dashboard local para status da ponte e fila de tarefas
 
-## Installation
+## Instalação
 
-1. Install Node.js 18 or higher.
-2. From `plugins/iluau/`, install dependencies if needed: `npm install`.
-3. Point your Codex client at the MCP server: `node ./server/index.js`
-   (the same process hosts the local dashboard on `http://127.0.0.1:3099/`).
-4. Copy `plugins/iluau/studio-plugin/iLuau.plugin.lua` to the Roblox Studio
-   plugins folder and restart Studio.
+1. Instale o Node.js 18 ou superior.
+2. Em `plugins/iluau/`, instale as dependências se necessário: `npm install`.
+3. Aponte seu cliente Codex para o servidor MCP: `node ./server/index.js`
+   (o mesmo processo hospeda o dashboard local em `http://127.0.0.1:3099/`).
+4. Copie `plugins/iluau/studio-plugin/iLuau.plugin.lua` para a pasta de plugins
+   do Roblox Studio e reinicie o Studio.
 
-## Requirements
+## Requisitos
 
 - Node.js >= 18
-- Roblox Studio (with Allow HTTP Requests enabled)
-- Codex (CLI or app) as the MCP client
+- Roblox Studio (com Allow HTTP Requests habilitado)
+- Codex (CLI ou app) como cliente MCP
 
 ## Links
 
