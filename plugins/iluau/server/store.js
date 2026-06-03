@@ -19,12 +19,42 @@ const state = {
     lastPingAt: null,
   },
   jobs: [],
+  chat: [],
 };
 
 const waiters = new Map();
+const MAX_CHAT_MESSAGES = 200;
 
 function nowIso() {
   return new Date().toISOString();
+}
+
+function addChatMessage(role, text) {
+  const message = {
+    id: randomUUID(),
+    role: role === "assistant" ? "assistant" : "user",
+    text: String(text == null ? "" : text),
+    status: role === "assistant" ? "done" : "pending",
+    createdAt: nowIso(),
+  };
+  state.chat.push(message);
+  if (state.chat.length > MAX_CHAT_MESSAGES) {
+    state.chat.splice(0, state.chat.length - MAX_CHAT_MESSAGES);
+  }
+  return message;
+}
+
+function getChatMessages(limit) {
+  const count = Number.isFinite(limit) && limit > 0 ? limit : 50;
+  return state.chat.slice(-count);
+}
+
+function takePendingChatPrompts() {
+  const pending = state.chat.filter((m) => m.role === "user" && m.status === "pending");
+  for (const message of pending) {
+    message.status = "delivered";
+  }
+  return pending.map((m) => ({ id: m.id, text: m.text, createdAt: m.createdAt }));
 }
 
 function queueJob(type, payload = {}) {
@@ -143,6 +173,8 @@ function getCapabilities() {
       "iluau.queue_job",
       "iluau.list_jobs",
       "iluau.bridge_state",
+      "iluau.chat_inbox",
+      "iluau.chat_reply",
     ],
     bridgeJobTypes: [
       "ping",
@@ -170,5 +202,8 @@ module.exports = {
   markJobCompleted,
   getPublicState,
   getCapabilities,
+  addChatMessage,
+  getChatMessages,
+  takePendingChatPrompts,
   nowIso,
 };

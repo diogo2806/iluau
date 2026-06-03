@@ -2,6 +2,14 @@
 
 Todas as mudanças relevantes do iLuau serão registradas aqui.
 
+## [Não publicado]
+
+### Adicionado
+
+- Card "Codex chat" no painel do Studio para escrever pedidos sem trocar de tela
+- Endpoints HTTP `POST /api/chat/send` e `GET /api/chat/messages` para a ponte de chat
+- Tools MCP `iluau.chat_inbox` e `iluau.chat_reply` para o Codex receber e responder mensagens do Studio
+
 ## [0.4.0] - 2026-06-03
 
 ### Adicionado

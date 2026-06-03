@@ -2079,6 +2079,160 @@ jobLayout.Padding = UDim.new(0, 8)
 jobLayout.SortOrder = Enum.SortOrder.LayoutOrder
 jobLayout.Parent = jobList
 
+local chatCard = makeCard(320)
+chatCard.LayoutOrder = 2
+chatCard.Parent = body
+makeSectionTitle(chatCard, "Codex chat")
+
+local chatHistory = Instance.new("ScrollingFrame")
+chatHistory.BackgroundTransparency = 1
+chatHistory.BorderSizePixel = 0
+chatHistory.Position = UDim2.new(0, 10, 0, 34)
+chatHistory.Size = UDim2.new(1, -20, 0, 210)
+chatHistory.CanvasSize = UDim2.new(0, 0, 0, 0)
+chatHistory.ScrollBarThickness = 6
+chatHistory.AutomaticCanvasSize = Enum.AutomaticSize.Y
+chatHistory.Parent = chatCard
+
+local chatLayout = Instance.new("UIListLayout")
+chatLayout.Padding = UDim.new(0, 6)
+chatLayout.SortOrder = Enum.SortOrder.LayoutOrder
+chatLayout.Parent = chatHistory
+
+local chatInputBox = makeTextBox(chatCard, "Ask Codex... (Enter to send)", 44)
+chatInputBox.Position = UDim2.new(0, 10, 0, 252)
+chatInputBox.Size = UDim2.new(1, -104, 0, 44)
+chatInputBox.MultiLine = true
+
+local chatSendButton = makeButton(chatCard, "Send", function() end)
+chatSendButton.AnchorPoint = Vector2.new(1, 0)
+chatSendButton.AutomaticSize = Enum.AutomaticSize.None
+chatSendButton.Position = UDim2.new(1, -10, 0, 252)
+chatSendButton.Size = UDim2.new(0, 80, 0, 44)
+
+local chatEmptyLabel = Instance.new("TextLabel")
+chatEmptyLabel.BackgroundTransparency = 1
+chatEmptyLabel.LayoutOrder = 0
+chatEmptyLabel.Size = UDim2.new(1, -4, 0, 18)
+chatEmptyLabel.Font = Enum.Font.Gotham
+chatEmptyLabel.Text = "No messages yet. Replies arrive from Codex."
+chatEmptyLabel.TextColor3 = Color3.fromRGB(104, 115, 129)
+chatEmptyLabel.TextSize = 11
+chatEmptyLabel.TextXAlignment = Enum.TextXAlignment.Left
+chatEmptyLabel.Parent = chatHistory
+
+local chatSignature = ""
+
+local function renderChatMessages(messages)
+	local signature = ""
+	for _, message in ipairs(messages or {}) do
+		signature = signature .. tostring(message.id) .. ":" .. tostring(message.status) .. ";"
+	end
+	if signature == chatSignature then
+		return
+	end
+	chatSignature = signature
+
+	for _, child in ipairs(chatHistory:GetChildren()) do
+		if child:IsA("Frame") then
+			child:Destroy()
+		end
+	end
+
+	chatEmptyLabel.Visible = not messages or #messages == 0
+
+	for index, message in ipairs(messages or {}) do
+		local isAssistant = message.role == "assistant"
+
+		local bubble = Instance.new("Frame")
+		bubble.LayoutOrder = index
+		bubble.AutomaticSize = Enum.AutomaticSize.Y
+		bubble.Size = UDim2.new(1, -4, 0, 0)
+		bubble.BackgroundColor3 = isAssistant and Color3.fromRGB(28, 40, 38) or Color3.fromRGB(28, 34, 46)
+		bubble.BorderSizePixel = 0
+		bubble.Parent = chatHistory
+
+		local bubbleCorner = Instance.new("UICorner")
+		bubbleCorner.CornerRadius = UDim.new(0, 10)
+		bubbleCorner.Parent = bubble
+
+		local bubblePadding = Instance.new("UIPadding")
+		bubblePadding.PaddingTop = UDim.new(0, 6)
+		bubblePadding.PaddingBottom = UDim.new(0, 6)
+		bubblePadding.PaddingLeft = UDim.new(0, 10)
+		bubblePadding.PaddingRight = UDim.new(0, 10)
+		bubblePadding.Parent = bubble
+
+		local bubbleList = Instance.new("UIListLayout")
+		bubbleList.Padding = UDim.new(0, 2)
+		bubbleList.SortOrder = Enum.SortOrder.LayoutOrder
+		bubbleList.Parent = bubble
+
+		local roleLabel = Instance.new("TextLabel")
+		roleLabel.LayoutOrder = 1
+		roleLabel.BackgroundTransparency = 1
+		roleLabel.Size = UDim2.new(1, 0, 0, 14)
+		roleLabel.Font = Enum.Font.GothamSemibold
+		roleLabel.Text = isAssistant and "Codex" or "You"
+		roleLabel.TextColor3 = isAssistant and Color3.fromRGB(124, 247, 212) or Color3.fromRGB(145, 156, 171)
+		roleLabel.TextSize = 11
+		roleLabel.TextXAlignment = Enum.TextXAlignment.Left
+		roleLabel.Parent = bubble
+
+		local textLabel = Instance.new("TextLabel")
+		textLabel.LayoutOrder = 2
+		textLabel.BackgroundTransparency = 1
+		textLabel.AutomaticSize = Enum.AutomaticSize.Y
+		textLabel.Size = UDim2.new(1, 0, 0, 0)
+		textLabel.Font = Enum.Font.Gotham
+		textLabel.Text = tostring(message.text or "")
+		textLabel.TextColor3 = Color3.fromRGB(240, 244, 248)
+		textLabel.TextSize = 12
+		textLabel.TextWrapped = true
+		textLabel.TextXAlignment = Enum.TextXAlignment.Left
+		textLabel.TextYAlignment = Enum.TextYAlignment.Top
+		textLabel.Parent = bubble
+	end
+
+	task.defer(function()
+		chatHistory.CanvasPosition = Vector2.new(0, math.max(0, chatHistory.AbsoluteCanvasSize.Y))
+	end)
+end
+
+local function refreshChat()
+	local response = safeRequest("GET", "/api/chat/messages?limit=50")
+	if response and response.Success and response.Body then
+		local ok, payload = pcall(function()
+			return HttpService:JSONDecode(response.Body)
+		end)
+		if ok and payload then
+			renderChatMessages(payload.messages or {})
+		end
+	end
+end
+
+local function sendChatMessage()
+	local text = (chatInputBox.Text or ""):gsub("^%s+", ""):gsub("%s+$", "")
+	if text == "" then
+		return
+	end
+	local response = safeRequest("POST", "/api/chat/send", { text = text })
+	if response and response.Success then
+		chatInputBox.Text = ""
+		messageLabel.Text = "Sent to Codex inbox."
+		refreshChat()
+	else
+		messageLabel.Text = "Failed to send chat message."
+	end
+end
+
+chatSendButton.MouseButton1Click:Connect(sendChatMessage)
+chatInputBox.FocusLost:Connect(function(enterPressed)
+	if enterPressed then
+		sendChatMessage()
+	end
+end)
+
 local function connectPropertyEditorSignals()
 	if selectionPropertyNameBox then
 		selectionPropertyNameBox:GetPropertyChangedSignal("Text"):Connect(function()
@@ -2302,6 +2456,7 @@ applyTreeFilter(selectionTreeFilterBox and selectionTreeFilterBox.Text or "")
 task.spawn(function()
 	while running do
 		pcall(heartbeat)
+		pcall(refreshChat)
 		local ok, response = pcall(request, "GET", "/api/bridge/next?clientId=" .. HttpService:UrlEncode(CLIENT_ID))
 		if ok and response and response.Success and response.Body then
 			local payload = HttpService:JSONDecode(response.Body)
@@ -2321,6 +2476,7 @@ end)
 
 widget.Enabled = true
 refreshPanel()
+refreshChat()
 refreshSelectionView()
 renderPropertyQuickReads()
 renderPropertyFavorites()

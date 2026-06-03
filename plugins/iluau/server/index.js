@@ -13,6 +13,9 @@ const {
   markJobCompleted,
   getPublicState,
   getCapabilities,
+  addChatMessage,
+  getChatMessages,
+  takePendingChatPrompts,
   nowIso,
 } = require("./store");
 
@@ -122,6 +125,27 @@ function serveDashboard(req, res) {
       const updated = markJobCompleted(payload.jobId, payload.result, payload.error);
       res.writeHead(updated ? 200 : 404, { "Content-Type": "application/json; charset=utf-8" });
       res.end(JSON.stringify({ ok: !!updated, job: updated }));
+    }).catch((error) => respondError(res, 400, error.message));
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/chat/messages") {
+    const limit = Number(url.searchParams.get("limit")) || 50;
+    res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
+    res.end(JSON.stringify({ messages: getChatMessages(limit) }));
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/chat/send") {
+    readJson(req).then((payload) => {
+      const text = (payload && payload.text || "").trim();
+      if (!text) {
+        respondError(res, 400, "Missing chat text");
+        return;
+      }
+      const message = addChatMessage("user", text);
+      res.writeHead(201, { "Content-Type": "application/json; charset=utf-8" });
+      res.end(JSON.stringify({ ok: true, message }));
     }).catch((error) => respondError(res, 400, error.message));
     return;
   }
@@ -476,6 +500,29 @@ const tools = [
       additionalProperties: false,
     },
   },
+  {
+    name: "iluau.chat_inbox",
+    description:
+      "Fetch pending chat prompts typed by the user inside the Roblox Studio panel. Poll this to receive new messages; each prompt is returned once and then marked as delivered. Reply with iluau.chat_reply so the answer shows up in Studio.",
+    inputSchema: {
+      type: "object",
+      properties: {},
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "iluau.chat_reply",
+    description:
+      "Send a chat reply back to the Roblox Studio panel so the user reads it without leaving Studio. Use this to answer prompts received from iluau.chat_inbox.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        text: { type: "string", description: "The reply text to display in the Studio chat panel." },
+      },
+      required: ["text"],
+      additionalProperties: false,
+    },
+  },
 ];
 
 function handlePing(params) {
@@ -517,6 +564,20 @@ function handleListJobs(params) {
 
 function handleBridgeState() {
   return textContent(jsonText(state.bridge));
+}
+
+function handleChatInbox() {
+  const prompts = takePendingChatPrompts();
+  return textContent(jsonText({ ok: true, prompts }));
+}
+
+function handleChatReply(params) {
+  const text = (params && params.text || "").trim();
+  if (!text) {
+    return textContent(jsonText({ ok: false, error: "Missing reply text" }));
+  }
+  const message = addChatMessage("assistant", text);
+  return textContent(jsonText({ ok: true, message }));
 }
 
 async function handleInspectSelection(params) {
@@ -614,6 +675,8 @@ const handlers = {
   "iluau.queue_job": handleQueueJob,
   "iluau.list_jobs": handleListJobs,
   "iluau.bridge_state": handleBridgeState,
+  "iluau.chat_inbox": handleChatInbox,
+  "iluau.chat_reply": handleChatReply,
 };
 
 const rl = readline.createInterface({
