@@ -49,7 +49,7 @@ title.Position = UDim2.new(0, 12, 0, 10)
 title.Font = Enum.Font.GothamBold
 title.Text = "iLuau"
 title.TextColor3 = Color3.fromRGB(240, 244, 248)
-title.TextSize = 20
+title.TextSize = 22
 title.TextXAlignment = Enum.TextXAlignment.Left
 title.Parent = topBar
 
@@ -58,9 +58,9 @@ subtitle.BackgroundTransparency = 1
 subtitle.Size = UDim2.new(1, -24, 0, 18)
 subtitle.Position = UDim2.new(0, 12, 0, 30)
 subtitle.Font = Enum.Font.Gotham
-subtitle.Text = "Roblox Studio bridge and queue"
+subtitle.Text = "Ponte e fila do Roblox Studio"
 subtitle.TextColor3 = Color3.fromRGB(190, 201, 216)
-subtitle.TextSize = 12
+subtitle.TextSize = 14
 subtitle.TextXAlignment = Enum.TextXAlignment.Left
 subtitle.Parent = topBar
 
@@ -71,9 +71,9 @@ statusBadge.BorderSizePixel = 0
 statusBadge.Position = UDim2.new(1, -12, 0, 14)
 statusBadge.Size = UDim2.new(0, 120, 0, 26)
 statusBadge.Font = Enum.Font.GothamSemibold
-statusBadge.Text = "disconnected"
+statusBadge.Text = "desconectado"
 statusBadge.TextColor3 = Color3.fromRGB(230, 236, 241)
-statusBadge.TextSize = 12
+statusBadge.TextSize = 14
 statusBadge.Parent = topBar
 
 local body = Instance.new("ScrollingFrame")
@@ -125,7 +125,7 @@ local function makeSectionTitle(parent, text)
 	label.Font = Enum.Font.GothamSemibold
 	label.Text = text
 	label.TextColor3 = Color3.fromRGB(232, 238, 247)
-	label.TextSize = 13
+	label.TextSize = 15
 	label.TextXAlignment = Enum.TextXAlignment.Left
 	label.Parent = parent
 	return label
@@ -139,7 +139,7 @@ local function makeStat(parent, text, value, topOffset)
 	titleLabel.Font = Enum.Font.Gotham
 	titleLabel.Text = text
 	titleLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
-	titleLabel.TextSize = 12
+	titleLabel.TextSize = 14
 	titleLabel.TextXAlignment = Enum.TextXAlignment.Left
 	titleLabel.Parent = parent
 
@@ -150,7 +150,7 @@ local function makeStat(parent, text, value, topOffset)
 	valueLabel.Font = Enum.Font.GothamSemibold
 	valueLabel.Text = value
 	valueLabel.TextColor3 = Color3.fromRGB(240, 244, 248)
-	valueLabel.TextSize = 12
+	valueLabel.TextSize = 14
 	valueLabel.TextXAlignment = Enum.TextXAlignment.Left
 	valueLabel.Parent = parent
 
@@ -166,7 +166,7 @@ local function makeButton(parent, text, onClick)
 	button.Font = Enum.Font.GothamSemibold
 	button.Text = text
 	button.TextColor3 = Color3.fromRGB(8, 16, 22)
-	button.TextSize = 12
+	button.TextSize = 14
 	button.AutoButtonColor = true
 
 	local padding = Instance.new("UIPadding")
@@ -238,7 +238,7 @@ local function makeTextBox(parent, placeholder, height)
 	box.PlaceholderColor3 = Color3.fromRGB(152, 164, 180)
 	box.Font = Enum.Font.Code
 	box.TextColor3 = Color3.fromRGB(240, 244, 248)
-	box.TextSize = 12
+	box.TextSize = 14
 	box.TextXAlignment = Enum.TextXAlignment.Left
 	box.TextYAlignment = Enum.TextYAlignment.Top
 
@@ -688,20 +688,20 @@ local function renderPropertyFavorites()
 	clearGuiRows(selectionPropertyFavoriteRow)
 
 	if #propertyFavorites == 0 then
-		selectionPropertyFavoritesStatusLabel.Text = "Pinned properties"
+		selectionPropertyFavoritesStatusLabel.Text = "Propriedades fixadas"
 		local empty = Instance.new("TextLabel")
 		empty.BackgroundTransparency = 1
 		empty.Size = UDim2.new(1, -8, 0, 18)
 		empty.Font = Enum.Font.Gotham
-		empty.Text = "Save a property with the star button to keep it here."
+		empty.Text = "Salve uma propriedade com o botão de estrela para mantê-la aqui."
 		empty.TextColor3 = Color3.fromRGB(190, 201, 216)
-		empty.TextSize = 12
+		empty.TextSize = 14
 		empty.TextXAlignment = Enum.TextXAlignment.Left
 		empty.Parent = selectionPropertyFavoriteRow
 		return
 	end
 
-	selectionPropertyFavoritesStatusLabel.Text = string.format("Pinned properties (%d)", #propertyFavorites)
+	selectionPropertyFavoritesStatusLabel.Text = string.format("Propriedades fixadas (%d)", #propertyFavorites)
 
 	local currentPropertyName = trim(selectionPropertyNameBox and selectionPropertyNameBox.Text or "")
 
@@ -722,7 +722,7 @@ local function toggleCurrentPropertyFavorite()
 	local propertyName = trim(selectionPropertyNameBox and selectionPropertyNameBox.Text or "")
 	if propertyName == "" then
 		if selectionPropertyOutcomeLabel then
-			selectionPropertyOutcomeLabel.Text = "Pick a property name before saving a favorite."
+			selectionPropertyOutcomeLabel.Text = "Escolha o nome de uma propriedade antes de salvar um favorito."
 			selectionPropertyOutcomeLabel.TextColor3 = Color3.fromRGB(244, 104, 104)
 		end
 		return
@@ -732,10 +732,10 @@ local function toggleCurrentPropertyFavorite()
 	renderPropertyFavorites()
 	if selectionPropertyOutcomeLabel then
 		if isFavoriteProperty(propertyName) then
-			selectionPropertyOutcomeLabel.Text = string.format("Saved %s as a favorite.", propertyName)
+			selectionPropertyOutcomeLabel.Text = string.format("%s salva como favorita.", propertyName)
 			selectionPropertyOutcomeLabel.TextColor3 = Color3.fromRGB(124, 247, 212)
 		else
-			selectionPropertyOutcomeLabel.Text = string.format("Removed %s from favorites.", propertyName)
+			selectionPropertyOutcomeLabel.Text = string.format("%s removida dos favoritos.", propertyName)
 			selectionPropertyOutcomeLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
 		end
 	end
@@ -947,7 +947,7 @@ end
 local function getPropertyTypeHint(value)
 	local kind = valueTypeName(value)
 	if kind == "nil" then
-		return "Type: unknown"
+		return "Tipo: desconhecido"
 	end
 	if kind == "boolean" then
 		return "Type: boolean. Use true or false."
@@ -1084,7 +1084,7 @@ local function renderTreeNode(parent, instance, depth, maxDepth, filterText, sel
 	toggleButton.Size = UDim2.new(0, 20, 1, 0)
 	toggleButton.Position = UDim2.new(0, 0, 0, 0)
 	toggleButton.Font = Enum.Font.GothamBold
-	toggleButton.TextSize = 12
+	toggleButton.TextSize = 14
 	toggleButton.TextColor3 = isSelected and Color3.fromRGB(124, 247, 212) or Color3.fromRGB(190, 201, 216)
 	toggleButton.TextXAlignment = Enum.TextXAlignment.Center
 	toggleButton.TextYAlignment = Enum.TextYAlignment.Center
@@ -1117,7 +1117,7 @@ local function renderTreeNode(parent, instance, depth, maxDepth, filterText, sel
 	labelButton.Font = Enum.Font.Gotham
 	labelButton.Text = string.format("%s [%s]", instance.Name, instance.ClassName)
 	labelButton.TextColor3 = isSelected and Color3.fromRGB(232, 238, 247) or Color3.fromRGB(240, 244, 248)
-	labelButton.TextSize = 12
+	labelButton.TextSize = 14
 	labelButton.TextXAlignment = Enum.TextXAlignment.Left
 	labelButton.TextYAlignment = Enum.TextYAlignment.Center
 	labelButton.TextTruncate = Enum.TextTruncate.AtEnd
@@ -1137,7 +1137,7 @@ local function renderTreeNode(parent, instance, depth, maxDepth, filterText, sel
 	classBadge.Font = Enum.Font.GothamSemibold
 	classBadge.Text = instance.ClassName
 	classBadge.TextColor3 = isSelected and Color3.fromRGB(124, 247, 212) or Color3.fromRGB(190, 201, 216)
-	classBadge.TextSize = 11
+	classBadge.TextSize = 13
 	classBadge.TextTruncate = Enum.TextTruncate.AtEnd
 	classBadge.TextXAlignment = Enum.TextXAlignment.Center
 	classBadge.Parent = row
@@ -1168,7 +1168,7 @@ local function refreshPropertyEditor()
 	end
 
 	if not target then
-		selectionPropertyStatusLabel.Text = "Pick a property name to read or edit."
+		selectionPropertyStatusLabel.Text = "Escolha o nome de uma propriedade para ler ou editar."
 		if selectionPropertyValueBox then
 			selectionPropertyValueBox.Text = ""
 		end
@@ -1177,9 +1177,9 @@ local function refreshPropertyEditor()
 
 	local propertyName = trim(selectionPropertyNameBox and selectionPropertyNameBox.Text or "")
 	if propertyName == "" then
-		selectionPropertyStatusLabel.Text = "Enter a property name, then load or apply it."
+		selectionPropertyStatusLabel.Text = "Digite o nome de uma propriedade e então carregue ou aplique."
 		if selectionPropertyTypeLabel then
-			selectionPropertyTypeLabel.Text = "Type: unknown"
+			selectionPropertyTypeLabel.Text = "Tipo: desconhecido"
 		end
 		if selectionPropertyValueBox then
 			selectionPropertyValueBox.Text = ""
@@ -1189,7 +1189,7 @@ local function refreshPropertyEditor()
 
 	local value, ok = readPropertyValue(target, propertyName)
 	if ok then
-		selectionPropertyStatusLabel.Text = string.format("Loaded %s from %s.", propertyName, target.Name)
+		selectionPropertyStatusLabel.Text = string.format("%s carregada de %s.", propertyName, target.Name)
 		if selectionPropertyTypeLabel then
 			selectionPropertyTypeLabel.Text = getPropertyTypeHint(value)
 		end
@@ -1197,9 +1197,9 @@ local function refreshPropertyEditor()
 			selectionPropertyValueBox.Text = formatPropertyValue(value)
 		end
 	else
-		selectionPropertyStatusLabel.Text = string.format("Could not read %s on %s.", propertyName, target.Name)
+		selectionPropertyStatusLabel.Text = string.format("Não foi possível ler %s em %s.", propertyName, target.Name)
 		if selectionPropertyTypeLabel then
-			selectionPropertyTypeLabel.Text = "Type: unknown. Load a valid property to infer it."
+			selectionPropertyTypeLabel.Text = "Tipo: desconhecido. Carregue uma propriedade válida para inferir."
 		end
 	end
 end
@@ -1212,20 +1212,20 @@ local function refreshPropertyHistory()
 	clearGuiRows(selectionPropertyHistoryList)
 
 	if #propertyHistory == 0 then
-		selectionPropertyHistoryStatusLabel.Text = "No local property history yet."
+		selectionPropertyHistoryStatusLabel.Text = "Ainda não há histórico local de propriedades."
 		local empty = Instance.new("TextLabel")
 		empty.BackgroundTransparency = 1
 		empty.Size = UDim2.new(1, -8, 0, 18)
 		empty.Font = Enum.Font.Gotham
-		empty.Text = "Edits you apply will appear here."
+		empty.Text = "As edições que você aplicar aparecerão aqui."
 		empty.TextColor3 = Color3.fromRGB(190, 201, 216)
-		empty.TextSize = 12
+		empty.TextSize = 14
 		empty.TextXAlignment = Enum.TextXAlignment.Left
 		empty.Parent = selectionPropertyHistoryList
 		return
 	end
 
-	selectionPropertyHistoryStatusLabel.Text = string.format("Local history: %d recent edits.", #propertyHistory)
+	selectionPropertyHistoryStatusLabel.Text = string.format("Histórico local: %d edições recentes.", #propertyHistory)
 
 	for index, entry in ipairs(propertyHistory) do
 		local row = Instance.new("Frame")
@@ -1245,7 +1245,7 @@ local function refreshPropertyHistory()
 		text.Font = Enum.Font.GothamSemibold
 		text.Text = string.format("%s = %s", entry.property, entry.valueText or formatPropertyValue(entry.value))
 		text.TextColor3 = Color3.fromRGB(240, 244, 248)
-		text.TextSize = 12
+		text.TextSize = 14
 		text.TextXAlignment = Enum.TextXAlignment.Left
 		text.Parent = row
 
@@ -1256,18 +1256,18 @@ local function refreshPropertyHistory()
 		meta.Font = Enum.Font.Gotham
 		meta.Text = string.format("%s%s", entry.path ~= "" and (entry.path .. "  ") or "", entry.updatedAt or nowIso())
 		meta.TextColor3 = Color3.fromRGB(190, 201, 216)
-		meta.TextSize = 10
+		meta.TextSize = 12
 		meta.TextXAlignment = Enum.TextXAlignment.Left
 		meta.Parent = row
 
-		local recall = makeButton(row, "Recall", function()
+		local recall = makeButton(row, "Recuperar", function()
 			if selectionPropertyNameBox then
 				selectionPropertyNameBox.Text = entry.property
 			end
 			if selectionPropertyValueBox then
 				selectionPropertyValueBox.Text = entry.valueText
 			end
-			selectionPropertyStatusLabel.Text = string.format("Recalled %s from history.", entry.property)
+			selectionPropertyStatusLabel.Text = string.format("%s recuperada do histórico.", entry.property)
 		end)
 		recall.Position = UDim2.new(1, -78, 0, 7)
 		recall.Size = UDim2.new(0, 66, 0, 28)
@@ -1303,7 +1303,7 @@ function syncPropertyAssist()
 
 	if not target or propertyName == "" then
 		if selectionPropertyTypeLabel then
-			selectionPropertyTypeLabel.Text = "Type: unknown"
+			selectionPropertyTypeLabel.Text = "Tipo: desconhecido"
 		end
 		return
 	end
@@ -1322,7 +1322,7 @@ function syncPropertyAssist()
 	end
 
 	if loaded then
-		selectionPropertyStatusLabel.Text = string.format("Loaded %s from %s.", propertyName, target.Name)
+		selectionPropertyStatusLabel.Text = string.format("%s carregada de %s.", propertyName, target.Name)
 	end
 end
 
@@ -1332,11 +1332,11 @@ local function refreshSelectionEditor()
 
 	if selectionSummaryLabel then
 		if count == 0 then
-			selectionSummaryLabel.Text = "Nothing selected."
+			selectionSummaryLabel.Text = "Nada selecionado."
 		elseif count == 1 then
-			selectionSummaryLabel.Text = "1 item selected."
+			selectionSummaryLabel.Text = "1 item selecionado."
 		else
-			selectionSummaryLabel.Text = string.format("%d items selected.", count)
+			selectionSummaryLabel.Text = string.format("%d itens selecionados.", count)
 		end
 	end
 
@@ -1344,13 +1344,13 @@ local function refreshSelectionEditor()
 		if target then
 			selectionStatusLabel.Text = target:GetFullName()
 		else
-			selectionStatusLabel.Text = "Select an instance to edit attributes and tags."
+			selectionStatusLabel.Text = "Selecione uma instância para editar attributes e tags."
 		end
 	end
 
 	if not target then
 		if selectionTargetLabel then
-			selectionTargetLabel.Text = "Path: none"
+			selectionTargetLabel.Text = "Caminho: nenhum"
 		end
 		if selectionAttributesBox then
 			selectionAttributesBox.Text = "{}"
@@ -1362,7 +1362,7 @@ local function refreshSelectionEditor()
 	end
 
 	if selectionTargetLabel then
-		selectionTargetLabel.Text = "Path: " .. target:GetFullName() .. "  [" .. target.ClassName .. "]"
+		selectionTargetLabel.Text = "Caminho: " .. target:GetFullName() .. "  [" .. target.ClassName .. "]"
 	end
 	refreshPropertyEditor()
 	if selectionAttributesBox then
@@ -1384,9 +1384,9 @@ function refreshSelectionTree()
 	local filterText = getFilterText()
 	if selectionTreeFilterStatusLabel then
 		if filterText == "" then
-			selectionTreeFilterStatusLabel.Text = "Showing all nodes."
+			selectionTreeFilterStatusLabel.Text = "Mostrando todos os nós."
 		else
-			selectionTreeFilterStatusLabel.Text = string.format("Filter: %s", filterText)
+			selectionTreeFilterStatusLabel.Text = string.format("Filtro: %s", filterText)
 		end
 	end
 
@@ -1395,9 +1395,9 @@ function refreshSelectionTree()
 		empty.BackgroundTransparency = 1
 		empty.Size = UDim2.new(1, -8, 0, 20)
 		empty.Font = Enum.Font.Gotham
-		empty.Text = "No selection."
+		empty.Text = "Nenhuma seleção."
 		empty.TextColor3 = Color3.fromRGB(190, 201, 216)
-		empty.TextSize = 12
+		empty.TextSize = 14
 		empty.TextXAlignment = Enum.TextXAlignment.Left
 		empty.Parent = selectionList
 		return
@@ -1420,7 +1420,7 @@ end
 local function applySelectionData()
 	local target = getPrimarySelection()
 	if not target then
-		messageLabel.Text = "Select an instance before applying data."
+		messageLabel.Text = "Selecione uma instância antes de aplicar os dados."
 		return
 	end
 
@@ -1438,7 +1438,7 @@ local function applySelectionData()
 
 	local tags = parseTagsText(selectionTagsBox and selectionTagsBox.Text or "")
 	if selectionPropertyOutcomeLabel then
-		selectionPropertyOutcomeLabel.Text = "Queued batch update."
+		selectionPropertyOutcomeLabel.Text = "Atualização em lote enfileirada."
 		selectionPropertyOutcomeLabel.TextColor3 = Color3.fromRGB(124, 247, 212)
 	end
 	queuePanelJob("set_properties", {
@@ -1447,21 +1447,21 @@ local function applySelectionData()
 		attributes = attributes,
 		tags = tags,
 	})
-	messageLabel.Text = string.format("Queued batch update for %s.", target.Name)
+	messageLabel.Text = string.format("Atualização em lote enfileirada para %s.", target.Name)
 end
 
 local function applySelectedProperty()
 	local target = getPrimarySelection()
 	if not target then
-		messageLabel.Text = "Select an instance before applying a property."
+		messageLabel.Text = "Selecione uma instância antes de aplicar uma propriedade."
 		return
 	end
 
 	local propertyName = trim(selectionPropertyNameBox and selectionPropertyNameBox.Text or "")
 	if propertyName == "" then
-		messageLabel.Text = "Enter a property name first."
+		messageLabel.Text = "Digite primeiro o nome de uma propriedade."
 		if selectionPropertyOutcomeLabel then
-			selectionPropertyOutcomeLabel.Text = "Property name is required."
+			selectionPropertyOutcomeLabel.Text = "O nome da propriedade é obrigatório."
 			selectionPropertyOutcomeLabel.TextColor3 = Color3.fromRGB(244, 104, 104)
 		end
 		return
@@ -1492,16 +1492,16 @@ local function applySelectedProperty()
 	end
 
 	if typedValue == nil then
-		messageLabel.Text = "Could not infer a value for that property."
+		messageLabel.Text = "Não foi possível inferir um valor para essa propriedade."
 		if selectionPropertyOutcomeLabel then
-			selectionPropertyOutcomeLabel.Text = "Could not infer a value for that property."
+			selectionPropertyOutcomeLabel.Text = "Não foi possível inferir um valor para essa propriedade."
 			selectionPropertyOutcomeLabel.TextColor3 = Color3.fromRGB(244, 104, 104)
 		end
 		return
 	end
 
 	if selectionPropertyOutcomeLabel then
-		selectionPropertyOutcomeLabel.Text = string.format("Queued property update for %s.", propertyName)
+		selectionPropertyOutcomeLabel.Text = string.format("Atualização de propriedade enfileirada para %s.", propertyName)
 		selectionPropertyOutcomeLabel.TextColor3 = Color3.fromRGB(124, 247, 212)
 	end
 	queuePanelJob("set_property", {
@@ -1511,7 +1511,7 @@ local function applySelectedProperty()
 	})
 	rememberPropertyHistory(target:GetFullName(), propertyName, typedValue)
 	refreshPropertyHistory()
-	messageLabel.Text = string.format("Queued property update for %s.", propertyName)
+	messageLabel.Text = string.format("Atualização de propriedade enfileirada para %s.", propertyName)
 end
 
 local function createTree(parent, node)
@@ -1687,24 +1687,24 @@ end
 local headerCard = makeCard(90)
 headerCard.LayoutOrder = 1
 headerCard.Parent = body
-makeSectionTitle(headerCard, "Connection")
+makeSectionTitle(headerCard, "Conexão")
 
-local serverValue = makeStat(headerCard, "Server", "offline", 30)
-local bridgeValue = makeStat(headerCard, "Bridge", "offline", 48)
+local serverValue = makeStat(headerCard, "Servidor", "desconectado", 30)
+local bridgeValue = makeStat(headerCard, "Ponte", "desconectado", 48)
 
 local selectionCard = makeCard(320)
 selectionCard.LayoutOrder = 2
 selectionCard.Parent = body
-makeSectionTitle(selectionCard, "Selection tree")
+makeSectionTitle(selectionCard, "Árvore de seleção")
 
 selectionSummaryLabel = Instance.new("TextLabel")
 selectionSummaryLabel.BackgroundTransparency = 1
 selectionSummaryLabel.Position = UDim2.new(0, 10, 0, 28)
 selectionSummaryLabel.Size = UDim2.new(1, -20, 0, 16)
 selectionSummaryLabel.Font = Enum.Font.Gotham
-selectionSummaryLabel.Text = "Nothing selected."
+selectionSummaryLabel.Text = "Nada selecionado."
 selectionSummaryLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
-selectionSummaryLabel.TextSize = 12
+selectionSummaryLabel.TextSize = 14
 selectionSummaryLabel.TextXAlignment = Enum.TextXAlignment.Left
 selectionSummaryLabel.Parent = selectionCard
 
@@ -1713,9 +1713,9 @@ selectionTreeFilterStatusLabel.BackgroundTransparency = 1
 selectionTreeFilterStatusLabel.Position = UDim2.new(0, 10, 0, 44)
 selectionTreeFilterStatusLabel.Size = UDim2.new(1, -20, 0, 16)
 selectionTreeFilterStatusLabel.Font = Enum.Font.GothamSemibold
-selectionTreeFilterStatusLabel.Text = "Showing all nodes."
+selectionTreeFilterStatusLabel.Text = "Mostrando todos os nós."
 selectionTreeFilterStatusLabel.TextColor3 = Color3.fromRGB(124, 247, 212)
-selectionTreeFilterStatusLabel.TextSize = 12
+selectionTreeFilterStatusLabel.TextSize = 14
 selectionTreeFilterStatusLabel.TextXAlignment = Enum.TextXAlignment.Left
 selectionTreeFilterStatusLabel.Parent = selectionCard
 
@@ -1724,13 +1724,13 @@ treeFilterLabel.BackgroundTransparency = 1
 treeFilterLabel.Position = UDim2.new(0, 10, 0, 66)
 treeFilterLabel.Size = UDim2.new(1, -20, 0, 16)
 treeFilterLabel.Font = Enum.Font.GothamSemibold
-treeFilterLabel.Text = "Tree filter"
+treeFilterLabel.Text = "Filtro da árvore"
 treeFilterLabel.TextColor3 = Color3.fromRGB(232, 238, 247)
-treeFilterLabel.TextSize = 12
+treeFilterLabel.TextSize = 14
 treeFilterLabel.TextXAlignment = Enum.TextXAlignment.Left
 treeFilterLabel.Parent = selectionCard
 
-selectionTreeFilterBox = makeTextBox(selectionCard, "Filter by name, class, or path", 28)
+selectionTreeFilterBox = makeTextBox(selectionCard, "Filtrar por nome, classe ou caminho", 28)
 selectionTreeFilterBox.Position = UDim2.new(0, 10, 0, 84)
 selectionTreeFilterBox.Size = UDim2.new(1, -20, 0, 30)
 
@@ -1746,17 +1746,17 @@ treeActionsLayout.Padding = UDim.new(0, 8)
 treeActionsLayout.SortOrder = Enum.SortOrder.LayoutOrder
 treeActionsLayout.Parent = selectionTreeActionsRow
 
-makePillButton(selectionTreeActionsRow, "Expand all", function()
+makePillButton(selectionTreeActionsRow, "Expandir tudo", function()
 	setTreeExpansionForSelection(true)
 	refreshSelectionTree()
 end, false, true)
 
-makePillButton(selectionTreeActionsRow, "Collapse all", function()
+makePillButton(selectionTreeActionsRow, "Colapsar tudo", function()
 	setTreeExpansionForSelection(false)
 	refreshSelectionTree()
 end, false, true)
 
-makePillButton(selectionTreeActionsRow, "Clear filter", function()
+makePillButton(selectionTreeActionsRow, "Limpar filtro", function()
 	if selectionTreeFilterBox then
 		selectionTreeFilterBox.Text = ""
 	end
@@ -1781,16 +1781,16 @@ selectionLayout.Parent = selectionList
 local propertiesCard = makeCard(468)
 propertiesCard.LayoutOrder = 3
 propertiesCard.Parent = body
-makeSectionTitle(propertiesCard, "Properties")
+makeSectionTitle(propertiesCard, "Propriedades")
 
 selectionPropertyStatusLabel = Instance.new("TextLabel")
 selectionPropertyStatusLabel.BackgroundTransparency = 1
 selectionPropertyStatusLabel.Position = UDim2.new(0, 10, 0, 28)
 selectionPropertyStatusLabel.Size = UDim2.new(1, -20, 0, 16)
 selectionPropertyStatusLabel.Font = Enum.Font.Gotham
-selectionPropertyStatusLabel.Text = "Pick a property name to read or edit."
+selectionPropertyStatusLabel.Text = "Escolha o nome de uma propriedade para ler ou editar."
 selectionPropertyStatusLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
-selectionPropertyStatusLabel.TextSize = 12
+selectionPropertyStatusLabel.TextSize = 14
 selectionPropertyStatusLabel.TextXAlignment = Enum.TextXAlignment.Left
 selectionPropertyStatusLabel.Parent = propertiesCard
 
@@ -1799,9 +1799,9 @@ selectionPropertyTypeLabel.BackgroundTransparency = 1
 selectionPropertyTypeLabel.Position = UDim2.new(0, 10, 0, 44)
 selectionPropertyTypeLabel.Size = UDim2.new(1, -20, 0, 16)
 selectionPropertyTypeLabel.Font = Enum.Font.GothamSemibold
-selectionPropertyTypeLabel.Text = "Type: unknown"
+selectionPropertyTypeLabel.Text = "Tipo: desconhecido"
 selectionPropertyTypeLabel.TextColor3 = Color3.fromRGB(124, 247, 212)
-selectionPropertyTypeLabel.TextSize = 12
+selectionPropertyTypeLabel.TextSize = 14
 selectionPropertyTypeLabel.TextXAlignment = Enum.TextXAlignment.Left
 selectionPropertyTypeLabel.Parent = propertiesCard
 
@@ -1810,9 +1810,9 @@ propertyNameLabel.BackgroundTransparency = 1
 propertyNameLabel.Position = UDim2.new(0, 10, 0, 64)
 propertyNameLabel.Size = UDim2.new(1, -20, 0, 16)
 propertyNameLabel.Font = Enum.Font.GothamSemibold
-propertyNameLabel.Text = "Property name"
+propertyNameLabel.Text = "Nome da propriedade"
 propertyNameLabel.TextColor3 = Color3.fromRGB(232, 238, 247)
-propertyNameLabel.TextSize = 12
+propertyNameLabel.TextSize = 14
 propertyNameLabel.TextXAlignment = Enum.TextXAlignment.Left
 propertyNameLabel.Parent = propertiesCard
 
@@ -1824,13 +1824,13 @@ propertyValueLabel.BackgroundTransparency = 1
 propertyValueLabel.Position = UDim2.new(0, 10, 0, 106)
 propertyValueLabel.Size = UDim2.new(1, -20, 0, 16)
 propertyValueLabel.Font = Enum.Font.GothamSemibold
-propertyValueLabel.Text = "Property value"
+propertyValueLabel.Text = "Valor da propriedade"
 propertyValueLabel.TextColor3 = Color3.fromRGB(232, 238, 247)
-propertyValueLabel.TextSize = 12
+propertyValueLabel.TextSize = 14
 propertyValueLabel.TextXAlignment = Enum.TextXAlignment.Left
 propertyValueLabel.Parent = propertiesCard
 
-selectionPropertyValueBox = makeTextBox(propertiesCard, "0.5, true, \"text\", or JSON", 36)
+selectionPropertyValueBox = makeTextBox(propertiesCard, "0.5, true, \"texto\", ou JSON", 36)
 selectionPropertyValueBox.Size = UDim2.new(1, -20, 0, 40)
 
 local propertyButtonRow = Instance.new("Frame")
@@ -1845,15 +1845,15 @@ propertyButtonLayout.Padding = UDim.new(0, 8)
 propertyButtonLayout.SortOrder = Enum.SortOrder.LayoutOrder
 propertyButtonLayout.Parent = propertyButtonRow
 
-makeButton(propertyButtonRow, "Load", function()
+makeButton(propertyButtonRow, "Carregar", function()
 	refreshPropertyEditor()
 end)
 
-makeButton(propertyButtonRow, "Apply property", function()
+makeButton(propertyButtonRow, "Aplicar propriedade", function()
 	applySelectedProperty()
 end)
 
-makeButton(propertyButtonRow, "☆ Favorite", function()
+makeButton(propertyButtonRow, "☆ Favoritar", function()
 	toggleCurrentPropertyFavorite()
 end)
 
@@ -1862,9 +1862,9 @@ selectionPropertyOutcomeLabel.BackgroundTransparency = 1
 selectionPropertyOutcomeLabel.Position = UDim2.new(0, 10, 0, 190)
 selectionPropertyOutcomeLabel.Size = UDim2.new(1, -20, 0, 16)
 selectionPropertyOutcomeLabel.Font = Enum.Font.Gotham
-selectionPropertyOutcomeLabel.Text = "Ready."
+selectionPropertyOutcomeLabel.Text = "Pronto."
 selectionPropertyOutcomeLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
-selectionPropertyOutcomeLabel.TextSize = 12
+selectionPropertyOutcomeLabel.TextSize = 14
 selectionPropertyOutcomeLabel.TextXAlignment = Enum.TextXAlignment.Left
 selectionPropertyOutcomeLabel.Parent = propertiesCard
 
@@ -1873,9 +1873,9 @@ selectionPropertyFavoritesStatusLabel.BackgroundTransparency = 1
 selectionPropertyFavoritesStatusLabel.Position = UDim2.new(0, 10, 0, 214)
 selectionPropertyFavoritesStatusLabel.Size = UDim2.new(1, -20, 0, 16)
 selectionPropertyFavoritesStatusLabel.Font = Enum.Font.GothamSemibold
-selectionPropertyFavoritesStatusLabel.Text = "Favorites"
+selectionPropertyFavoritesStatusLabel.Text = "Favoritos"
 selectionPropertyFavoritesStatusLabel.TextColor3 = Color3.fromRGB(232, 238, 247)
-selectionPropertyFavoritesStatusLabel.TextSize = 12
+selectionPropertyFavoritesStatusLabel.TextSize = 14
 selectionPropertyFavoritesStatusLabel.TextXAlignment = Enum.TextXAlignment.Left
 selectionPropertyFavoritesStatusLabel.Parent = propertiesCard
 
@@ -1884,9 +1884,9 @@ favoritesHintLabel.BackgroundTransparency = 1
 favoritesHintLabel.Position = UDim2.new(0, 10, 0, 198)
 favoritesHintLabel.Size = UDim2.new(1, -20, 0, 14)
 favoritesHintLabel.Font = Enum.Font.Gotham
-favoritesHintLabel.Text = "Click a favorite to load it into the editor."
+favoritesHintLabel.Text = "Clique em um favorito para carregá-lo no editor."
 favoritesHintLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
-favoritesHintLabel.TextSize = 11
+favoritesHintLabel.TextSize = 13
 favoritesHintLabel.TextXAlignment = Enum.TextXAlignment.Left
 favoritesHintLabel.Parent = propertiesCard
 
@@ -1912,9 +1912,9 @@ quickReadLabel.BackgroundTransparency = 1
 quickReadLabel.Position = UDim2.new(0, 10, 0, 274)
 quickReadLabel.Size = UDim2.new(1, -20, 0, 16)
 quickReadLabel.Font = Enum.Font.GothamSemibold
-quickReadLabel.Text = "Quick read"
+quickReadLabel.Text = "Leitura rápida"
 quickReadLabel.TextColor3 = Color3.fromRGB(232, 238, 247)
-quickReadLabel.TextSize = 12
+quickReadLabel.TextSize = 14
 quickReadLabel.TextXAlignment = Enum.TextXAlignment.Left
 quickReadLabel.Parent = propertiesCard
 
@@ -1940,9 +1940,9 @@ selectionPropertyHistoryStatusLabel.BackgroundTransparency = 1
 selectionPropertyHistoryStatusLabel.Position = UDim2.new(0, 10, 0, 348)
 selectionPropertyHistoryStatusLabel.Size = UDim2.new(1, -20, 0, 16)
 selectionPropertyHistoryStatusLabel.Font = Enum.Font.GothamSemibold
-selectionPropertyHistoryStatusLabel.Text = "Local history"
+selectionPropertyHistoryStatusLabel.Text = "Histórico local"
 selectionPropertyHistoryStatusLabel.TextColor3 = Color3.fromRGB(232, 238, 247)
-selectionPropertyHistoryStatusLabel.TextSize = 12
+selectionPropertyHistoryStatusLabel.TextSize = 14
 selectionPropertyHistoryStatusLabel.TextXAlignment = Enum.TextXAlignment.Left
 selectionPropertyHistoryStatusLabel.Parent = propertiesCard
 
@@ -1964,16 +1964,16 @@ propertyHistoryLayout.Parent = selectionPropertyHistoryList
 local editorCard = makeCard(250)
 editorCard.LayoutOrder = 4
 editorCard.Parent = body
-makeSectionTitle(editorCard, "Attributes and tags")
+makeSectionTitle(editorCard, "Attributes e tags")
 
 selectionStatusLabel = Instance.new("TextLabel")
 selectionStatusLabel.BackgroundTransparency = 1
 selectionStatusLabel.Position = UDim2.new(0, 10, 0, 28)
 selectionStatusLabel.Size = UDim2.new(1, -20, 0, 16)
 selectionStatusLabel.Font = Enum.Font.Gotham
-selectionStatusLabel.Text = "Select an instance to edit attributes and tags."
+selectionStatusLabel.Text = "Selecione uma instância para editar attributes e tags."
 selectionStatusLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
-selectionStatusLabel.TextSize = 12
+selectionStatusLabel.TextSize = 14
 selectionStatusLabel.TextXAlignment = Enum.TextXAlignment.Left
 selectionStatusLabel.Parent = editorCard
 
@@ -1982,9 +1982,9 @@ selectionTargetLabel.BackgroundTransparency = 1
 selectionTargetLabel.Position = UDim2.new(0, 10, 0, 48)
 selectionTargetLabel.Size = UDim2.new(1, -20, 0, 16)
 selectionTargetLabel.Font = Enum.Font.GothamSemibold
-selectionTargetLabel.Text = "Path: none"
+selectionTargetLabel.Text = "Caminho: nenhum"
 selectionTargetLabel.TextColor3 = Color3.fromRGB(232, 238, 247)
-selectionTargetLabel.TextSize = 12
+selectionTargetLabel.TextSize = 14
 selectionTargetLabel.TextXAlignment = Enum.TextXAlignment.Left
 selectionTargetLabel.Parent = editorCard
 
@@ -1993,9 +1993,9 @@ attributesLabel.BackgroundTransparency = 1
 attributesLabel.Position = UDim2.new(0, 10, 0, 68)
 attributesLabel.Size = UDim2.new(1, -20, 0, 16)
 attributesLabel.Font = Enum.Font.GothamSemibold
-attributesLabel.Text = "Attributes JSON"
+attributesLabel.Text = "Attributes (JSON)"
 attributesLabel.TextColor3 = Color3.fromRGB(232, 238, 247)
-attributesLabel.TextSize = 12
+attributesLabel.TextSize = 14
 attributesLabel.TextXAlignment = Enum.TextXAlignment.Left
 attributesLabel.Parent = editorCard
 
@@ -2009,7 +2009,7 @@ tagsLabel.Size = UDim2.new(1, -20, 0, 16)
 tagsLabel.Font = Enum.Font.GothamSemibold
 tagsLabel.Text = "Tags"
 tagsLabel.TextColor3 = Color3.fromRGB(232, 238, 247)
-tagsLabel.TextSize = 12
+tagsLabel.TextSize = 14
 tagsLabel.TextXAlignment = Enum.TextXAlignment.Left
 tagsLabel.Parent = editorCard
 
@@ -2028,18 +2028,18 @@ editorButtonLayout.Padding = UDim.new(0, 8)
 editorButtonLayout.SortOrder = Enum.SortOrder.LayoutOrder
 editorButtonLayout.Parent = editorButtonRow
 
-makeButton(editorButtonRow, "Refresh target", function()
+makeButton(editorButtonRow, "Atualizar alvo", function()
 	refreshSelectionView()
 end)
 
-makeButton(editorButtonRow, "Apply batch", function()
+makeButton(editorButtonRow, "Aplicar em lote", function()
 	applySelectionData()
 end)
 
 local actionCard = makeCard(122)
 actionCard.LayoutOrder = 5
 actionCard.Parent = body
-makeSectionTitle(actionCard, "Quick actions")
+makeSectionTitle(actionCard, "Ações rápidas")
 
 local buttonRow = Instance.new("Frame")
 buttonRow.BackgroundTransparency = 1
@@ -2058,16 +2058,16 @@ messageLabel.BackgroundTransparency = 1
 messageLabel.Position = UDim2.new(0, 10, 0, 104)
 messageLabel.Size = UDim2.new(1, -20, 0, 16)
 messageLabel.Font = Enum.Font.Gotham
-messageLabel.Text = "Ready."
+messageLabel.Text = "Pronto."
 messageLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
-messageLabel.TextSize = 12
+messageLabel.TextSize = 14
 messageLabel.TextXAlignment = Enum.TextXAlignment.Left
 messageLabel.Parent = actionCard
 
 local jobCard = makeCard(286)
 jobCard.LayoutOrder = 6
 jobCard.Parent = body
-makeSectionTitle(jobCard, "Recent jobs")
+makeSectionTitle(jobCard, "Tarefas recentes")
 
 local jobList = Instance.new("ScrollingFrame")
 jobList.BackgroundTransparency = 1
@@ -2087,7 +2087,7 @@ jobLayout.Parent = jobList
 local chatCard = makeCard(320)
 chatCard.LayoutOrder = 2
 chatCard.Parent = body
-makeSectionTitle(chatCard, "Codex chat")
+makeSectionTitle(chatCard, "Chat do Codex")
 
 local chatHistory = Instance.new("ScrollingFrame")
 chatHistory.BackgroundTransparency = 1
@@ -2104,12 +2104,12 @@ chatLayout.Padding = UDim.new(0, 6)
 chatLayout.SortOrder = Enum.SortOrder.LayoutOrder
 chatLayout.Parent = chatHistory
 
-local chatInputBox = makeTextBox(chatCard, "Ask Codex... (Enter to send)", 44)
+local chatInputBox = makeTextBox(chatCard, "Pergunte ao Codex... (Enter para enviar)", 44)
 chatInputBox.Position = UDim2.new(0, 10, 0, 252)
 chatInputBox.Size = UDim2.new(1, -104, 0, 44)
 chatInputBox.MultiLine = true
 
-local chatSendButton = makeButton(chatCard, "Send", function() end)
+local chatSendButton = makeButton(chatCard, "Enviar", function() end)
 chatSendButton.AnchorPoint = Vector2.new(1, 0)
 chatSendButton.AutomaticSize = Enum.AutomaticSize.None
 chatSendButton.Position = UDim2.new(1, -10, 0, 252)
@@ -2120,9 +2120,9 @@ chatEmptyLabel.BackgroundTransparency = 1
 chatEmptyLabel.LayoutOrder = 0
 chatEmptyLabel.Size = UDim2.new(1, -4, 0, 18)
 chatEmptyLabel.Font = Enum.Font.Gotham
-chatEmptyLabel.Text = "No messages yet. Replies arrive from Codex."
+chatEmptyLabel.Text = "Ainda não há mensagens. As respostas chegam do Codex."
 chatEmptyLabel.TextColor3 = Color3.fromRGB(152, 164, 180)
-chatEmptyLabel.TextSize = 11
+chatEmptyLabel.TextSize = 13
 chatEmptyLabel.TextXAlignment = Enum.TextXAlignment.Left
 chatEmptyLabel.Parent = chatHistory
 
@@ -2178,9 +2178,9 @@ local function renderChatMessages(messages)
 		roleLabel.BackgroundTransparency = 1
 		roleLabel.Size = UDim2.new(1, 0, 0, 14)
 		roleLabel.Font = Enum.Font.GothamSemibold
-		roleLabel.Text = isAssistant and "Codex" or "You"
+		roleLabel.Text = isAssistant and "Codex" or "Você"
 		roleLabel.TextColor3 = isAssistant and Color3.fromRGB(124, 247, 212) or Color3.fromRGB(190, 201, 216)
-		roleLabel.TextSize = 11
+		roleLabel.TextSize = 13
 		roleLabel.TextXAlignment = Enum.TextXAlignment.Left
 		roleLabel.Parent = bubble
 
@@ -2192,7 +2192,7 @@ local function renderChatMessages(messages)
 		textLabel.Font = Enum.Font.Gotham
 		textLabel.Text = tostring(message.text or "")
 		textLabel.TextColor3 = Color3.fromRGB(240, 244, 248)
-		textLabel.TextSize = 12
+		textLabel.TextSize = 14
 		textLabel.TextWrapped = true
 		textLabel.TextXAlignment = Enum.TextXAlignment.Left
 		textLabel.TextYAlignment = Enum.TextYAlignment.Top
@@ -2224,10 +2224,10 @@ local function sendChatMessage()
 	local response = safeRequest("POST", "/api/chat/send", { text = text })
 	if response and response.Success then
 		chatInputBox.Text = ""
-		messageLabel.Text = "Sent to Codex inbox."
+		messageLabel.Text = "Enviado para a caixa do Codex."
 		refreshChat()
 	else
-		messageLabel.Text = "Failed to send chat message."
+		messageLabel.Text = "Falha ao enviar a mensagem."
 	end
 end
 
@@ -2288,7 +2288,7 @@ local function renderJobs(jobs)
 		typeLabel.Font = Enum.Font.GothamSemibold
 		typeLabel.Text = tostring(job.type or "-")
 		typeLabel.TextColor3 = Color3.fromRGB(240, 244, 248)
-		typeLabel.TextSize = 12
+		typeLabel.TextSize = 14
 		typeLabel.TextXAlignment = Enum.TextXAlignment.Left
 		typeLabel.Parent = row
 
@@ -2307,7 +2307,7 @@ local function renderJobs(jobs)
 		statusLabel.Font = Enum.Font.GothamSemibold
 		statusLabel.Text = tostring(job.status or "-")
 		statusLabel.TextColor3 = statusColor
-		statusLabel.TextSize = 12
+		statusLabel.TextSize = 14
 		statusLabel.TextXAlignment = Enum.TextXAlignment.Right
 		statusLabel.Parent = row
 
@@ -2318,7 +2318,7 @@ local function renderJobs(jobs)
 		metaLabel.Font = Enum.Font.Gotham
 		metaLabel.Text = tostring(job.id or "")
 		metaLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
-		metaLabel.TextSize = 11
+		metaLabel.TextSize = 13
 		metaLabel.TextXAlignment = Enum.TextXAlignment.Left
 		metaLabel.Parent = row
 
@@ -2327,18 +2327,18 @@ local function renderJobs(jobs)
 		detailLabel.Position = UDim2.new(0, 10, 0, 42)
 		detailLabel.Size = UDim2.new(1, -20, 0, 14)
 		detailLabel.Font = Enum.Font.Gotham
-		detailLabel.TextSize = 10
+		detailLabel.TextSize = 12
 		detailLabel.TextXAlignment = Enum.TextXAlignment.Left
 		if job.status == "done" and type(job.result) == "table" then
 			detailLabel.TextColor3 = Color3.fromRGB(124, 247, 212)
 			local summary = job.result.path or job.result.message or job.result.property or job.result.className or "ok"
-			detailLabel.Text = "Result: " .. tostring(summary)
+			detailLabel.Text = "Resultado: " .. tostring(summary)
 		elseif job.status == "failed" and job.error then
 			detailLabel.TextColor3 = Color3.fromRGB(244, 104, 104)
-			detailLabel.Text = "Error: " .. tostring(job.error)
+			detailLabel.Text = "Erro: " .. tostring(job.error)
 		else
 			detailLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
-			detailLabel.Text = "Queued for bridge processing."
+			detailLabel.Text = "Na fila para processamento da ponte."
 		end
 		detailLabel.Parent = row
 	end
@@ -2346,23 +2346,23 @@ end
 
 local function updatePanelState(payload)
 	if not payload then
-		serverValue.Text = "offline"
-		bridgeValue.Text = "offline"
-		statusBadge.Text = "disconnected"
+		serverValue.Text = "desconectado"
+		bridgeValue.Text = "desconectado"
+		statusBadge.Text = "desconectado"
 		statusBadge.BackgroundColor3 = Color3.fromRGB(78, 52, 52)
-		messageLabel.Text = "Dashboard unavailable."
+		messageLabel.Text = "Dashboard indisponível."
 		return
 	end
 
 	serverValue.Text = tostring(payload.version or "-")
 	local bridge = payload.bridge or {}
-	bridgeValue.Text = bridge.connected and "connected" or "disconnected"
-	statusBadge.Text = bridge.connected and "online" or "offline"
+	bridgeValue.Text = bridge.connected and "conectado" or "desconectado"
+	statusBadge.Text = bridge.connected and "conectado" or "desconectado"
 	statusBadge.BackgroundColor3 = bridge.connected and Color3.fromRGB(39, 95, 78) or Color3.fromRGB(78, 52, 52)
 	if bridge.connected then
-		messageLabel.Text = string.format("Bridge: %s", tostring(bridge.clientName or "Roblox Studio"))
+		messageLabel.Text = string.format("Ponte: %s", tostring(bridge.clientName or "Roblox Studio"))
 	else
-		messageLabel.Text = "Bridge not connected yet."
+		messageLabel.Text = "Ponte ainda não conectada."
 	end
 end
 
@@ -2398,10 +2398,10 @@ function queuePanelJob(jobType, payload)
 		payload = payload or {},
 	})
 	if response and response.Success and response.Body then
-		messageLabel.Text = string.format("Queued %s.", jobType)
+		messageLabel.Text = string.format("%s enfileirado.", jobType)
 		return true
 	end
-	messageLabel.Text = string.format("Failed to queue %s.", jobType)
+	messageLabel.Text = string.format("Falha ao enfileirar %s.", jobType)
 	return false
 end
 
@@ -2411,7 +2411,7 @@ makeButton(buttonRow, "Ping", function()
 	})
 end)
 
-makeButton(buttonRow, "Selection", function()
+makeButton(buttonRow, "Seleção", function()
 	queuePanelJob("inspect_selection", {})
 end)
 
@@ -2419,7 +2419,7 @@ makeButton(buttonRow, "Snapshot", function()
 	queuePanelJob("sync_snapshot", {})
 end)
 
-makeButton(buttonRow, "Refresh", function()
+makeButton(buttonRow, "Atualizar", function()
 	refreshPanel()
 end)
 
