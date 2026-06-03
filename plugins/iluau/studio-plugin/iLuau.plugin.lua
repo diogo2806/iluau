@@ -1427,9 +1427,9 @@ local function refreshSelectionEditor()
 
 	if selectionSummaryLabel then
 		if count == 0 then
-			selectionSummaryLabel.Text = "Nada selecionado."
+			selectionSummaryLabel.Text = "Nada selecionado — clique num nó para selecioná-lo no Studio."
 		elseif count == 1 then
-			selectionSummaryLabel.Text = "1 item selecionado."
+			selectionSummaryLabel.Text = "1 item selecionado. Edite propriedades, attributes e tags abaixo."
 		else
 			selectionSummaryLabel.Text = string.format("%d itens selecionados.", count)
 		end
@@ -1817,7 +1817,7 @@ selectionSummaryLabel.BackgroundTransparency = 1
 selectionSummaryLabel.Position = UDim2.new(0, 10, 0, 28)
 selectionSummaryLabel.Size = UDim2.new(1, -20, 0, 16)
 selectionSummaryLabel.Font = Enum.Font.Gotham
-selectionSummaryLabel.Text = "Nada selecionado."
+selectionSummaryLabel.Text = "Nada selecionado — clique num nó para selecioná-lo no Studio."
 selectionSummaryLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
 selectionSummaryLabel.TextSize = 14
 selectionSummaryLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -1876,6 +1876,12 @@ makePillButton(selectionTreeActionsRow, "Limpar filtro", function()
 		selectionTreeFilterBox.Text = ""
 	end
 	applyTreeFilter("")
+end, false, true)
+
+makePillButton(selectionTreeActionsRow, "Limpar seleção", function()
+	pcall(function()
+		Selection:Set({})
+	end)
 end, false, true)
 
 selectionList = Instance.new("ScrollingFrame")
