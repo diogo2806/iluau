@@ -1,5 +1,7 @@
 # Sync Format Reference
 
+> Legacy WEPPY reference. Active iLuau docs live under `plugins/iluau/`.
+
 WEPPY uses sync file format v2: nested directories where each instance owns its own directory.
 
 ## Directory Shape

@@ -1,21 +1,29 @@
 # iLuau Studio Plugin
 
-This folder contains the Roblox Studio-side bridge source for iLuau.
+This folder contains the Roblox Studio bridge for iLuau.
 
-What it does:
+## What it does
+
 - polls the local iLuau dashboard server
 - reports Studio heartbeat state
 - receives queued jobs from Codex
-- executes a small safe action set inside Studio
-- opens a dockable iLuau panel with status, a selection tree, and an attribute/tag editor
+- executes the safe Studio action set
+- opens a dockable panel with:
+  - connection status
+  - selection tree
+  - property editor
+  - property favorites
+  - Attributes and Tags editor
 
-Install:
+## Install
+
 1. Copy `iLuau.plugin.lua` into a Roblox Studio plugin script.
-2. Enable `HttpService` for localhost requests if required by your Studio environment.
-3. Start the `iLuau` MCP server from Codex.
-4. Use the `iLuau` toolbar button to open the Studio panel.
+2. Enable `HttpService` for localhost requests if your Studio setup requires it.
+3. Start the local MCP server from `plugins/iluau/`.
+4. Open the iLuau toolbar button in Studio.
 
-Supported job types:
+## Supported job types
+
 - `ping`
 - `inspect_selection`
 - `get_properties`
@@ -29,4 +37,4 @@ Supported job types:
 - `delete_instance`
 - `sync_snapshot`
 
-`set_properties` also accepts `attributes` and `tags`, so batch edits can update normal properties and metadata in one job.
+`set_properties` accepts `properties`, `attributes`, and `tags`, so batch edits can update instance state and metadata in one job.

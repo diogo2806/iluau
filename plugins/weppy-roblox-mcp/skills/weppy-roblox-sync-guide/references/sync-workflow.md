@@ -1,5 +1,7 @@
 # Sync Workflow Reference
 
+> Legacy WEPPY reference. Active iLuau docs live under `plugins/iluau/`.
+
 WEPPY sync mirrors Roblox Studio content into local files under `weppy-project-sync`.
 
 ## Lifecycle

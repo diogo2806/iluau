@@ -1,5 +1,7 @@
 # Sync Conflict Reference
 
+> Legacy WEPPY reference. Active iLuau docs live under `plugins/iluau/`.
+
 Sync conflict handling follows direction policy. Do not resolve by guessing which side is newer without checking the direction and conflict payload.
 
 ## Enforcement

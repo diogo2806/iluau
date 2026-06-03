@@ -1,5 +1,7 @@
 # Playtest Reference
 
+> Legacy WEPPY reference. Active iLuau docs live under `plugins/iluau/`.
+
 Use playtest actions when verifying runtime behavior, collecting logs, or creating dashboard-linked test reports.
 
 ## Control Flow

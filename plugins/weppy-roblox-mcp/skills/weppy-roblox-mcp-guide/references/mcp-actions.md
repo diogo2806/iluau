@@ -2,7 +2,9 @@
 
 <!-- AUTO-GENERATED from tool-codegen/tools.yaml and tool-codegen/tools/*.yaml. DO NOT EDIT. -->
 
-Use this reference for exact MCP tool/action names, tiers, routes, aliases, and parameters. Public marketing copy must not reuse this raw action dump.
+> Legacy WEPPY reference dump. Active iLuau docs live under `plugins/iluau/`.
+
+Use this reference for exact MCP tool/action names, routes, aliases, and parameters. Public marketing copy must not reuse this raw action dump.
 
 ## Tool: `query_instances`
 

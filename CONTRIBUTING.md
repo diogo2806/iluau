@@ -1,35 +1,50 @@
-# Contributing to Roblox MCP
+# Contributing to iLuau
 
 ## Bug Reports
 
-Use the [Bug Report issue template](https://github.com/hope1026/weppy-roblox-mcp/issues/new?template=bug_report.yml).
+Use the bug report issue template:
+
+- [Bug Report](https://github.com/diogo2806/iluau/issues/new?template=bug_report.yml)
 
 Include:
-- OS and Node.js version (`node --version`)
+
+- OS and Node.js version
 - Roblox Studio version
 - AI client and version
-- Steps to reproduce
+- Reproduction steps
 - Expected vs actual behavior
-- Error logs if available
+- Relevant logs or screenshots
 
 ## Feature Requests
 
-Use the [Feature Request template](https://github.com/hope1026/weppy-roblox-mcp/issues/new?template=feature_request.yml).
+Use the feature request template:
 
-## Questions & Install Help
+- [Feature Request](https://github.com/diogo2806/iluau/issues/new?template=feature_request.yml)
 
-Use [GitHub Issues](https://github.com/hope1026/weppy-roblox-mcp/issues/new) for questions and install help. Do not post raw license keys, receipts, email addresses, or personal billing details in public issues.
+## Questions and Install Help
+
+Use [GitHub Issues](https://github.com/diogo2806/iluau/issues) for questions and setup help.
+
+Do not post secrets, receipts, API keys, or private project data in public issues.
 
 ## Pull Requests
 
-This repository distributes the MCP server and plugin. The plugin source is not included here.
+This repository includes the active iLuau plugin source in `plugins/iluau/`.
 
-PRs for **documentation improvements** and **example prompts** are welcome:
+PRs are welcome for:
+
+- documentation improvements
+- bug fixes
+- workflow polish
+- tests and validation helpers
+
+Suggested flow:
 
 1. Fork the repository
-2. Create a branch: `git checkout -b docs/your-improvement`
+2. Create a branch
 3. Make your changes
-4. Open a Pull Request with a clear description
+4. Run validation
+5. Open a pull request with a clear description
 
 ## Code of Conduct
 

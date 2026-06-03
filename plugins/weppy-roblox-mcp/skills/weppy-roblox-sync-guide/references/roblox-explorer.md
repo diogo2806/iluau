@@ -1,5 +1,7 @@
 # Roblox Explorer Reference
 
+> Legacy WEPPY reference. Active iLuau docs live under `plugins/iluau/`.
+
 The WEPPY Roblox Explorer VSCode extension reads the local sync mirror. It does not talk directly to Roblox Studio for tree data.
 
 ## Data Source

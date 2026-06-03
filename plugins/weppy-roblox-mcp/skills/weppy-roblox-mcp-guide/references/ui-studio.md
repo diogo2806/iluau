@@ -1,5 +1,7 @@
 # UI Studio Reference
 
+> Legacy WEPPY reference. Active iLuau docs live under `plugins/iluau/`.
+
 Use UI Studio for Roblox `StarterGui` work instead of hand-rolling many GUI mutations.
 
 ## Product Loop

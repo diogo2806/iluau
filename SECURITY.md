@@ -2,29 +2,25 @@
 
 ## Supported Versions
 
-| Version | Supported |
-|---------|-----------|
-| 1.x (latest) | ✅ |
-| < 1.0 | ❌ |
+- The current main branch and the active iLuau plugin bundle are supported.
 
 ## Reporting a Vulnerability
 
-Do **not** include exploit details, secrets, license keys, or private project data in public reports.
+Do not include exploit details, secrets, or private project data in public reports.
 
-Report security issues by emailing <support@weppyai.com>.
+Open a public issue with a short high-level summary and prefix the title with `[SECURITY]`:
 
-If you need to open a public [GitHub Issue](https://github.com/hope1026/weppy-roblox-mcp/issues/new), prefix the title with `[SECURITY]` and include only a high-level summary.
-
-We will respond within 72 hours and aim to release a fix within 14 days for confirmed vulnerabilities.
+- [GitHub Issues](https://github.com/diogo2806/iluau/issues/new)
 
 ## Scope
 
-- MCP server HTTP bridge (localhost:3002)
-- Plugin authentication and session token handling
-- License server communication
+- Local MCP server
+- Local dashboard
+- Roblox Studio bridge
+- Plugin settings and local state
 
 ## Out of Scope
 
 - Roblox Studio itself
 - Third-party AI client security
-- Issues requiring physical access to the machine
+- Physical access to the machine
