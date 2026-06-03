@@ -5,9 +5,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        **First:** check the [Installation Guide](https://github.com/hope1026/weppy-roblox-mcp/blob/main/docs/en/installation/README.md)
-        and [Troubleshooting](https://github.com/hope1026/weppy-roblox-mcp/blob/main/docs/en/troubleshooting.md).
-        For general questions, use [Discussions](https://github.com/hope1026/weppy-roblox-mcp/discussions) instead.
+        **First:** check the [iLuau README](https://github.com/diogo2806/iluau/blob/main/README.md).
+        For general questions, use [Discussions](https://github.com/diogo2806/iluau/discussions) instead.
   - type: dropdown
     id: ai-client
     attributes:

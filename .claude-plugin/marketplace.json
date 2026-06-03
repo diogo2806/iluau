@@ -5,40 +5,10 @@
     "email": "hope841026@gmail.com"
   },
   "metadata": {
-    "description": "WEPPY Roblox AI Toolkit and iLuau plugin marketplace for local Roblox Studio workflows.",
+    "description": "iLuau plugin marketplace for local Roblox Studio workflows.",
     "version": "2.7.13"
   },
   "plugins": [
-    {
-      "name": "weppy-roblox-ai-toolkit",
-      "source": "./plugins/weppy-roblox-mcp",
-      "description": "WEPPY Roblox AI Toolkit for live Roblox Studio workflows.",
-      "version": "2.7.13",
-      "author": {
-        "name": "hope1026"
-      },
-      "homepage": "https://github.com/hope1026/weppy-roblox-mcp",
-      "repository": "https://github.com/hope1026/weppy-roblox-mcp",
-      "license": "AGPL-3.0",
-      "keywords": [
-        "mcp",
-        "roblox",
-        "roblox-studio",
-        "game-development",
-        "ai",
-        "claude",
-        "codex",
-        "gemini",
-        "cursor"
-      ],
-      "category": "game-development",
-      "tags": [
-        "roblox",
-        "mcp",
-        "game-dev",
-        "ai-tools"
-      ]
-    },
     {
       "name": "iluau",
       "source": "./plugins/iluau",
@@ -47,8 +17,8 @@
       "author": {
         "name": "Local developer"
       },
-      "homepage": "https://github.com/hope1026/weppy-roblox-mcp",
-      "repository": "https://github.com/hope1026/weppy-roblox-mcp",
+      "homepage": "https://github.com/diogo2806/iluau",
+      "repository": "https://github.com/diogo2806/iluau",
       "license": "AGPL-3.0",
       "keywords": [
         "mcp",

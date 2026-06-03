@@ -15,7 +15,6 @@ Ele inclui:
 ## O que existe neste repositório
 
 - `plugins/iluau/` - plugin ativo do iLuau, servidor MCP, dashboard e ponte do Studio
-- `plugins/weppy-roblox-mcp/` - material legado mantido apenas como referência e compatibilidade
 
 ## Início rápido
 

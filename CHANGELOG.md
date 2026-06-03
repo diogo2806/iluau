@@ -14,6 +14,12 @@ Todas as mudanças relevantes do iLuau serão registradas aqui.
 
 - Forward references quebradas no plugin do Studio (`refreshSelectionTree`, `trim`, `refreshPropertyEditorState`, `syncPropertyAssist`, `queuePanelJob`) que causavam "attempt to call a nil value" e abortavam o script antes de iniciar o loop de heartbeat, deixando a ponte sempre offline e os jobs presos em "queued"
 
+### Removido
+
+- Plugin legado `plugins/weppy-roblox-mcp/` e todas as referências a weppy no repositório
+- Instaladores e CI específicos do weppy (`install.sh`, `install.ps1`, `.github/workflows/install-test.yml`, `.github/scripts/mcp-smoke.mjs`)
+- Entradas do weppy nos `marketplace.json`; `Dockerfile`, `smithery.yaml`, `llms.txt` e `llms-full.txt` agora apontam para o fluxo local do iLuau
+
 ## [0.4.0] - 2026-06-03
 
 ### Adicionado

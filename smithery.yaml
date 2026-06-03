@@ -5,7 +5,7 @@ startCommand:
     properties: {}
   commandFunction: |-
     (config) => ({
-      command: 'npx',
-      args: ['-y', '@weppy/roblox-mcp@latest']
+      command: 'node',
+      args: ['plugins/iluau/server/index.js']
     })
   exampleConfig: {}
