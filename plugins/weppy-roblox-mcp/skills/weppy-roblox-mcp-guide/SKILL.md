@@ -1,23 +1,23 @@
 ---
 name: weppy-roblox-mcp-guide
-description: Legacy reference for the original WEPPY Roblox MCP workflow. The active project in this repository is iLuau under plugins/iluau.
+description: Referência legada do fluxo original do WEPPY Roblox MCP. O projeto ativo neste repositório é o iLuau em plugins/iluau.
 ---
 
-# WEPPY Roblox MCP Guide
+# Guia legado do WEPPY Roblox MCP
 
-> Legacy reference only. For the active workflow, use `plugins/iluau/skills/iluau-guide/SKILL.md`.
+> Referência apenas para compatibilidade histórica. Para o fluxo atual, use `plugins/iluau/skills/iluau-guide/SKILL.md`.
 
-This skill is kept for historical compatibility with the original WEPPY plugin layout.
+Este skill foi mantido para preservar a estrutura antiga do projeto e referências geradas em versões anteriores.
 
 ## Status
 
-- Archived reference
-- Not the primary documentation for the current repository state
-- Kept only so older examples and generated references still have a landing page
+- Referência arquivada
+- Não é a documentação principal do estado atual do repositório
+- Mantido apenas para exemplos antigos e compatibilidade
 
-## Active workflow
+## Fluxo ativo
 
-Use the iLuau plugin and its local Studio bridge for current work:
+Use o iLuau para o fluxo atual:
 
 - `plugins/iluau/server/index.js`
 - `plugins/iluau/studio-plugin/iLuau.plugin.lua`

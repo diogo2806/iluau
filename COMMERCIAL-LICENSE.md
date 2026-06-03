@@ -1,7 +1,7 @@
-# Commercial Licensing
+# Licença Comercial
 
-No separate commercial license is currently offered for iLuau.
+No momento, o iLuau não oferece uma licença comercial separada.
 
-This repository is intended to be used under its open-source terms only.
+Este repositório foi pensado para uso apenas sob os termos de código aberto atuais.
 
-If that changes in the future, the new terms should be documented here and linked from the main README.
+Se isso mudar no futuro, os novos termos devem ser documentados aqui e vinculados no README principal.

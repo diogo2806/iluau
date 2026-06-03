@@ -1,29 +1,29 @@
-# Code of Conduct
+# Código de Conduta
 
-## Our Pledge
+## Nosso compromisso
 
-We aim to keep participation in this project harassment-free for everyone, regardless of age, body size, disability, ethnicity, gender identity, experience level, nationality, personal appearance, race, religion, or sexual identity.
+Queremos manter a participação neste projeto livre de assédio para todas as pessoas, independentemente de idade, corpo, deficiência, etnia, identidade de gênero, nível de experiência, nacionalidade, aparência, raça, religião ou identidade sexual.
 
-## Our Standards
+## Nossos padrões
 
-Examples of positive behavior:
+Exemplos de comportamento positivo:
 
-- Use welcoming and inclusive language
-- Respect different viewpoints and experiences
-- Accept constructive criticism gracefully
-- Focus on what is best for the project
-- Show empathy toward other contributors
+- Usar linguagem acolhedora e inclusiva
+- Respeitar pontos de vista e experiências diferentes
+- Aceitar críticas construtivas com maturidade
+- Focar no que é melhor para o projeto
+- Demonstrar empatia com outras pessoas contribuindo
 
-Examples of unacceptable behavior:
+Exemplos de comportamento inaceitável:
 
-- Harassment, trolling, or personal attacks
-- Publishing private information without permission
-- Other conduct that could reasonably be considered inappropriate
+- Assédio, provocação ou ataques pessoais
+- Publicar informações privadas de outras pessoas sem permissão
+- Qualquer outro comportamento que possa ser considerado inadequado
 
-## Enforcement
+## Aplicação
 
-Report abusive or otherwise unacceptable behavior by opening a [GitHub Issue](https://github.com/diogo2806/iluau/issues/new). Reports will be reviewed and handled as appropriate.
+Comportamentos abusivos ou inadequados podem ser relatados abrindo uma [issue no GitHub](https://github.com/diogo2806/iluau/issues/new). As denúncias serão analisadas e tratadas conforme necessário.
 
-## Attribution
+## Atribuição
 
-This Code of Conduct is adapted from the [Contributor Covenant](https://www.contributor-covenant.org/), version 2.1.
+Este Código de Conduta é adaptado do [Contributor Covenant](https://www.contributor-covenant.org/), versão 2.1.

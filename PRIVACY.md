@@ -1,19 +1,19 @@
-# Privacy
+# Privacidade
 
-iLuau is designed to run locally on your machine.
+O iLuau foi projetado para funcionar localmente na sua máquina.
 
-## What stays local
+## O que fica local
 
-- The MCP server runs on localhost.
-- The Studio bridge uses local HTTP requests to the dashboard server.
-- Plugin settings, property history, favorites, and tree filter state are stored locally in Roblox Studio plugin settings.
+- O servidor MCP roda em `localhost`.
+- A ponte do Studio usa requisições HTTP locais para o dashboard.
+- Configurações do plugin, histórico de propriedades, favoritos e filtro da árvore são salvos localmente nas preferências do Roblox Studio.
 
-## What this repository does not document
+## O que este repositório não documenta como coleta ativa
 
-- No telemetry pipeline is defined in the current iLuau code in this repository.
-- No paid-plan analytics are used in the active iLuau plugin.
-- No project files or script contents are intentionally sent to a remote service by the current iLuau docs or bridge code.
+- Não há pipeline de telemetria definido no código ativo do iLuau neste repositório.
+- Não há analytics de plano pago no plugin ativo do iLuau.
+- Não há envio intencional de arquivos do projeto, scripts ou conteúdo do Roblox para um serviço remoto pelo código ativo ou pela documentação atual.
 
-## If telemetry is added later
+## Se telemetria for adicionada no futuro
 
-Any future analytics or telemetry work should be documented here before release, including what data is collected, why it is collected, and how to opt out.
+Qualquer trabalho futuro de analytics ou telemetria deve ser documentado aqui antes do lançamento, incluindo o que é coletado, por quê e como desativar.

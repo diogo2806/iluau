@@ -1,66 +1,64 @@
 # iLuau
 
-iLuau is a local Roblox MCP plugin and Studio bridge for Codex.
+O iLuau é um plugin local de MCP para Roblox Studio, feito para funcionar com o Codex.
 
-It gives you:
+Ele inclui:
 
-- a local MCP server
-- a dockable Roblox Studio panel
-- a selection tree with filtering and expand/collapse controls
-- a property editor with history and favorites
-- Attributes and Tags editing
-- a local dashboard for bridge state and queued jobs
+- servidor MCP local
+- painel encaixável no Roblox Studio
+- árvore de seleção com filtro e expandir/colapsar
+- editor de propriedades com histórico e favoritos
+- edição de Attributes e Tags
+- dashboard local para status da ponte e fila de jobs
 
-## What is in this repository
+## O que existe neste repositório
 
-- `plugins/iluau/` - the active iLuau plugin, MCP server, dashboard, and Studio bridge
-- `plugins/weppy-roblox-mcp/` - archived reference material kept for compatibility and history
+- `plugins/iluau/` - plugin ativo do iLuau, servidor MCP, dashboard e ponte do Studio
+- `plugins/weppy-roblox-mcp/` - material legado mantido apenas como referência e compatibilidade
 
-## Quick start
+## Início rápido
 
-1. Install Node.js 18 or newer.
-2. Open a terminal in `plugins/iluau/`.
-3. Install dependencies if needed:
+1. Instale Node.js 18 ou superior.
+2. Abra um terminal em `plugins/iluau/`.
+3. Instale as dependências, se necessário:
 
 ```bash
 npm install
 ```
 
-4. Start the local MCP server:
+4. Inicie o servidor MCP local:
 
 ```bash
 npm start
 ```
 
-5. Load the MCP config from `plugins/iluau/.mcp.json` in your Codex setup or point your client at `node ./server/index.js`.
-6. Copy `plugins/iluau/studio-plugin/iLuau.plugin.lua` into your Roblox Studio plugin folder.
-7. Restart Roblox Studio and open the iLuau toolbar button.
+5. Aponte seu cliente Codex para `plugins/iluau/.mcp.json` ou use `node ./server/index.js`.
+6. Copie `plugins/iluau/studio-plugin/iLuau.plugin.lua` para a pasta de plugins do Roblox Studio.
+7. Reinicie o Roblox Studio e abra o botão do iLuau.
 
-The dashboard runs locally at `http://127.0.0.1:3099/`.
+O dashboard local roda em `http://127.0.0.1:3099/`.
 
-## Main workflows
+## Fluxos principais
 
-- Inspect the current selection tree.
-- Read and write properties with type assistance.
-- Save and recall common property favorites.
-- Edit Attributes and Tags.
-- Create and delete instances.
-- Queue Studio actions from Codex through the MCP bridge.
+- Inspecionar a árvore da seleção atual.
+- Ler e alterar propriedades com ajuda de tipo.
+- Salvar e reutilizar propriedades favoritas.
+- Editar Attributes e Tags.
+- Criar e remover instâncias.
+- Enfileirar ações do Studio pelo MCP.
 
-## Project files
+## Arquivos principais
 
-- `plugins/iluau/server/index.js` - MCP server entry point
-- `plugins/iluau/server/store.js` - bridge state and job queue
-- `plugins/iluau/dashboard/` - local dashboard UI
-- `plugins/iluau/studio-plugin/iLuau.plugin.lua` - Roblox Studio bridge
-- `plugins/iluau/skills/iluau-guide/SKILL.md` - Codex workflow guide for iLuau
+- `plugins/iluau/server/index.js` - ponto de entrada do servidor MCP
+- `plugins/iluau/server/store.js` - estado da ponte e fila de jobs
+- `plugins/iluau/dashboard/` - interface do dashboard local
+- `plugins/iluau/studio-plugin/iLuau.plugin.lua` - ponte do Roblox Studio
+- `plugins/iluau/skills/iluau-guide/SKILL.md` - guia de fluxo do iLuau para o Codex
 
-## Support
-
-Open an issue in the repository if you find a bug or need setup help:
+## Suporte
 
 - [GitHub Issues](https://github.com/diogo2806/iluau/issues)
 
-## License
+## Licença
 
-See [COMMERCIAL-LICENSE.md](COMMERCIAL-LICENSE.md) for the current licensing note.
+Veja [COMMERCIAL-LICENSE.md](COMMERCIAL-LICENSE.md) para a nota atual de licenciamento.

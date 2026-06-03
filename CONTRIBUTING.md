@@ -1,51 +1,51 @@
-# Contributing to iLuau
+# Como contribuir com o iLuau
 
-## Bug Reports
+## Relatos de bug
 
-Use the bug report issue template:
+Use o template de issue de bug:
 
 - [Bug Report](https://github.com/diogo2806/iluau/issues/new?template=bug_report.yml)
 
-Include:
+Inclua:
 
-- OS and Node.js version
-- Roblox Studio version
-- AI client and version
-- Reproduction steps
-- Expected vs actual behavior
-- Relevant logs or screenshots
+- Sistema operacional e versão do Node.js
+- Versão do Roblox Studio
+- Cliente de IA e versão
+- Passos para reproduzir
+- Resultado esperado vs. resultado atual
+- Logs ou capturas relevantes
 
-## Feature Requests
+## Sugestões de recurso
 
-Use the feature request template:
+Use o template de feature request:
 
 - [Feature Request](https://github.com/diogo2806/iluau/issues/new?template=feature_request.yml)
 
-## Questions and Install Help
+## Dúvidas e ajuda na instalação
 
-Use [GitHub Issues](https://github.com/diogo2806/iluau/issues) for questions and setup help.
+Use as [issues do GitHub](https://github.com/diogo2806/iluau/issues) para dúvidas e suporte de instalação.
 
-Do not post secrets, receipts, API keys, or private project data in public issues.
+Não publique segredos, recibos, chaves de API ou dados privados do projeto em issues públicas.
 
-## Pull Requests
+## Pull requests
 
-This repository includes the active iLuau plugin source in `plugins/iluau/`.
+Este repositório contém o código ativo do iLuau em `plugins/iluau/`.
 
-PRs are welcome for:
+PRs são bem-vindos para:
 
-- documentation improvements
-- bug fixes
-- workflow polish
-- tests and validation helpers
+- melhorias de documentação
+- correções de bug
+- polimento de fluxo
+- testes e utilitários de validação
 
-Suggested flow:
+Fluxo sugerido:
 
-1. Fork the repository
-2. Create a branch
-3. Make your changes
-4. Run validation
-5. Open a pull request with a clear description
+1. Faça um fork do repositório
+2. Crie uma branch
+3. Faça suas alterações
+4. Rode a validação
+5. Abra um pull request com descrição clara
 
-## Code of Conduct
+## Código de Conduta
 
-Please read and follow the [Code of Conduct](CODE_OF_CONDUCT.md).
+Leia e siga o [Código de Conduta](CODE_OF_CONDUCT.md).

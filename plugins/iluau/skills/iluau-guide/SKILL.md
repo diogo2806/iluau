@@ -1,23 +1,23 @@
 ---
 name: iluau-guide
-description: Use when working with the iLuau Roblox MCP plugin, its local server, or the Roblox Studio bridge it exposes through Codex.
+description: Use quando estiver trabalhando com o plugin iLuau, o servidor local ou a ponte do Roblox Studio exposta ao Codex.
 ---
 
-# iLuau Guide
+# Guia do iLuau
 
-## Overview
+## Visão geral
 
-Use this plugin to control Roblox Studio through the local iLuau MCP server, dashboard, and Studio bridge.
+Use este plugin para controlar o Roblox Studio por meio do servidor MCP local do iLuau, do dashboard e da ponte do Studio.
 
-## Workflow
+## Fluxo
 
-1. Ensure Roblox Studio is running and the local MCP server is started.
-2. Prefer the narrowest action that matches the task.
-3. Use the dashboard to inspect queued jobs, bridge status, and recent results.
-4. Verify changes after each mutating operation.
+1. Garanta que o Roblox Studio esteja aberto e que o servidor MCP local esteja em execução.
+2. Prefira a ação mais específica que resolva a tarefa.
+3. Use o dashboard para inspecionar jobs enfileirados, status da ponte e resultados recentes.
+4. Verifique as mudanças após cada operação que altera o Studio.
 
-## Notes
+## Observações
 
-- `iLuau` is the active plugin and server name.
-- The MCP backend lives in `plugins/iluau/server/index.js`.
-- The Studio bridge lives in `plugins/iluau/studio-plugin/iLuau.plugin.lua`.
+- `iLuau` é o nome ativo do plugin e do servidor.
+- O backend MCP fica em `plugins/iluau/server/index.js`.
+- A ponte do Studio fica em `plugins/iluau/studio-plugin/iLuau.plugin.lua`.

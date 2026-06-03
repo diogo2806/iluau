@@ -1,26 +1,26 @@
-# Security Policy
+# Política de Segurança
 
-## Supported Versions
+## Versões suportadas
 
-- The current main branch and the active iLuau plugin bundle are supported.
+- A branch `main` atual e o pacote ativo do iLuau são suportados.
 
-## Reporting a Vulnerability
+## Como relatar uma vulnerabilidade
 
-Do not include exploit details, secrets, or private project data in public reports.
+Não inclua detalhes de exploração, segredos ou dados privados do projeto em relatos públicos.
 
-Open a public issue with a short high-level summary and prefix the title with `[SECURITY]`:
+Abra uma issue pública com um resumo alto nível e prefixe o título com `[SECURITY]`:
 
 - [GitHub Issues](https://github.com/diogo2806/iluau/issues/new)
 
-## Scope
+## Escopo
 
-- Local MCP server
-- Local dashboard
-- Roblox Studio bridge
-- Plugin settings and local state
+- Servidor MCP local
+- Dashboard local
+- Ponte do Roblox Studio
+- Configurações e estado local do plugin
 
-## Out of Scope
+## Fora de escopo
 
-- Roblox Studio itself
-- Third-party AI client security
-- Physical access to the machine
+- O próprio Roblox Studio
+- Segurança de clientes de IA de terceiros
+- Acesso físico à máquina

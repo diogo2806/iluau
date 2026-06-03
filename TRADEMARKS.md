@@ -1,17 +1,17 @@
-# Trademarks
+# Marcas
 
-`iLuau` and related logos or product names are project branding used for this repository.
+`iLuau` e os nomes, logos ou marcas relacionados a este projeto são usados como identidade do repositório.
 
-The open-source software license for this repository does not grant trademark rights.
+A licença de software livre deste repositório não concede direitos sobre marca registrada.
 
-You may:
+Você pode:
 
-- Use the project name in factual references to this repository
-- State that your software is compatible with or derived from this project
+- Usar o nome do projeto em referências factuais a este repositório
+- Dizer que seu software é compatível com este projeto ou derivado dele
 
-You may not:
+Você não pode:
 
-- Use the iLuau name or branding in a way that suggests endorsement, affiliation, or official status
-- Redistribute modified versions under the same branding in a way that could confuse users about origin
+- Usar o nome ou a identidade visual do iLuau de forma que sugira apoio, afiliação ou status oficial
+- Redistribuir versões modificadas com a mesma marca de um jeito que confunda a origem
 
-If you publish a fork or modified distribution, use distinct branding unless you have separate written permission.
+Se publicar um fork ou distribuição modificada, use uma identidade visual diferente, salvo autorização escrita separada.

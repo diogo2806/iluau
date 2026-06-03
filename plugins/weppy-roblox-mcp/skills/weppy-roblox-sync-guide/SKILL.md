@@ -1,22 +1,22 @@
 ---
 name: weppy-roblox-sync-guide
-description: Legacy reference for the original WEPPY sync workflow. The active project in this repository is iLuau under plugins/iluau.
+description: Referência legada do fluxo original de sync do WEPPY. O projeto ativo neste repositório é o iLuau em plugins/iluau.
 ---
 
-# WEPPY Roblox Sync Guide
+# Guia legado de sync do WEPPY
 
-> Legacy reference only. The current repo workflow lives in `plugins/iluau`.
+> Referência apenas para compatibilidade histórica. O fluxo atual do repositório vive em `plugins/iluau`.
 
-This skill is kept for compatibility with older generated references and historical context.
+Este skill foi mantido para dar contexto a referências antigas e manter compatibilidade com material gerado em versões anteriores.
 
 ## Status
 
-- Archived reference
-- Not the primary sync documentation for the current repository state
+- Referência arquivada
+- Não é a documentação principal do estado atual do repositório
 
-## Active workflow
+## Fluxo ativo
 
-For current Studio bridge, property, and selection workflows, use the iLuau docs:
+Para ponte do Studio, propriedades e seleção, use os docs do iLuau:
 
 - `plugins/iluau/skills/iluau-guide/SKILL.md`
 - `plugins/iluau/studio-plugin/README.md`

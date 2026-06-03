@@ -1,34 +1,5 @@
-# Sync Workflow Reference
+# Referência legada de sync
 
-> Legacy WEPPY reference. Active iLuau docs live under `plugins/iluau/`.
+> Documento legado do WEPPY. O fluxo ativo do repositório está em `plugins/iluau/`.
 
-WEPPY sync mirrors Roblox Studio content into local files under `weppy-project-sync`.
-
-## Lifecycle
-
-1. Check the connected place and sync status.
-2. Start full sync from Studio while Studio is in edit mode.
-3. Let incremental Studio changes flow to files according to direction policy.
-4. Let local file changes become reverse pending changes according to direction policy.
-5. Use sync history, progress, and read/write actions for inspection and targeted edits.
-6. Stop sync before changing project root or when Studio disconnects.
-
-## Directions
-
-Direction values:
-- `forward`: Studio is authoritative.
-- `reverse`: local files are authoritative.
-- `bidirectional`: both sides can change; conflicts require resolution.
-
-Category keys:
-- `scripts`
-- `values`
-- `data`
-- `containers`
-- `services`
-
-Default direction is `forward`. Default apply mode is `manual`. The workflow supports safer manual behavior by default and broader bidirectional workflows when needed.
-
-## Multi-Place
-
-The project sync root is `${resolvedProjectRoot}/weppy-project-sync`. Place data is isolated in `place_<id>/` directories. The runtime keeps one active project sync root and stores place metadata separately.
+Esta referência antiga era usada para o sync original do WEPPY e foi mantida apenas como arquivo histórico.
