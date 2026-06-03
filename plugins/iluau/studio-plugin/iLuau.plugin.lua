@@ -547,7 +547,9 @@ end
 
 local function clearGuiRows(container)
 	for _, child in ipairs(container:GetChildren()) do
-		if not child:IsA("UIListLayout") and not child:IsA("UIPadding") then
+		-- Preserve layout helpers (UIListLayout, UIGridLayout, UIPadding, UICorner,
+		-- UIStroke, ...) which all derive from UIComponent; only clear content rows.
+		if not child:IsA("UIComponent") then
 			child:Destroy()
 		end
 	end
