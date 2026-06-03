@@ -44,7 +44,7 @@ topAccent.Parent = topBar
 
 local title = Instance.new("TextLabel")
 title.BackgroundTransparency = 1
-title.Size = UDim2.new(1, -24, 0, 24)
+title.Size = UDim2.new(1, -156, 0, 24)
 title.Position = UDim2.new(0, 12, 0, 10)
 title.Font = Enum.Font.GothamBold
 title.Text = "iLuau"
@@ -55,7 +55,7 @@ title.Parent = topBar
 
 local subtitle = Instance.new("TextLabel")
 subtitle.BackgroundTransparency = 1
-subtitle.Size = UDim2.new(1, -24, 0, 18)
+subtitle.Size = UDim2.new(1, -156, 0, 18)
 subtitle.Position = UDim2.new(0, 12, 0, 30)
 subtitle.Font = Enum.Font.Gotham
 subtitle.Text = "Ponte e fila do Roblox Studio"
@@ -69,7 +69,7 @@ statusBadge.AnchorPoint = Vector2.new(1, 0)
 statusBadge.BackgroundColor3 = Color3.fromRGB(48, 58, 78)
 statusBadge.BorderSizePixel = 0
 statusBadge.Position = UDim2.new(1, -12, 0, 14)
-statusBadge.Size = UDim2.new(0, 120, 0, 26)
+statusBadge.Size = UDim2.new(0, 110, 0, 26)
 statusBadge.Font = Enum.Font.GothamSemibold
 statusBadge.Text = "desconectado"
 statusBadge.TextColor3 = Color3.fromRGB(230, 236, 241)
@@ -167,6 +167,7 @@ local function makeButton(parent, text, onClick)
 	button.Text = text
 	button.TextColor3 = Color3.fromRGB(8, 16, 22)
 	button.TextSize = 14
+	button.TextWrapped = true
 	button.AutoButtonColor = true
 
 	local padding = Instance.new("UIPadding")
@@ -181,6 +182,15 @@ local function makeButton(parent, text, onClick)
 	button.MouseButton1Click:Connect(onClick)
 	button.Parent = parent
 	return button
+end
+
+local function fitGridButtons(parent)
+	for _, child in ipairs(parent:GetChildren()) do
+		if child:IsA("TextButton") then
+			child.AutomaticSize = Enum.AutomaticSize.None
+			child.Size = UDim2.fromScale(1, 1)
+		end
+	end
 end
 
 local function stylePillButton(button, isActive, compact)
@@ -347,6 +357,7 @@ local selectionPropertyFavoritesStatusLabel
 local selectionAttributesBox
 local selectionTagsBox
 local selectionStatusLabel
+local messageLabel
 local refreshSelectionTree
 local trim
 local refreshPropertyEditorState
@@ -1836,7 +1847,7 @@ selectionLayout.Padding = UDim.new(0, 6)
 selectionLayout.SortOrder = Enum.SortOrder.LayoutOrder
 selectionLayout.Parent = selectionList
 
-local propertiesCard = makeCard(468)
+local propertiesCard = makeCard(548)
 propertiesCard.LayoutOrder = 3
 propertiesCard.Parent = body
 makeSectionTitle(propertiesCard, "Propriedades")
@@ -1874,7 +1885,7 @@ propertyNameLabel.TextSize = 14
 propertyNameLabel.TextXAlignment = Enum.TextXAlignment.Left
 propertyNameLabel.Parent = propertiesCard
 
-selectionPropertyNameBox = makeTextBox(propertiesCard, "Transparency", 28)
+selectionPropertyNameBox = makeTextBox(propertiesCard, "Ex.: Transparency, Name, Parent", 28)
 selectionPropertyNameBox.Size = UDim2.new(1, -20, 0, 30)
 
 local propertyValueLabel = Instance.new("TextLabel")
@@ -1888,36 +1899,41 @@ propertyValueLabel.TextSize = 14
 propertyValueLabel.TextXAlignment = Enum.TextXAlignment.Left
 propertyValueLabel.Parent = propertiesCard
 
-selectionPropertyValueBox = makeTextBox(propertiesCard, "0.5, true, \"texto\", ou JSON", 36)
+selectionPropertyValueBox = makeTextBox(propertiesCard, "Novo valor: 0.5, true, \"texto\" ou JSON", 36)
 selectionPropertyValueBox.Size = UDim2.new(1, -20, 0, 40)
 
 local propertyButtonRow = Instance.new("Frame")
 propertyButtonRow.BackgroundTransparency = 1
 propertyButtonRow.Position = UDim2.new(0, 10, 0, 158)
-propertyButtonRow.Size = UDim2.new(1, -20, 0, 30)
+propertyButtonRow.Size = UDim2.new(1, -20, 0, 68)
 propertyButtonRow.Parent = propertiesCard
 
-local propertyButtonLayout = Instance.new("UIListLayout")
-propertyButtonLayout.FillDirection = Enum.FillDirection.Horizontal
-propertyButtonLayout.Padding = UDim.new(0, 8)
+local propertyButtonLayout = Instance.new("UIGridLayout")
+propertyButtonLayout.CellPadding = UDim2.new(0, 8, 0, 8)
+propertyButtonLayout.CellSize = UDim2.new(0.5, -4, 0, 30)
 propertyButtonLayout.SortOrder = Enum.SortOrder.LayoutOrder
 propertyButtonLayout.Parent = propertyButtonRow
 
-makeButton(propertyButtonRow, "Carregar", function()
+local loadPropertyButton = makeButton(propertyButtonRow, "Ler valor atual", function()
 	refreshPropertyEditor()
 end)
+loadPropertyButton.AutomaticSize = Enum.AutomaticSize.None
+loadPropertyButton.Size = UDim2.fromScale(1, 1)
 
-makeButton(propertyButtonRow, "Aplicar propriedade", function()
+local applyPropertyButton = makeButton(propertyButtonRow, "Aplicar valor", function()
 	applySelectedProperty()
 end)
+applyPropertyButton.AutomaticSize = Enum.AutomaticSize.None
+applyPropertyButton.Size = UDim2.fromScale(1, 1)
 
-makeButton(propertyButtonRow, "☆ Favoritar", function()
+makeButton(propertyButtonRow, "Salvar favorito", function()
 	toggleCurrentPropertyFavorite()
 end)
+fitGridButtons(propertyButtonRow)
 
 selectionPropertyOutcomeLabel = Instance.new("TextLabel")
 selectionPropertyOutcomeLabel.BackgroundTransparency = 1
-selectionPropertyOutcomeLabel.Position = UDim2.new(0, 10, 0, 190)
+selectionPropertyOutcomeLabel.Position = UDim2.new(0, 10, 0, 230)
 selectionPropertyOutcomeLabel.Size = UDim2.new(1, -20, 0, 16)
 selectionPropertyOutcomeLabel.Font = Enum.Font.Gotham
 selectionPropertyOutcomeLabel.Text = "Pronto."
@@ -1928,10 +1944,10 @@ selectionPropertyOutcomeLabel.Parent = propertiesCard
 
 selectionPropertyFavoritesStatusLabel = Instance.new("TextLabel")
 selectionPropertyFavoritesStatusLabel.BackgroundTransparency = 1
-selectionPropertyFavoritesStatusLabel.Position = UDim2.new(0, 10, 0, 214)
+selectionPropertyFavoritesStatusLabel.Position = UDim2.new(0, 10, 0, 256)
 selectionPropertyFavoritesStatusLabel.Size = UDim2.new(1, -20, 0, 16)
 selectionPropertyFavoritesStatusLabel.Font = Enum.Font.GothamSemibold
-selectionPropertyFavoritesStatusLabel.Text = "Favoritos"
+selectionPropertyFavoritesStatusLabel.Text = "Propriedades favoritas"
 selectionPropertyFavoritesStatusLabel.TextColor3 = Color3.fromRGB(232, 238, 247)
 selectionPropertyFavoritesStatusLabel.TextSize = 14
 selectionPropertyFavoritesStatusLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -1939,7 +1955,7 @@ selectionPropertyFavoritesStatusLabel.Parent = propertiesCard
 
 local favoritesHintLabel = Instance.new("TextLabel")
 favoritesHintLabel.BackgroundTransparency = 1
-favoritesHintLabel.Position = UDim2.new(0, 10, 0, 198)
+favoritesHintLabel.Position = UDim2.new(0, 10, 0, 276)
 favoritesHintLabel.Size = UDim2.new(1, -20, 0, 14)
 favoritesHintLabel.Font = Enum.Font.Gotham
 favoritesHintLabel.Text = "Clique em um favorito para carregá-lo no editor."
@@ -1951,7 +1967,7 @@ favoritesHintLabel.Parent = propertiesCard
 selectionPropertyFavoriteRow = Instance.new("ScrollingFrame")
 selectionPropertyFavoriteRow.BackgroundTransparency = 1
 selectionPropertyFavoriteRow.BorderSizePixel = 0
-selectionPropertyFavoriteRow.Position = UDim2.new(0, 10, 0, 232)
+selectionPropertyFavoriteRow.Position = UDim2.new(0, 10, 0, 296)
 selectionPropertyFavoriteRow.Size = UDim2.new(1, -20, 0, 38)
 selectionPropertyFavoriteRow.CanvasSize = UDim2.new(0, 0, 0, 0)
 selectionPropertyFavoriteRow.ScrollBarThickness = 0
@@ -1967,7 +1983,7 @@ favoriteLayout.Parent = selectionPropertyFavoriteRow
 
 local quickReadLabel = Instance.new("TextLabel")
 quickReadLabel.BackgroundTransparency = 1
-quickReadLabel.Position = UDim2.new(0, 10, 0, 274)
+quickReadLabel.Position = UDim2.new(0, 10, 0, 352)
 quickReadLabel.Size = UDim2.new(1, -20, 0, 16)
 quickReadLabel.Font = Enum.Font.GothamSemibold
 quickReadLabel.Text = "Leitura rápida"
@@ -1979,7 +1995,7 @@ quickReadLabel.Parent = propertiesCard
 selectionPropertyQuickRow = Instance.new("ScrollingFrame")
 selectionPropertyQuickRow.BackgroundTransparency = 1
 selectionPropertyQuickRow.BorderSizePixel = 0
-selectionPropertyQuickRow.Position = UDim2.new(0, 10, 0, 292)
+selectionPropertyQuickRow.Position = UDim2.new(0, 10, 0, 372)
 selectionPropertyQuickRow.Size = UDim2.new(1, -20, 0, 40)
 selectionPropertyQuickRow.CanvasSize = UDim2.new(0, 0, 0, 0)
 selectionPropertyQuickRow.ScrollBarThickness = 0
@@ -1995,7 +2011,7 @@ quickReadLayout.Parent = selectionPropertyQuickRow
 
 selectionPropertyHistoryStatusLabel = Instance.new("TextLabel")
 selectionPropertyHistoryStatusLabel.BackgroundTransparency = 1
-selectionPropertyHistoryStatusLabel.Position = UDim2.new(0, 10, 0, 348)
+selectionPropertyHistoryStatusLabel.Position = UDim2.new(0, 10, 0, 428)
 selectionPropertyHistoryStatusLabel.Size = UDim2.new(1, -20, 0, 16)
 selectionPropertyHistoryStatusLabel.Font = Enum.Font.GothamSemibold
 selectionPropertyHistoryStatusLabel.Text = "Histórico local"
@@ -2007,8 +2023,8 @@ selectionPropertyHistoryStatusLabel.Parent = propertiesCard
 selectionPropertyHistoryList = Instance.new("ScrollingFrame")
 selectionPropertyHistoryList.BackgroundTransparency = 1
 selectionPropertyHistoryList.BorderSizePixel = 0
-selectionPropertyHistoryList.Position = UDim2.new(0, 10, 0, 370)
-selectionPropertyHistoryList.Size = UDim2.new(1, -20, 0, 86)
+selectionPropertyHistoryList.Position = UDim2.new(0, 10, 0, 450)
+selectionPropertyHistoryList.Size = UDim2.new(1, -20, 0, 88)
 selectionPropertyHistoryList.CanvasSize = UDim2.new(0, 0, 0, 0)
 selectionPropertyHistoryList.ScrollBarThickness = 6
 selectionPropertyHistoryList.AutomaticCanvasSize = Enum.AutomaticSize.Y
@@ -2019,7 +2035,7 @@ propertyHistoryLayout.Padding = UDim.new(0, 8)
 propertyHistoryLayout.SortOrder = Enum.SortOrder.LayoutOrder
 propertyHistoryLayout.Parent = selectionPropertyHistoryList
 
-local editorCard = makeCard(250)
+local editorCard = makeCard(296)
 editorCard.LayoutOrder = 4
 editorCard.Parent = body
 makeSectionTitle(editorCard, "Attributes e tags")
@@ -2077,24 +2093,29 @@ selectionTagsBox.Size = UDim2.new(1, -20, 0, 36)
 local editorButtonRow = Instance.new("Frame")
 editorButtonRow.BackgroundTransparency = 1
 editorButtonRow.Position = UDim2.new(0, 10, 0, 222)
-editorButtonRow.Size = UDim2.new(1, -20, 0, 34)
+editorButtonRow.Size = UDim2.new(1, -20, 0, 68)
 editorButtonRow.Parent = editorCard
 
-local editorButtonLayout = Instance.new("UIListLayout")
-editorButtonLayout.FillDirection = Enum.FillDirection.Horizontal
-editorButtonLayout.Padding = UDim.new(0, 8)
+local editorButtonLayout = Instance.new("UIGridLayout")
+editorButtonLayout.CellPadding = UDim2.new(0, 8, 0, 8)
+editorButtonLayout.CellSize = UDim2.new(0.5, -4, 0, 30)
 editorButtonLayout.SortOrder = Enum.SortOrder.LayoutOrder
 editorButtonLayout.Parent = editorButtonRow
 
-makeButton(editorButtonRow, "Atualizar alvo", function()
+local refreshTargetButton = makeButton(editorButtonRow, "Recarregar seleção", function()
 	refreshSelectionView()
 end)
+refreshTargetButton.AutomaticSize = Enum.AutomaticSize.None
+refreshTargetButton.Size = UDim2.fromScale(1, 1)
 
-makeButton(editorButtonRow, "Aplicar em lote", function()
+local applyBatchButton = makeButton(editorButtonRow, "Aplicar attributes/tags", function()
 	applySelectionData()
 end)
+applyBatchButton.AutomaticSize = Enum.AutomaticSize.None
+applyBatchButton.Size = UDim2.fromScale(1, 1)
+fitGridButtons(editorButtonRow)
 
-local actionCard = makeCard(122)
+local actionCard = makeCard(154)
 actionCard.LayoutOrder = 5
 actionCard.Parent = body
 makeSectionTitle(actionCard, "Ações rápidas")
@@ -2105,21 +2126,23 @@ buttonRow.Position = UDim2.new(0, 10, 0, 34)
 buttonRow.Size = UDim2.new(1, -20, 0, 76)
 buttonRow.Parent = actionCard
 
-local buttonLayout = Instance.new("UIListLayout")
-buttonLayout.FillDirection = Enum.FillDirection.Horizontal
-buttonLayout.Padding = UDim.new(0, 8)
+local buttonLayout = Instance.new("UIGridLayout")
+buttonLayout.CellPadding = UDim2.new(0, 8, 0, 8)
+buttonLayout.CellSize = UDim2.new(0.5, -4, 0, 30)
 buttonLayout.SortOrder = Enum.SortOrder.LayoutOrder
 buttonLayout.Parent = buttonRow
 
-local messageLabel = Instance.new("TextLabel")
+messageLabel = Instance.new("TextLabel")
 messageLabel.BackgroundTransparency = 1
-messageLabel.Position = UDim2.new(0, 10, 0, 104)
-messageLabel.Size = UDim2.new(1, -20, 0, 16)
+messageLabel.Position = UDim2.new(0, 10, 0, 114)
+messageLabel.Size = UDim2.new(1, -20, 0, 34)
 messageLabel.Font = Enum.Font.Gotham
 messageLabel.Text = "Pronto."
 messageLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
 messageLabel.TextSize = 14
+messageLabel.TextWrapped = true
 messageLabel.TextXAlignment = Enum.TextXAlignment.Left
+messageLabel.TextYAlignment = Enum.TextYAlignment.Top
 messageLabel.Parent = actionCard
 
 local jobCard = makeCard(286)
@@ -2147,11 +2170,23 @@ chatCard.LayoutOrder = 2
 chatCard.Parent = body
 makeSectionTitle(chatCard, "Chat do Codex")
 
+local chatStatusLabel = Instance.new("TextLabel")
+chatStatusLabel.BackgroundTransparency = 1
+chatStatusLabel.Position = UDim2.new(0, 10, 0, 30)
+chatStatusLabel.Size = UDim2.new(1, -20, 0, 18)
+chatStatusLabel.Font = Enum.Font.Gotham
+chatStatusLabel.Text = "Digite uma mensagem; o Codex precisa buscar e responder pelo MCP."
+chatStatusLabel.TextColor3 = Color3.fromRGB(152, 164, 180)
+chatStatusLabel.TextSize = 12
+chatStatusLabel.TextXAlignment = Enum.TextXAlignment.Left
+chatStatusLabel.TextTruncate = Enum.TextTruncate.AtEnd
+chatStatusLabel.Parent = chatCard
+
 local chatHistory = Instance.new("ScrollingFrame")
 chatHistory.BackgroundTransparency = 1
 chatHistory.BorderSizePixel = 0
-chatHistory.Position = UDim2.new(0, 10, 0, 34)
-chatHistory.Size = UDim2.new(1, -20, 0, 210)
+chatHistory.Position = UDim2.new(0, 10, 0, 54)
+chatHistory.Size = UDim2.new(1, -20, 0, 190)
 chatHistory.CanvasSize = UDim2.new(0, 0, 0, 0)
 chatHistory.ScrollBarThickness = 6
 chatHistory.AutomaticCanvasSize = Enum.AutomaticSize.Y
@@ -2186,15 +2221,56 @@ chatEmptyLabel.Parent = chatHistory
 
 local chatSignature = ""
 
+local function describeChatStatus(messages)
+	local pending = 0
+	local delivered = 0
+	local hasAssistant = false
+
+	for _, message in ipairs(messages or {}) do
+		if message.role == "assistant" then
+			hasAssistant = true
+		elseif message.status == "pending" then
+			pending = pending + 1
+		elseif message.status == "delivered" then
+			delivered = delivered + 1
+		end
+	end
+
+	if pending > 0 then
+		return "Mensagem enviada. Aguardando o Codex buscar no MCP."
+	end
+	if delivered > 0 then
+		return "Mensagem entregue ao Codex. Aguardando resposta no painel."
+	end
+	if hasAssistant then
+		return "Resposta recebida do Codex."
+	end
+	return "Digite uma mensagem; o Codex precisa buscar e responder pelo MCP."
+end
+
+local function describeChatMessageStatus(message)
+	if message.role == "assistant" then
+		return "resposta"
+	end
+	if message.status == "pending" then
+		return "aguardando leitura"
+	end
+	if message.status == "delivered" then
+		return "entregue; aguardando resposta"
+	end
+	return tostring(message.status or "enviada")
+end
+
 local function renderChatMessages(messages)
 	local signature = ""
 	for _, message in ipairs(messages or {}) do
-		signature = signature .. tostring(message.id) .. ":" .. tostring(message.status) .. ";"
+		signature = signature .. tostring(message.id) .. ":" .. tostring(message.status) .. ":" .. tostring(message.text) .. ";"
 	end
 	if signature == chatSignature then
 		return
 	end
 	chatSignature = signature
+	chatStatusLabel.Text = describeChatStatus(messages)
 
 	for _, child in ipairs(chatHistory:GetChildren()) do
 		if child:IsA("Frame") then
@@ -2236,7 +2312,7 @@ local function renderChatMessages(messages)
 		roleLabel.BackgroundTransparency = 1
 		roleLabel.Size = UDim2.new(1, 0, 0, 14)
 		roleLabel.Font = Enum.Font.GothamSemibold
-		roleLabel.Text = isAssistant and "Codex" or "Você"
+		roleLabel.Text = string.format("%s - %s", isAssistant and "Codex" or "Voce", describeChatMessageStatus(message))
 		roleLabel.TextColor3 = isAssistant and Color3.fromRGB(124, 247, 212) or Color3.fromRGB(190, 201, 216)
 		roleLabel.TextSize = 13
 		roleLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -2282,7 +2358,8 @@ local function sendChatMessage()
 	local response = safeRequest("POST", "/api/chat/send", { text = text })
 	if response and response.Success then
 		chatInputBox.Text = ""
-		messageLabel.Text = "Enviado para a caixa do Codex."
+		messageLabel.Text = "Mensagem enviada. O Codex precisa buscar no MCP para responder."
+		chatStatusLabel.Text = "Mensagem enviada. Aguardando o Codex buscar no MCP."
 		refreshChat()
 	else
 		messageLabel.Text = "Falha ao enviar a mensagem."
@@ -2463,23 +2540,30 @@ function queuePanelJob(jobType, payload)
 	return false
 end
 
-makeButton(buttonRow, "Ping", function()
+local pingButton = makeButton(buttonRow, "Testar ponte", function()
 	queuePanelJob("ping", {
 		selection = serializeSelection(),
 	})
 end)
+pingButton.AutomaticSize = Enum.AutomaticSize.None
+pingButton.Size = UDim2.fromScale(1, 1)
 
-makeButton(buttonRow, "Seleção", function()
+makeButton(buttonRow, "Inspecionar seleção", function()
 	queuePanelJob("inspect_selection", {})
 end)
 
-makeButton(buttonRow, "Snapshot", function()
+local snapshotButton = makeButton(buttonRow, "Capturar snapshot", function()
 	queuePanelJob("sync_snapshot", {})
 end)
+snapshotButton.AutomaticSize = Enum.AutomaticSize.None
+snapshotButton.Size = UDim2.fromScale(1, 1)
 
-makeButton(buttonRow, "Atualizar", function()
+local refreshPanelButton = makeButton(buttonRow, "Atualizar painel", function()
 	refreshPanel()
 end)
+refreshPanelButton.AutomaticSize = Enum.AutomaticSize.None
+refreshPanelButton.Size = UDim2.fromScale(1, 1)
+fitGridButtons(buttonRow)
 
 toggleButton.Click:Connect(function()
 	widget.Enabled = not widget.Enabled
@@ -2526,10 +2610,14 @@ task.spawn(function()
 			local job = payload and payload.job
 			if job then
 				local success, result = executeJob(job)
+				local jobError = nil
+				if not success then
+					jobError = tostring(result)
+				end
 				pcall(request, "POST", "/api/bridge/result", {
 					jobId = job.id,
 					result = result,
-					error = success and nil or tostring(result),
+					error = jobError,
 				})
 			end
 		end
