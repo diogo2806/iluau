@@ -4,4 +4,6 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
-CMD ["npx", "-y", "@weppy/roblox-mcp@latest"]
+COPY plugins/iluau ./plugins/iluau
+
+CMD ["node", "plugins/iluau/server/index.js"]

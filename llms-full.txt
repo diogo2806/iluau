@@ -1,30 +1,35 @@
-# WEPPY — Canonical Web Docs
+# iLuau — Canonical Docs
 
-> WEPPY is an MCP server that lets AI coding agents control a live Roblox Studio session and interact with scripts, instances, terrain, lighting, assets, audio, animations, and UI Studio workflows.
+> iLuau is a local MCP plugin that lets the Codex AI agent control a live
+> Roblox Studio session and interact with the selection, properties, attributes,
+> tags, and instances, plus a chat panel embedded in Studio.
 
-This package intentionally does not ship a standalone full documentation surface.
+## Components
 
-Canonical documentation lives on the web:
+- `plugins/iluau/server/` — local MCP server (stdio) and HTTP dashboard/bridge
+- `plugins/iluau/studio-plugin/iLuau.plugin.lua` — dockable Studio plugin
+- `plugins/iluau/dashboard/` — local dashboard UI
+- `plugins/iluau/skills/iluau-guide/` — usage guide for Codex
 
-- Install and setup: https://weppyai.com/en/install
-- Product documentation: https://weppyai.com/en/docs
-- Pro plans: https://weppyai.com/plans/
+## Setup
 
-For installation, start from the web install page and follow its recommended one-line installer first. If terminal or PowerShell is uncomfortable, use the terminal-free web installer on that same page. If automated install fails, use the relevant app-specific manual guide.
+1. Install Node.js 18 or higher.
+2. From `plugins/iluau/`, run `npm install` if needed.
+3. Configure Codex to launch the MCP server (stdio):
+   `node /path/to/plugins/iluau/server/index.js`
+4. Copy `studio-plugin/iLuau.plugin.lua` into the Roblox Studio plugins folder
+   and restart Studio.
+5. Enable Allow HTTP Requests in Studio so the plugin can reach the local
+   bridge at `http://127.0.0.1:3099/`.
 
-Optional WEPPY Roblox AI Toolkit:
+## Chat with Codex inside Studio
 
-- Claude Code:
+The Studio panel has a "Codex chat" card. Messages typed there go to the local
+chat queue; Codex reads them with `iluau.chat_inbox`, acts using the other
+iLuau tools, and replies with `iluau.chat_reply` so the answer appears back in
+the panel.
 
-```bash
-claude plugin marketplace add hope1026/weppy-roblox-mcp --scope user
-claude plugin install weppy-roblox-ai-toolkit@hope1026-roblox-mcp --scope user
-```
+## Links
 
-- Codex:
-
-```bash
-codex plugin marketplace add hope1026/weppy-roblox-mcp
-```
-
-After adding the Codex marketplace, restart Codex, open Plugin Directory, and install WEPPY Roblox AI Toolkit.
+- GitHub: https://github.com/diogo2806/iluau
+- Issues: https://github.com/diogo2806/iluau/issues

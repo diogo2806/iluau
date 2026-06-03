@@ -5,8 +5,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        Before reporting, check [Troubleshooting](https://weppyai.com/en/docs/troubleshooting/)
-        and [Discussions](https://github.com/hope1026/weppy-roblox-mcp/discussions).
+        Before reporting, check the [iLuau docs](https://github.com/diogo2806/iluau)
+        and [Discussions](https://github.com/diogo2806/iluau/discussions).
   - type: input
     id: os
     attributes:
