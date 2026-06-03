@@ -5,6 +5,9 @@
   "description": "Local Roblox MCP server for the iLuau plugin.",
   "type": "commonjs",
   "main": "server/index.js",
+  "bin": {
+    "iluau-roblox-mcp": "server/index.js"
+  },
   "scripts": {
     "start": "node server/index.js"
   }

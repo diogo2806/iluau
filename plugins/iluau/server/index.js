@@ -3,7 +3,9 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const http = require("node:http");
+const os = require("node:os");
 const readline = require("node:readline");
+const { spawn } = require("node:child_process");
 const {
   state,
   queueJob,
@@ -22,6 +24,9 @@ const {
 const ROOT = path.resolve(__dirname, "..");
 const dashboardDir = path.join(ROOT, "dashboard");
 const studioPluginDir = path.join(ROOT, "studio-plugin");
+const DASHBOARD_HOST = "127.0.0.1";
+const DASHBOARD_URL = `http://${DASHBOARD_HOST}:${state.dashboardPort}`;
+let dashboardProxyMode = false;
 
 function write(obj) {
   process.stdout.write(`${JSON.stringify(obj)}\n`);
@@ -33,6 +38,79 @@ function textContent(text) {
 
 function jsonText(value) {
   return JSON.stringify(value, null, 2);
+}
+
+function getCodexCommand() {
+  return process.env.ILUAU_CODEX_COMMAND || process.env.CODEX_CLI_PATH || "codex";
+}
+
+function buildChatPrompt(text) {
+  return [
+    "Voce esta respondendo uma mensagem enviada pelo painel iLuau dentro do Roblox Studio.",
+    "Responda em portugues, de forma direta, e nao exponha raciocinio interno.",
+    "Se precisar inspecionar ou alterar o Studio, use as ferramentas MCP iLuau disponiveis.",
+    "Quando terminar, entregue uma resposta curta que faca sentido para aparecer no chat do Studio.",
+    "",
+    "Mensagem do usuario:",
+    text,
+  ].join("\n");
+}
+
+function runCodexChatReply(message) {
+  const text = String(message?.text || "").trim();
+  if (!text) return;
+
+  const outputPath = path.join(os.tmpdir(), `iluau-codex-reply-${message.id}.txt`);
+  const args = [
+    "exec",
+    "--cd", ROOT,
+    "--sandbox", "danger-full-access",
+    "--output-last-message", outputPath,
+    "-",
+  ];
+
+  const child = spawn(getCodexCommand(), args, {
+    cwd: ROOT,
+    shell: process.platform === "win32",
+    windowsHide: true,
+  });
+
+  let stderr = "";
+  child.stderr.on("data", (chunk) => {
+    stderr += chunk.toString();
+  });
+  child.stdin.write(buildChatPrompt(text));
+  child.stdin.end();
+
+  const timeout = setTimeout(() => {
+    child.kill();
+  }, Number(process.env.ILUAU_CODEX_CHAT_TIMEOUT_MS || 180000));
+
+  child.on("close", (code) => {
+    clearTimeout(timeout);
+    let reply = "";
+    try {
+      if (fs.existsSync(outputPath)) {
+        reply = fs.readFileSync(outputPath, "utf8").trim();
+        fs.unlinkSync(outputPath);
+      }
+    } catch (error) {
+      stderr += `\n${error?.message || String(error)}`;
+    }
+
+    if (!reply) {
+      reply = code === 0
+        ? "O Codex terminou, mas nao retornou texto para exibir no chat."
+        : `Falha ao chamar o Codex automaticamente. Codigo ${code}. ${stderr.trim()}`.trim();
+    }
+
+    addChatMessage("assistant", reply);
+  });
+
+  child.on("error", (error) => {
+    clearTimeout(timeout);
+    addChatMessage("assistant", `Falha ao iniciar o Codex automaticamente: ${error?.message || String(error)}`);
+  });
 }
 
 function ok(id, result) {
@@ -48,6 +126,42 @@ function fail(id, code, message, data) {
 function readStatic(filePath, contentType) {
   const body = fs.readFileSync(filePath);
   return { body, contentType };
+}
+
+function requestDashboardJson(method, pathname, body) {
+  return new Promise((resolve, reject) => {
+    const payload = body == null ? null : JSON.stringify(body);
+    const req = http.request({
+      hostname: DASHBOARD_HOST,
+      port: state.dashboardPort,
+      path: pathname,
+      method,
+      headers: payload ? {
+        "Content-Type": "application/json; charset=utf-8",
+        "Content-Length": Buffer.byteLength(payload),
+      } : undefined,
+    }, (res) => {
+      let responseBody = "";
+      res.setEncoding("utf8");
+      res.on("data", (chunk) => {
+        responseBody += chunk;
+      });
+      res.on("end", () => {
+        if (res.statusCode < 200 || res.statusCode >= 300) {
+          reject(new Error(`Dashboard ${method} ${pathname} failed with ${res.statusCode}: ${responseBody}`));
+          return;
+        }
+        try {
+          resolve(responseBody ? JSON.parse(responseBody) : {});
+        } catch (error) {
+          reject(error);
+        }
+      });
+    });
+    req.on("error", reject);
+    if (payload) req.write(payload);
+    req.end();
+  });
 }
 
 function renderDashboard() {
@@ -144,6 +258,29 @@ function serveDashboard(req, res) {
         return;
       }
       const message = addChatMessage("user", text);
+      message.status = "delivered";
+      runCodexChatReply(message);
+      res.writeHead(201, { "Content-Type": "application/json; charset=utf-8" });
+      res.end(JSON.stringify({ ok: true, message }));
+    }).catch((error) => respondError(res, 400, error.message));
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/chat/inbox") {
+    const prompts = takePendingChatPrompts();
+    res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
+    res.end(JSON.stringify({ ok: true, prompts }));
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/chat/reply") {
+    readJson(req).then((payload) => {
+      const text = (payload && payload.text || "").trim();
+      if (!text) {
+        respondError(res, 400, "Missing reply text");
+        return;
+      }
+      const message = addChatMessage("assistant", text);
       res.writeHead(201, { "Content-Type": "application/json; charset=utf-8" });
       res.end(JSON.stringify({ ok: true, message }));
     }).catch((error) => respondError(res, 400, error.message));
@@ -207,6 +344,36 @@ function bridgeJobSummary(job) {
 }
 
 async function dispatchBridgeJob(type, payload, timeoutMs = 30000) {
+  if (dashboardProxyMode) {
+    const queued = await requestDashboardJson("POST", "/api/jobs", { type, payload });
+    const jobId = queued?.job?.id;
+    const deadline = Date.now() + timeoutMs;
+
+    while (Date.now() < deadline) {
+      const jobsResponse = await requestDashboardJson("GET", "/api/jobs");
+      const job = (jobsResponse.jobs || []).find((item) => item.id === jobId);
+      if (job?.status === "done") {
+        return { ok: true, job: bridgeJobSummary(job) };
+      }
+      if (job?.status === "failed") {
+        return {
+          ok: false,
+          queued: true,
+          job: bridgeJobSummary(job),
+          error: job.error || "Job failed",
+        };
+      }
+      await new Promise((resolve) => setTimeout(resolve, 250));
+    }
+
+    return {
+      ok: false,
+      queued: true,
+      job: queued?.job || null,
+      error: `Timed out waiting for bridge job ${jobId}`,
+    };
+  }
+
   const job = queueJob(type, payload);
   if (!state.bridge.connected) {
     return {
@@ -233,8 +400,19 @@ async function dispatchBridgeJob(type, payload, timeoutMs = 30000) {
 }
 
 const httpServer = http.createServer(serveDashboard);
-httpServer.listen(state.dashboardPort, "127.0.0.1", () => {
+httpServer.on("error", (error) => {
+  if (error && error.code === "EADDRINUSE") {
+    dashboardProxyMode = true;
+    state.runtime.dashboardProxyMode = true;
+    state.runtime.dashboardUrl = DASHBOARD_URL;
+    return;
+  }
+  throw error;
+});
+httpServer.listen(state.dashboardPort, DASHBOARD_HOST, () => {
   state.runtime.dashboardStartedAt = nowIso();
+  state.runtime.dashboardProxyMode = false;
+  state.runtime.dashboardUrl = DASHBOARD_URL;
 });
 
 const tools = [
@@ -539,7 +717,16 @@ function handlePing(params) {
   );
 }
 
-function handleStatus() {
+async function handleStatus() {
+  if (dashboardProxyMode) {
+    const publicState = await requestDashboardJson("GET", "/api/state");
+    publicState.runtime = {
+      ...(publicState.runtime || {}),
+      mcpProxyMode: true,
+      mcpProxyUrl: DASHBOARD_URL,
+    };
+    return textContent(jsonText(publicState));
+  }
   return textContent(jsonText(getPublicState()));
 }
 
@@ -552,29 +739,52 @@ function handleDashboardUrl() {
 }
 
 async function handleQueueJob(params) {
+  if (dashboardProxyMode) {
+    const queued = await requestDashboardJson("POST", "/api/jobs", {
+      type: params.type,
+      payload: params.payload || {},
+    });
+    return textContent(jsonText({ ok: true, job: bridgeJobSummary(queued.job) }));
+  }
   const job = queueJob(params.type, params.payload || {});
   return textContent(jsonText({ ok: true, job: bridgeJobSummary(job) }));
 }
 
-function handleListJobs(params) {
+async function handleListJobs(params) {
+  if (dashboardProxyMode) {
+    const jobsResponse = await requestDashboardJson("GET", "/api/jobs");
+    const limit = Number.isFinite(params?.limit) ? params.limit : 20;
+    const jobs = (jobsResponse.jobs || []).filter((job) => !params?.status || job.status === params.status).slice(0, limit);
+    return textContent(jsonText({ jobs }));
+  }
   const limit = Number.isFinite(params?.limit) ? params.limit : 20;
   const jobs = state.jobs.filter((job) => !params?.status || job.status === params.status).slice(0, limit);
   return textContent(jsonText({ jobs }));
 }
 
-function handleBridgeState() {
+async function handleBridgeState() {
+  if (dashboardProxyMode) {
+    const publicState = await requestDashboardJson("GET", "/api/state");
+    return textContent(jsonText(publicState.bridge || {}));
+  }
   return textContent(jsonText(state.bridge));
 }
 
-function handleChatInbox() {
+async function handleChatInbox() {
+  if (dashboardProxyMode) {
+    return textContent(jsonText(await requestDashboardJson("GET", "/api/chat/inbox")));
+  }
   const prompts = takePendingChatPrompts();
   return textContent(jsonText({ ok: true, prompts }));
 }
 
-function handleChatReply(params) {
+async function handleChatReply(params) {
   const text = (params && params.text || "").trim();
   if (!text) {
     return textContent(jsonText({ ok: false, error: "Missing reply text" }));
+  }
+  if (dashboardProxyMode) {
+    return textContent(jsonText(await requestDashboardJson("POST", "/api/chat/reply", { text })));
   }
   const message = addChatMessage("assistant", text);
   return textContent(jsonText({ ok: true, message }));
@@ -736,6 +946,10 @@ rl.on("line", (line) => {
   if (id !== undefined) {
     return fail(id, -32601, `Unknown method: ${method}`);
   }
+});
+
+rl.on("close", () => {
+  process.exit(0);
 });
 
 process.on("SIGINT", () => process.exit(0));
