@@ -9,7 +9,7 @@ Ele inclui:
 - árvore de seleção com filtro e expandir/colapsar
 - editor de propriedades com histórico e favoritos
 - edição de Attributes e Tags
-- dashboard local para status da ponte e fila de jobs
+- dashboard local para status da ponte e fila de tarefas
 
 ## O que existe neste repositório
 
@@ -50,7 +50,7 @@ O dashboard local roda em `http://127.0.0.1:3099/`.
 ## Arquivos principais
 
 - `plugins/iluau/server/index.js` - ponto de entrada do servidor MCP
-- `plugins/iluau/server/store.js` - estado da ponte e fila de jobs
+- `plugins/iluau/server/store.js` - estado da ponte e fila de tarefas
 - `plugins/iluau/dashboard/` - interface do dashboard local
 - `plugins/iluau/studio-plugin/iLuau.plugin.lua` - ponte do Roblox Studio
 - `plugins/iluau/skills/iluau-guide/SKILL.md` - guia de fluxo do iLuau para o Codex

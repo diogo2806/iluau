@@ -13,7 +13,7 @@ Use este plugin para controlar o Roblox Studio por meio do servidor MCP local do
 
 1. Garanta que o Roblox Studio esteja aberto e que o servidor MCP local esteja em execução.
 2. Prefira a ação mais específica que resolva a tarefa.
-3. Use o dashboard para inspecionar jobs enfileirados, status da ponte e resultados recentes.
+3. Use o dashboard para inspecionar tarefas enfileiradas, status da ponte e resultados recentes.
 4. Verifique as mudanças após cada operação que altera o Studio.
 
 ## Observações

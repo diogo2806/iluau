@@ -2,9 +2,9 @@
 
 ## Relatos de bug
 
-Use o template de issue de bug:
+Use o template de relato de bug:
 
-- [Bug Report](https://github.com/diogo2806/iluau/issues/new?template=bug_report.yml)
+- [Relato de bug](https://github.com/diogo2806/iluau/issues/new?template=bug_report.yml)
 
 Inclua:
 
@@ -17,9 +17,9 @@ Inclua:
 
 ## Sugestões de recurso
 
-Use o template de feature request:
+Use o template de solicitação de recurso:
 
-- [Feature Request](https://github.com/diogo2806/iluau/issues/new?template=feature_request.yml)
+- [Solicitação de recurso](https://github.com/diogo2806/iluau/issues/new?template=feature_request.yml)
 
 ## Dúvidas e ajuda na instalação
 
@@ -27,7 +27,7 @@ Use as [issues do GitHub](https://github.com/diogo2806/iluau/issues) para dúvid
 
 Não publique segredos, recibos, chaves de API ou dados privados do projeto em issues públicas.
 
-## Pull requests
+## Solicitações de pull request
 
 Este repositório contém o código ativo do iLuau em `plugins/iluau/`.
 

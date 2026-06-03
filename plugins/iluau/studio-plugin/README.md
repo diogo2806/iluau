@@ -6,7 +6,7 @@ Esta pasta contém a ponte do Roblox Studio para o iLuau.
 
 - consulta o servidor local do dashboard do iLuau
 - reporta o estado do heartbeat do Studio
-- recebe jobs enfileirados pelo Codex
+- recebe tarefas enfileiradas pelo Codex
 - executa o conjunto seguro de ações no Studio
 - abre um painel encaixável com:
   - status da conexão
@@ -22,7 +22,7 @@ Esta pasta contém a ponte do Roblox Studio para o iLuau.
 3. Inicie o servidor MCP local em `plugins/iluau/`.
 4. Abra o botão do iLuau no Studio.
 
-## Tipos de job suportados
+## Tipos de tarefa suportados
 
 - `ping`
 - `inspect_selection`
@@ -37,4 +37,4 @@ Esta pasta contém a ponte do Roblox Studio para o iLuau.
 - `delete_instance`
 - `sync_snapshot`
 
-`set_properties` aceita `properties`, `attributes` e `tags`, então edições em lote podem atualizar estado e metadados em um único job.
+`set_properties` aceita `properties`, `attributes` e `tags`, então edições em lote podem atualizar estado e metadados em uma única tarefa.
