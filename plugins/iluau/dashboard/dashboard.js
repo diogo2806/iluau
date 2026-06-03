@@ -15,7 +15,13 @@ function formatTime(value) {
 
 function setPanel(name) {
   document.querySelectorAll(".menu-item").forEach((btn) => {
-    btn.classList.toggle("active", btn.dataset.panel === name);
+    const isActive = btn.dataset.panel === name;
+    btn.classList.toggle("active", isActive);
+    if (isActive) {
+      btn.setAttribute("aria-current", "page");
+    } else {
+      btn.removeAttribute("aria-current");
+    }
   });
   document.querySelectorAll(".panel").forEach((panel) => {
     panel.classList.add("hidden");

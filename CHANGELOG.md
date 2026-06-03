@@ -24,6 +24,7 @@ Todas as mudanças relevantes do iLuau serão registradas aqui.
 
 - Documentação informativa traduzida para pt-BR: `llms.txt`, `llms-full.txt`, templates de issue (bug, instalação, sugestão de recurso) e template de pull request
 - Contraste do painel do Studio e do dashboard aumentado: texto secundário e placeholders mais claros, fundos de cards/linhas levemente mais claros e bordas mais visíveis para melhor legibilidade
+- Acessibilidade do dashboard: `aria-label` nos campos do formulário de jobs, `aria-current` no menu de navegação e `role="status"`/`aria-live` no badge da ponte
 
 ## [0.4.0] - 2026-06-03
 
