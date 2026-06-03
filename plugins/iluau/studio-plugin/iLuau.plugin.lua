@@ -765,6 +765,7 @@ local function renderPropertyFavorites()
 		button.TextXAlignment = Enum.TextXAlignment.Left
 		button.Text = "★ " .. propertyName
 	end
+	fitGridButtons(selectionPropertyFavoriteRow)
 end
 
 local function toggleCurrentPropertyFavorite()
@@ -1339,6 +1340,7 @@ local function renderPropertyQuickReads()
 			refreshPropertyEditor()
 		end)
 	end
+	fitGridButtons(selectionPropertyQuickRow)
 end
 
 function refreshPropertyEditorState()
@@ -1847,7 +1849,7 @@ selectionLayout.Padding = UDim.new(0, 6)
 selectionLayout.SortOrder = Enum.SortOrder.LayoutOrder
 selectionLayout.Parent = selectionList
 
-local propertiesCard = makeCard(568)
+local propertiesCard = makeCard(638)
 propertiesCard.LayoutOrder = 3
 propertiesCard.Parent = body
 makeSectionTitle(propertiesCard, "Propriedades")
@@ -1970,22 +1972,22 @@ selectionPropertyFavoriteRow = Instance.new("ScrollingFrame")
 selectionPropertyFavoriteRow.BackgroundTransparency = 1
 selectionPropertyFavoriteRow.BorderSizePixel = 0
 selectionPropertyFavoriteRow.Position = UDim2.new(0, 10, 0, 310)
-selectionPropertyFavoriteRow.Size = UDim2.new(1, -20, 0, 38)
+selectionPropertyFavoriteRow.Size = UDim2.new(1, -20, 0, 68)
 selectionPropertyFavoriteRow.CanvasSize = UDim2.new(0, 0, 0, 0)
 selectionPropertyFavoriteRow.ScrollBarThickness = 0
-selectionPropertyFavoriteRow.ScrollingDirection = Enum.ScrollingDirection.X
-selectionPropertyFavoriteRow.AutomaticCanvasSize = Enum.AutomaticSize.X
+selectionPropertyFavoriteRow.ScrollingDirection = Enum.ScrollingDirection.Y
+selectionPropertyFavoriteRow.AutomaticCanvasSize = Enum.AutomaticSize.Y
 selectionPropertyFavoriteRow.Parent = propertiesCard
 
-local favoriteLayout = Instance.new("UIListLayout")
-favoriteLayout.FillDirection = Enum.FillDirection.Horizontal
-favoriteLayout.Padding = UDim.new(0, 8)
+local favoriteLayout = Instance.new("UIGridLayout")
+favoriteLayout.CellPadding = UDim2.new(0, 8, 0, 8)
+favoriteLayout.CellSize = UDim2.new(0.5, -4, 0, 26)
 favoriteLayout.SortOrder = Enum.SortOrder.LayoutOrder
 favoriteLayout.Parent = selectionPropertyFavoriteRow
 
 local quickReadLabel = Instance.new("TextLabel")
 quickReadLabel.BackgroundTransparency = 1
-quickReadLabel.Position = UDim2.new(0, 10, 0, 366)
+quickReadLabel.Position = UDim2.new(0, 10, 0, 392)
 quickReadLabel.Size = UDim2.new(1, -20, 0, 16)
 quickReadLabel.Font = Enum.Font.GothamSemibold
 quickReadLabel.Text = "Leitura rápida"
@@ -1997,23 +1999,23 @@ quickReadLabel.Parent = propertiesCard
 selectionPropertyQuickRow = Instance.new("ScrollingFrame")
 selectionPropertyQuickRow.BackgroundTransparency = 1
 selectionPropertyQuickRow.BorderSizePixel = 0
-selectionPropertyQuickRow.Position = UDim2.new(0, 10, 0, 386)
-selectionPropertyQuickRow.Size = UDim2.new(1, -20, 0, 40)
+selectionPropertyQuickRow.Position = UDim2.new(0, 10, 0, 412)
+selectionPropertyQuickRow.Size = UDim2.new(1, -20, 0, 68)
 selectionPropertyQuickRow.CanvasSize = UDim2.new(0, 0, 0, 0)
 selectionPropertyQuickRow.ScrollBarThickness = 0
-selectionPropertyQuickRow.ScrollingDirection = Enum.ScrollingDirection.X
-selectionPropertyQuickRow.AutomaticCanvasSize = Enum.AutomaticSize.X
+selectionPropertyQuickRow.ScrollingDirection = Enum.ScrollingDirection.Y
+selectionPropertyQuickRow.AutomaticCanvasSize = Enum.AutomaticSize.Y
 selectionPropertyQuickRow.Parent = propertiesCard
 
-local quickReadLayout = Instance.new("UIListLayout")
-quickReadLayout.FillDirection = Enum.FillDirection.Horizontal
-quickReadLayout.Padding = UDim.new(0, 8)
+local quickReadLayout = Instance.new("UIGridLayout")
+quickReadLayout.CellPadding = UDim2.new(0, 8, 0, 8)
+quickReadLayout.CellSize = UDim2.new(0.5, -4, 0, 30)
 quickReadLayout.SortOrder = Enum.SortOrder.LayoutOrder
 quickReadLayout.Parent = selectionPropertyQuickRow
 
 selectionPropertyHistoryStatusLabel = Instance.new("TextLabel")
 selectionPropertyHistoryStatusLabel.BackgroundTransparency = 1
-selectionPropertyHistoryStatusLabel.Position = UDim2.new(0, 10, 0, 442)
+selectionPropertyHistoryStatusLabel.Position = UDim2.new(0, 10, 0, 500)
 selectionPropertyHistoryStatusLabel.Size = UDim2.new(1, -20, 0, 16)
 selectionPropertyHistoryStatusLabel.Font = Enum.Font.GothamSemibold
 selectionPropertyHistoryStatusLabel.Text = "Histórico local"
@@ -2025,8 +2027,8 @@ selectionPropertyHistoryStatusLabel.Parent = propertiesCard
 selectionPropertyHistoryList = Instance.new("ScrollingFrame")
 selectionPropertyHistoryList.BackgroundTransparency = 1
 selectionPropertyHistoryList.BorderSizePixel = 0
-selectionPropertyHistoryList.Position = UDim2.new(0, 10, 0, 464)
-selectionPropertyHistoryList.Size = UDim2.new(1, -20, 0, 88)
+selectionPropertyHistoryList.Position = UDim2.new(0, 10, 0, 522)
+selectionPropertyHistoryList.Size = UDim2.new(1, -20, 0, 96)
 selectionPropertyHistoryList.CanvasSize = UDim2.new(0, 0, 0, 0)
 selectionPropertyHistoryList.ScrollBarThickness = 6
 selectionPropertyHistoryList.AutomaticCanvasSize = Enum.AutomaticSize.Y
