@@ -169,6 +169,8 @@ function getCapabilities() {
       "iluau.create_instance",
       "iluau.delete_instance",
       "iluau.sync_snapshot",
+      "iluau.get_tree",
+      "iluau.run_luau",
       "iluau.dashboard_url",
       "iluau.queue_job",
       "iluau.list_jobs",
@@ -189,6 +191,8 @@ function getCapabilities() {
       "create_instance",
       "delete_instance",
       "sync_snapshot",
+      "get_tree",
+      "run_luau",
     ],
   };
 }

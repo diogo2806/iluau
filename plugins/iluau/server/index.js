@@ -636,6 +636,38 @@ const tools = [
     },
   },
   {
+    name: "iluau.get_tree",
+    description:
+      "Read the Roblox place tree WITHOUT requiring a Studio selection. Returns nested name/className/path, child counts, tags and (by default) the Source of every Script/LocalScript/ModuleScript. Omit 'path' to read all default services (the whole game), or pass a path to read a specific subtree more deeply. Use this first to understand the game before editing it.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        path: {
+          type: "string",
+          description: "Optional instance path (e.g. 'game.Workspace.Map'). Omit to read all default services.",
+        },
+        maxDepth: { type: "number", description: "How deep to descend (default 4)." },
+        includeSource: { type: "boolean", description: "Include script Source (default true)." },
+        timeoutMs: { type: "number" },
+      },
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "iluau.run_luau",
+    description:
+      "Execute arbitrary Luau code inside Studio with plugin permissions, for full read/edit autonomy without any selection. Captures print() output and returns it together with any returned values (stringified). Requires loadstring to be available in the Studio context; prefer the structured tools (set_property, create_instance, ...) when they suffice.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        source: { type: "string", description: "Luau source code to run." },
+        timeoutMs: { type: "number" },
+      },
+      required: ["source"],
+      additionalProperties: false,
+    },
+  },
+  {
     name: "iluau.dashboard_url",
     description: "Return the local dashboard URL.",
     inputSchema: {
@@ -866,6 +898,20 @@ async function handleSyncSnapshot(params) {
   return textContent(jsonText(await dispatchBridgeJob("sync_snapshot", {}, params?.timeoutMs || 30000)));
 }
 
+async function handleGetTree(params) {
+  return textContent(jsonText(await dispatchBridgeJob("get_tree", {
+    path: params?.path,
+    maxDepth: params?.maxDepth,
+    includeSource: params?.includeSource,
+  }, params?.timeoutMs || 60000)));
+}
+
+async function handleRunLuau(params) {
+  return textContent(jsonText(await dispatchBridgeJob("run_luau", {
+    source: params?.source,
+  }, params?.timeoutMs || 60000)));
+}
+
 const handlers = {
   "iluau.ping": handlePing,
   "iluau.status": handleStatus,
@@ -881,6 +927,8 @@ const handlers = {
   "iluau.create_instance": handleCreateInstance,
   "iluau.delete_instance": handleDeleteInstance,
   "iluau.sync_snapshot": handleSyncSnapshot,
+  "iluau.get_tree": handleGetTree,
+  "iluau.run_luau": handleRunLuau,
   "iluau.dashboard_url": handleDashboardUrl,
   "iluau.queue_job": handleQueueJob,
   "iluau.list_jobs": handleListJobs,

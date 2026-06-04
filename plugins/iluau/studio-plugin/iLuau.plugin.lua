@@ -549,6 +549,86 @@ local function setProperties(target, properties)
 	end
 end
 
+-- Deep, JSON-safe serialization of the place so the assistant can read the whole
+-- game without the user having to select anything in Studio.
+local TREE_MAX_NODES = 1500
+local TREE_DEFAULT_MAX_DEPTH = 4
+local TREE_MAX_SOURCE_CHARS = 8000
+-- Keep the whole serialized payload comfortably under the bridge's 1 MB limit.
+local TREE_MAX_TOTAL_SOURCE = 250000
+
+local function readInstanceSource(instance)
+	if not instance:IsA("LuaSourceContainer") then
+		return nil
+	end
+	local ok, source = pcall(function()
+		return instance.Source
+	end)
+	if not ok or type(source) ~= "string" then
+		return nil
+	end
+	if #source > TREE_MAX_SOURCE_CHARS then
+		return string.sub(source, 1, TREE_MAX_SOURCE_CHARS) .. "\n-- [iLuau] source truncado", true
+	end
+	return source, false
+end
+
+local function serializeInstanceTree(instance, maxDepth, includeSource, counter)
+	counter.count += 1
+
+	local node = {
+		name = instance.Name,
+		className = instance.ClassName,
+		path = instance:GetFullName(),
+	}
+
+	if includeSource then
+		if counter.sourceBytes >= TREE_MAX_TOTAL_SOURCE then
+			if instance:IsA("LuaSourceContainer") then
+				node.sourceOmitted = true
+			end
+		else
+			local source, truncated = readInstanceSource(instance)
+			if source ~= nil then
+				node.source = source
+				counter.sourceBytes += #source
+				if truncated then
+					node.sourceTruncated = true
+				end
+			end
+		end
+	end
+
+	local tags = readTags(instance)
+	if #tags > 0 then
+		node.tags = tags
+	end
+
+	local okChildren, children = pcall(function()
+		return instance:GetChildren()
+	end)
+	local childList = okChildren and children or {}
+	node.childCount = #childList
+
+	if #childList > 0 then
+		if maxDepth <= 0 or counter.count >= TREE_MAX_NODES then
+			node.truncated = true
+		else
+			local serialized = {}
+			for _, child in ipairs(childList) do
+				if counter.count >= TREE_MAX_NODES then
+					node.truncated = true
+					break
+				end
+				table.insert(serialized, serializeInstanceTree(child, maxDepth - 1, includeSource, counter))
+			end
+			node.children = serialized
+		end
+	end
+
+	return node
+end
+
 local function clearGuiRows(container)
 	for _, child in ipairs(container:GetChildren()) do
 		-- Preserve layout helpers (UIListLayout, UIGridLayout, UIPadding, UICorner,
@@ -1776,6 +1856,84 @@ local function executeJob(job)
 				selection = serializeSelection(),
 				placeName = game.Name,
 				placeId = game.PlaceId,
+			}
+		elseif job.type == "get_tree" then
+			local payload = job.payload or {}
+			local maxDepth = tonumber(payload.maxDepth) or TREE_DEFAULT_MAX_DEPTH
+			local includeSource = payload.includeSource ~= false
+			local counter = { count = 0, sourceBytes = 0 }
+			local roots = {}
+			local rootPath = payload.path
+
+			if type(rootPath) == "string" and rootPath ~= "" then
+				local target = findByPath(rootPath)
+				if not target then
+					error("target not found: " .. tostring(rootPath))
+				end
+				table.insert(roots, serializeInstanceTree(target, maxDepth, includeSource, counter))
+			else
+				for _, service in ipairs(getDefaultSelectionTreeRoots()) do
+					table.insert(roots, serializeInstanceTree(service, maxDepth, includeSource, counter))
+				end
+			end
+
+			return {
+				ok = true,
+				placeName = game.Name,
+				placeId = game.PlaceId,
+				nodeCount = counter.count,
+				truncatedAtLimit = counter.count >= TREE_MAX_NODES,
+				roots = roots,
+			}
+		elseif job.type == "run_luau" then
+			local payload = job.payload or {}
+			local source = payload.source or payload.code
+			if type(source) ~= "string" or trim(source) == "" then
+				error("run_luau requires payload.source (Luau code as a string)")
+			end
+			if type(loadstring) ~= "function" then
+				error("run_luau indisponível: loadstring está desabilitado neste contexto do Studio")
+			end
+
+			local chunk, compileError = loadstring(source, "iLuau.run_luau")
+			if not chunk then
+				error("erro de compilação: " .. tostring(compileError))
+			end
+
+			local output = {}
+			-- Best-effort capture of print() output. If the sandbox cannot be
+			-- installed (getfenv/setfenv unavailable), the chunk still runs.
+			pcall(function()
+				if type(getfenv) == "function" and type(setfenv) == "function" then
+					local baseEnv = getfenv(chunk)
+					local sandboxEnv = setmetatable({
+						print = function(...)
+							local parts = {}
+							for index = 1, select("#", ...) do
+								parts[index] = tostring(select(index, ...))
+							end
+							table.insert(output, table.concat(parts, "\t"))
+						end,
+					}, { __index = baseEnv })
+					setfenv(chunk, sandboxEnv)
+				end
+			end)
+
+			local returns = table.pack(pcall(chunk))
+			ChangeHistoryService:SetWaypoint("iLuau run luau")
+			if not returns[1] then
+				error("erro de execução: " .. tostring(returns[2]))
+			end
+
+			local values = {}
+			for index = 2, returns.n do
+				table.insert(values, tostring(returns[index]))
+			end
+
+			return {
+				ok = true,
+				output = table.concat(output, "\n"),
+				returned = values,
 			}
 		else
 			error("unsupported job type: " .. tostring(job.type))
