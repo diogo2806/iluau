@@ -668,6 +668,64 @@ const tools = [
     },
   },
   {
+    name: "iluau.get_editor_source",
+    description:
+      "Read the LIVE editor text of a script by path via ScriptEditorService:GetEditorSource (includes unsaved edits/drafts), falling back to the saved .Source. Use this to analyze exactly what the developer is currently editing without copy/paste.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        path: { type: "string", description: "Path to a Script/LocalScript/ModuleScript." },
+        timeoutMs: { type: "number" },
+      },
+      required: ["path"],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "iluau.set_diagnostics",
+    description:
+      "Inject your own diagnostics (errors/warnings) into Studio's native 'Script Analysis' panel for a script, via ScriptEditorService:RegisterScriptAnalysisCallback. Replaces any previously injected diagnostics for that script. Each diagnostic: { line, character, endLine?, endCharacter?, message, severity } where line/character are 0-based and severity is 1=Error, 2=Warning, 3=Information, 4=Hint. (An LSP-style { range: { start, end } } is also accepted.)",
+    inputSchema: {
+      type: "object",
+      properties: {
+        path: { type: "string", description: "Path to the script to annotate." },
+        diagnostics: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              line: { type: "number" },
+              character: { type: "number" },
+              endLine: { type: "number" },
+              endCharacter: { type: "number" },
+              message: { type: "string" },
+              severity: { type: "number" },
+              code: { type: "string" },
+              range: { type: "object", additionalProperties: true },
+            },
+            additionalProperties: true,
+          },
+        },
+        timeoutMs: { type: "number" },
+      },
+      required: ["path", "diagnostics"],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "iluau.clear_diagnostics",
+    description:
+      "Clear iLuau-injected diagnostics from Studio's 'Script Analysis' panel. Pass a script path to clear one script, or omit it to clear all.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        path: { type: "string" },
+        timeoutMs: { type: "number" },
+      },
+      additionalProperties: false,
+    },
+  },
+  {
     name: "iluau.dashboard_url",
     description: "Return the local dashboard URL.",
     inputSchema: {
@@ -912,6 +970,25 @@ async function handleRunLuau(params) {
   }, params?.timeoutMs || 60000)));
 }
 
+async function handleGetEditorSource(params) {
+  return textContent(jsonText(await dispatchBridgeJob("get_editor_source", {
+    path: params?.path,
+  }, params?.timeoutMs || 30000)));
+}
+
+async function handleSetDiagnostics(params) {
+  return textContent(jsonText(await dispatchBridgeJob("set_diagnostics", {
+    path: params?.path,
+    diagnostics: params?.diagnostics || [],
+  }, params?.timeoutMs || 30000)));
+}
+
+async function handleClearDiagnostics(params) {
+  return textContent(jsonText(await dispatchBridgeJob("clear_diagnostics", {
+    path: params?.path,
+  }, params?.timeoutMs || 30000)));
+}
+
 const handlers = {
   "iluau.ping": handlePing,
   "iluau.status": handleStatus,
@@ -929,6 +1006,9 @@ const handlers = {
   "iluau.sync_snapshot": handleSyncSnapshot,
   "iluau.get_tree": handleGetTree,
   "iluau.run_luau": handleRunLuau,
+  "iluau.get_editor_source": handleGetEditorSource,
+  "iluau.set_diagnostics": handleSetDiagnostics,
+  "iluau.clear_diagnostics": handleClearDiagnostics,
   "iluau.dashboard_url": handleDashboardUrl,
   "iluau.queue_job": handleQueueJob,
   "iluau.list_jobs": handleListJobs,

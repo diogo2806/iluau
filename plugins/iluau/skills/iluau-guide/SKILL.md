@@ -18,6 +18,17 @@ Use este plugin para controlar o Roblox Studio por meio do servidor MCP local do
 5. Use o dashboard para inspecionar tarefas enfileiradas, status da ponte e resultados recentes.
 6. Verifique as mudanças após cada operação que altera o Studio.
 
+## Analisar scripts e mostrar erros no Studio
+
+O Studio não deixa o plugin LER o painel "Análise do script", mas deixa o iLuau ESCREVER diagnósticos nele. Fluxo para revisar/corrigir código:
+
+1. Leia o código exatamente como o dev está editando (inclui rascunhos não salvos) com `iluau.get_editor_source` (`{ "path": "..." }`). Para varrer vários scripts de uma vez, use `iluau.get_tree` (já traz o `source`).
+2. Encontre os problemas (sintaxe, API depreciada, globais indefinidos, tipos, etc.).
+3. Injete os diagnósticos no painel nativo com `iluau.set_diagnostics` (`{ "path": "...", "diagnostics": [ { "line": 0, "character": 0, "message": "...", "severity": 1 } ] }`). `line`/`character` são 0-based; `severity`: 1=Erro, 2=Aviso, 3=Info, 4=Dica. Cada chamada substitui os diagnósticos anteriores daquele script. Use `iluau.clear_diagnostics` para limpar.
+4. Para corrigir, edite por caminho (`iluau.set_property` no `Source`, ou `iluau.run_luau`).
+
+O card "Análise do script" do painel tem o botão "Analisar seleção no Codex (ao vivo)", que envia ao chat um pedido para você fazer exatamente esse fluxo nos scripts selecionados.
+
 ## Chat dentro do Studio
 
 O painel do Studio tem um card "Codex chat". O usuário digita ali sem sair do Studio e você responde de volta no mesmo painel:

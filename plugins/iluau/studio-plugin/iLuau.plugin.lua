@@ -2,6 +2,7 @@ local HttpService = game:GetService("HttpService")
 local CollectionService = game:GetService("CollectionService")
 local Selection = game:GetService("Selection")
 local ChangeHistoryService = game:GetService("ChangeHistoryService")
+local ScriptEditorService = game:GetService("ScriptEditorService")
 
 local BASE_URL = "http://127.0.0.1:3099"
 local CLIENT_ID = HttpService:GenerateGUID(false)
@@ -557,10 +558,30 @@ local TREE_MAX_SOURCE_CHARS = 8000
 -- Keep the whole serialized payload comfortably under the bridge's 1 MB limit.
 local TREE_MAX_TOTAL_SOURCE = 250000
 
+-- Read the live editor text for a script (including unsaved drafts) and fall
+-- back to the persisted .Source when the editor copy is unavailable.
+local function readLiveScriptSource(instance)
+	local ok, source = pcall(function()
+		return ScriptEditorService:GetEditorSource(instance)
+	end)
+	if ok and type(source) == "string" then
+		return source
+	end
+	ok, source = pcall(function()
+		return instance.Source
+	end)
+	if ok and type(source) == "string" then
+		return source
+	end
+	return nil
+end
+
 local function readInstanceSource(instance)
 	if not instance:IsA("LuaSourceContainer") then
 		return nil
 	end
+	-- Bulk tree reads use the saved .Source (fast); the dedicated
+	-- get_editor_source job uses readLiveScriptSource for the live draft.
 	local ok, source = pcall(function()
 		return instance.Source
 	end)
@@ -627,6 +648,85 @@ local function serializeInstanceTree(instance, maxDepth, includeSource, counter)
 	end
 
 	return node
+end
+
+-- Native "Script Analysis" injection. Studio does not let plugins READ its own
+-- diagnostics, but ScriptEditorService:RegisterScriptAnalysisCallback lets us
+-- WRITE diagnostics into the editor. The Codex sends findings through the
+-- set_diagnostics job; we store them per script path and serve them here.
+local codexDiagnostics = {}
+local onScriptAnalysis
+-- Scoped so the mapping helpers below don't linger as chunk locals (Luau caps a
+-- scope at 200 locals); only codexDiagnostics and onScriptAnalysis escape.
+do
+local function clampInt(value, fallback)
+	local n = tonumber(value)
+	if not n then
+		return fallback
+	end
+	return math.max(0, math.floor(n))
+end
+
+-- Map a raw diagnostic (as sent by the server/Codex) to the shape Studio's
+-- analysis callback expects. Accepts either flat fields (line/character/...) or
+-- an LSP-style { range = { start = ..., ["end"] = ... } }. Kept in one place so
+-- the schema is easy to tweak after verifying against a live Studio.
+local function buildEditorDiagnostic(raw)
+	raw = raw or {}
+	local range = raw.range or {}
+	local rangeStart = range.start or {}
+	local rangeEnd = range["end"] or {}
+	local startLine = clampInt(raw.line or rangeStart.line, 0)
+	local startChar = clampInt(raw.character or rangeStart.character, 0)
+	local endLine = clampInt(raw.endLine or rangeEnd.line, startLine)
+	local endChar = clampInt(raw.endCharacter or rangeEnd.character, startChar + 1)
+	return {
+		range = {
+			start = { line = startLine, character = startChar },
+			["end"] = { line = endLine, character = endChar },
+		},
+		message = tostring(raw.message or "iLuau Codex"),
+		severity = math.max(1, clampInt(raw.severity, 1)),
+		code = raw.code,
+	}
+end
+
+local function scriptFromAnalysisRequest(request)
+	if type(request) ~= "table" then
+		return nil
+	end
+	if request.document then
+		local ok, scriptInstance = pcall(function()
+			return request.document:GetScript()
+		end)
+		if ok and scriptInstance then
+			return scriptInstance
+		end
+	end
+	return request.script
+end
+
+function onScriptAnalysis(request)
+	local response = { diagnostics = {} }
+	local scriptInstance = scriptFromAnalysisRequest(request)
+	if not scriptInstance then
+		return response
+	end
+	local ok, fullName = pcall(function()
+		return scriptInstance:GetFullName()
+	end)
+	if not ok then
+		return response
+	end
+	for _, raw in ipairs(codexDiagnostics[fullName] or {}) do
+		table.insert(response.diagnostics, buildEditorDiagnostic(raw))
+	end
+	return response
+end
+
+pcall(function()
+	ScriptEditorService:RegisterScriptAnalysisCallback("iLuau Codex", 100, onScriptAnalysis)
+end)
 end
 
 local function clearGuiRows(container)
@@ -1935,6 +2035,55 @@ local function executeJob(job)
 				output = table.concat(output, "\n"),
 				returned = values,
 			}
+		elseif job.type == "get_editor_source" then
+			local target = findByPath(job.payload and job.payload.path or "")
+			if not target then
+				error("target not found")
+			end
+			if not target:IsA("LuaSourceContainer") then
+				error("target is not a script: " .. target:GetFullName())
+			end
+			local source = readLiveScriptSource(target)
+			return {
+				ok = true,
+				path = target:GetFullName(),
+				className = target.ClassName,
+				source = source or "",
+			}
+		elseif job.type == "set_diagnostics" then
+			local target = findByPath(job.payload and job.payload.path or "")
+			if not target then
+				error("target not found")
+			end
+			local fullName = target:GetFullName()
+			local diagnostics = job.payload and job.payload.diagnostics or {}
+			codexDiagnostics[fullName] = diagnostics
+			-- Re-register the callback so Studio re-queries and the editor shows
+			-- the new diagnostics without waiting for the next edit.
+			pcall(function()
+				ScriptEditorService:DeregisterScriptAnalysisCallback("iLuau Codex")
+				ScriptEditorService:RegisterScriptAnalysisCallback("iLuau Codex", 100, onScriptAnalysis)
+			end)
+			return {
+				ok = true,
+				path = fullName,
+				count = #diagnostics,
+			}
+		elseif job.type == "clear_diagnostics" then
+			local path = job.payload and job.payload.path
+			if type(path) == "string" and path ~= "" then
+				local target = findByPath(path)
+				if target then
+					codexDiagnostics[target:GetFullName()] = nil
+				end
+			else
+				codexDiagnostics = {}
+			end
+			pcall(function()
+				ScriptEditorService:DeregisterScriptAnalysisCallback("iLuau Codex")
+				ScriptEditorService:RegisterScriptAnalysisCallback("iLuau Codex", 100, onScriptAnalysis)
+			end)
+			return { ok = true }
 		else
 			error("unsupported job type: " .. tostring(job.type))
 		end
@@ -2650,7 +2799,7 @@ end)
 -- file in the tree, and forwards the analysis + selection to the Codex chat.
 -- Wrapped in do/end so its construction locals stay out of the chunk scope.
 do
-local analysisCard = makeCard(312)
+local analysisCard = makeCard(350)
 analysisCard.LayoutOrder = 3
 analysisCard.Parent = body
 makeSectionTitle(analysisCard, "Análise do script")
@@ -2660,7 +2809,7 @@ hintLabel.BackgroundTransparency = 1
 hintLabel.Position = UDim2.new(0, 10, 0, 30)
 hintLabel.Size = UDim2.new(1, -20, 0, 30)
 hintLabel.Font = Enum.Font.Gotham
-hintLabel.Text = "Cole a saída do painel 'Análise do script' ou clique em Verificar sintaxe. Clique numa linha com caminho para selecioná-la na árvore."
+hintLabel.Text = "Analise no Codex: ele lê o código ao vivo e mostra os erros no painel nativo 'Análise do script'. Ou cole/verifique sintaxe aqui; clique numa linha com caminho para selecioná-la na árvore."
 hintLabel.TextColor3 = Color3.fromRGB(152, 164, 180)
 hintLabel.TextSize = 12
 hintLabel.TextWrapped = true
@@ -2668,13 +2817,18 @@ hintLabel.TextXAlignment = Enum.TextXAlignment.Left
 hintLabel.TextYAlignment = Enum.TextYAlignment.Top
 hintLabel.Parent = analysisCard
 
+local analyzeButton = makeButton(analysisCard, "Analisar seleção no Codex (ao vivo)", function() end)
+analyzeButton.AutomaticSize = Enum.AutomaticSize.None
+analyzeButton.Position = UDim2.new(0, 10, 0, 64)
+analyzeButton.Size = UDim2.new(1, -20, 0, 30)
+
 local analysisInputBox = makeTextBox(analysisCard, "Cole aqui a análise do Studio (selecionável e copiável)...", 96)
-analysisInputBox.Position = UDim2.new(0, 10, 0, 64)
+analysisInputBox.Position = UDim2.new(0, 10, 0, 102)
 analysisInputBox.Size = UDim2.new(1, -20, 0, 96)
 
 local buttonsRow = Instance.new("Frame")
 buttonsRow.BackgroundTransparency = 1
-buttonsRow.Position = UDim2.new(0, 10, 0, 168)
+buttonsRow.Position = UDim2.new(0, 10, 0, 206)
 buttonsRow.Size = UDim2.new(1, -20, 0, 28)
 buttonsRow.Parent = analysisCard
 
@@ -2687,7 +2841,7 @@ buttonsLayout.Parent = buttonsRow
 local analysisRows = Instance.new("ScrollingFrame")
 analysisRows.BackgroundTransparency = 1
 analysisRows.BorderSizePixel = 0
-analysisRows.Position = UDim2.new(0, 10, 0, 204)
+analysisRows.Position = UDim2.new(0, 10, 0, 242)
 analysisRows.Size = UDim2.new(1, -20, 0, 72)
 analysisRows.CanvasSize = UDim2.new(0, 0, 0, 0)
 analysisRows.ScrollBarThickness = 4
@@ -2701,7 +2855,7 @@ rowsLayout.Parent = analysisRows
 
 local analysisStatusLabel = Instance.new("TextLabel")
 analysisStatusLabel.BackgroundTransparency = 1
-analysisStatusLabel.Position = UDim2.new(0, 10, 0, 286)
+analysisStatusLabel.Position = UDim2.new(0, 10, 0, 324)
 analysisStatusLabel.Size = UDim2.new(1, -20, 0, 16)
 analysisStatusLabel.Font = Enum.Font.Gotham
 analysisStatusLabel.Text = "Pronto."
@@ -2802,6 +2956,35 @@ local function runSyntaxCheck()
 	analysisStatusLabel.Text = string.format("%d scripts verificados · %d com erro de sintaxe.", checked, problems)
 end
 
+-- Ask the Codex to read the live source of the selected scripts and inject its
+-- findings into Studio's native panel via iluau.set_diagnostics. No copy/paste.
+local function analyzeSelectionWithCodex()
+	local paths = {}
+	for _, item in ipairs(Selection:Get()) do
+		if item:IsA("LuaSourceContainer") then
+			table.insert(paths, item:GetFullName())
+		end
+	end
+	if #paths == 0 then
+		analysisStatusLabel.Text = "Selecione um Script/LocalScript/ModuleScript na árvore primeiro."
+		return
+	end
+	local prompt = table.concat({
+		"Analise os scripts abaixo do meu jogo no Roblox Studio e mostre os problemas no painel nativo 'Análise do script'.",
+		"Para cada script: leia o código com iluau.get_editor_source, encontre erros/avisos e chame iluau.set_diagnostics com a lista de { line, character (0-based), message, severity (1=Erro, 2=Aviso) }.",
+		"",
+		"Scripts:",
+		table.concat(paths, "\n"),
+	}, "\n")
+	local response = safeRequest("POST", "/api/chat/send", { text = prompt })
+	if response and response.Success then
+		analysisStatusLabel.Text = string.format("%d script(s) enviado(s). Os erros aparecerão no painel 'Análise do script'.", #paths)
+		pcall(refreshChat)
+	else
+		analysisStatusLabel.Text = "Falha ao enviar ao Codex."
+	end
+end
+
 local function sendAnalysisToCodex()
 	local analysis = trim(analysisInputBox.Text or "")
 	if analysis == "" then
@@ -2830,6 +3013,8 @@ local function sendAnalysisToCodex()
 		analysisStatusLabel.Text = "Falha ao enviar ao Codex."
 	end
 end
+
+analyzeButton.MouseButton1Click:Connect(analyzeSelectionWithCodex)
 
 makePillButton(buttonsRow, "Verificar sintaxe", runSyntaxCheck, false, true)
 makePillButton(buttonsRow, "Processar linhas", renderAnalysisRows, false, true)
@@ -3108,4 +3293,7 @@ refreshPropertyEditorState()
 
 plugin.Unloading:Connect(function()
 	running = false
+	pcall(function()
+		ScriptEditorService:DeregisterScriptAnalysisCallback("iLuau Codex")
+	end)
 end)
