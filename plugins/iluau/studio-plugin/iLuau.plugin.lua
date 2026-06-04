@@ -1970,7 +1970,7 @@ local bridgeValue = makeStat(headerCard, "Ponte", "desconectado", 48)
 -- Luau's hard limit of 200 locals per scope.
 do
 local selectionCard = makeCard(320)
-selectionCard.LayoutOrder = 2
+selectionCard.LayoutOrder = 4
 selectionCard.Parent = body
 makeSectionTitle(selectionCard, "Árvore de seleção")
 
@@ -2064,7 +2064,7 @@ end
 
 do
 propertiesCard = makeCard(638)
-propertiesCard.LayoutOrder = 3
+propertiesCard.LayoutOrder = 5
 propertiesCard.Parent = body
 makeSectionTitle(propertiesCard, "Propriedades")
 
@@ -2248,7 +2248,7 @@ end
 
 do
 local editorCard = makeCard(296)
-editorCard.LayoutOrder = 4
+editorCard.LayoutOrder = 6
 editorCard.Parent = body
 makeSectionTitle(editorCard, "Attributes e tags")
 
@@ -2329,7 +2329,7 @@ fitGridButtons(editorButtonRow)
 end
 
 local actionCard = makeCard(154)
-actionCard.LayoutOrder = 5
+actionCard.LayoutOrder = 7
 actionCard.Parent = body
 makeSectionTitle(actionCard, "Ações rápidas")
 
@@ -2359,7 +2359,7 @@ messageLabel.TextYAlignment = Enum.TextYAlignment.Top
 messageLabel.Parent = actionCard
 
 local jobCard = makeCard(286)
-jobCard.LayoutOrder = 6
+jobCard.LayoutOrder = 8
 jobCard.Parent = body
 makeSectionTitle(jobCard, "Tarefas recentes")
 
@@ -2584,7 +2584,7 @@ local function renderChatMessages(messages)
 		roleLabel.TextXAlignment = Enum.TextXAlignment.Left
 		roleLabel.Parent = bubble
 
-		local textLabel = Instance.new("TextLabel")
+		local textLabel = Instance.new("TextBox")
 		textLabel.LayoutOrder = 2
 		textLabel.BackgroundTransparency = 1
 		textLabel.AutomaticSize = Enum.AutomaticSize.Y
@@ -2596,6 +2596,11 @@ local function renderChatMessages(messages)
 		textLabel.TextWrapped = true
 		textLabel.TextXAlignment = Enum.TextXAlignment.Left
 		textLabel.TextYAlignment = Enum.TextYAlignment.Top
+		-- Read-only TextBox so the user can drag-select across many lines and
+		-- copy the whole reply at once (TextLabels are not selectable).
+		textLabel.TextEditable = false
+		textLabel.ClearTextOnFocus = false
+		textLabel.MultiLine = true
 		textLabel.Parent = bubble
 	end
 
@@ -2638,6 +2643,207 @@ chatInputBox.FocusLost:Connect(function(enterPressed)
 		sendChatMessage()
 	end
 end)
+
+-- "Análise do script" card. Studio has no public API to read its built-in
+-- analysis panel, so this card lets the user paste it (or auto-fill a Luau
+-- syntax check), turns each script path into a clickable row that selects the
+-- file in the tree, and forwards the analysis + selection to the Codex chat.
+-- Wrapped in do/end so its construction locals stay out of the chunk scope.
+do
+local analysisCard = makeCard(312)
+analysisCard.LayoutOrder = 3
+analysisCard.Parent = body
+makeSectionTitle(analysisCard, "Análise do script")
+
+local hintLabel = Instance.new("TextLabel")
+hintLabel.BackgroundTransparency = 1
+hintLabel.Position = UDim2.new(0, 10, 0, 30)
+hintLabel.Size = UDim2.new(1, -20, 0, 30)
+hintLabel.Font = Enum.Font.Gotham
+hintLabel.Text = "Cole a saída do painel 'Análise do script' ou clique em Verificar sintaxe. Clique numa linha com caminho para selecioná-la na árvore."
+hintLabel.TextColor3 = Color3.fromRGB(152, 164, 180)
+hintLabel.TextSize = 12
+hintLabel.TextWrapped = true
+hintLabel.TextXAlignment = Enum.TextXAlignment.Left
+hintLabel.TextYAlignment = Enum.TextYAlignment.Top
+hintLabel.Parent = analysisCard
+
+local analysisInputBox = makeTextBox(analysisCard, "Cole aqui a análise do Studio (selecionável e copiável)...", 96)
+analysisInputBox.Position = UDim2.new(0, 10, 0, 64)
+analysisInputBox.Size = UDim2.new(1, -20, 0, 96)
+
+local buttonsRow = Instance.new("Frame")
+buttonsRow.BackgroundTransparency = 1
+buttonsRow.Position = UDim2.new(0, 10, 0, 168)
+buttonsRow.Size = UDim2.new(1, -20, 0, 28)
+buttonsRow.Parent = analysisCard
+
+local buttonsLayout = Instance.new("UIListLayout")
+buttonsLayout.FillDirection = Enum.FillDirection.Horizontal
+buttonsLayout.Padding = UDim.new(0, 8)
+buttonsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+buttonsLayout.Parent = buttonsRow
+
+local analysisRows = Instance.new("ScrollingFrame")
+analysisRows.BackgroundTransparency = 1
+analysisRows.BorderSizePixel = 0
+analysisRows.Position = UDim2.new(0, 10, 0, 204)
+analysisRows.Size = UDim2.new(1, -20, 0, 72)
+analysisRows.CanvasSize = UDim2.new(0, 0, 0, 0)
+analysisRows.ScrollBarThickness = 4
+analysisRows.AutomaticCanvasSize = Enum.AutomaticSize.Y
+analysisRows.Parent = analysisCard
+
+local rowsLayout = Instance.new("UIListLayout")
+rowsLayout.Padding = UDim.new(0, 4)
+rowsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+rowsLayout.Parent = analysisRows
+
+local analysisStatusLabel = Instance.new("TextLabel")
+analysisStatusLabel.BackgroundTransparency = 1
+analysisStatusLabel.Position = UDim2.new(0, 10, 0, 286)
+analysisStatusLabel.Size = UDim2.new(1, -20, 0, 16)
+analysisStatusLabel.Font = Enum.Font.Gotham
+analysisStatusLabel.Text = "Pronto."
+analysisStatusLabel.TextColor3 = Color3.fromRGB(190, 201, 216)
+analysisStatusLabel.TextSize = 12
+analysisStatusLabel.TextXAlignment = Enum.TextXAlignment.Left
+analysisStatusLabel.TextTruncate = Enum.TextTruncate.AtEnd
+analysisStatusLabel.Parent = analysisCard
+
+local function pathsFromText(text)
+	local paths, seen = {}, {}
+	for line in string.gmatch(text or "", "[^\r\n]+") do
+		local candidate = trim(line)
+		-- A path header (e.g. Workspace.Mario.Sound) has a dot, no colon and no
+		-- spaces; diagnostic lines carry a ": (line, col)" and are skipped.
+		if candidate ~= "" and not candidate:find(":") and candidate:find("%.") and not candidate:find("%s") then
+			if not seen[candidate] then
+				seen[candidate] = true
+				table.insert(paths, candidate)
+			end
+		end
+	end
+	return paths
+end
+
+local function renderAnalysisRows()
+	clearGuiRows(analysisRows)
+	local paths = pathsFromText(analysisInputBox.Text)
+	if #paths == 0 then
+		analysisStatusLabel.Text = "Nenhum caminho reconhecido (ex.: Workspace.Mario.Sound)."
+		return
+	end
+	for index, path in ipairs(paths) do
+		local target = findByPath(path)
+		local row = Instance.new("TextButton")
+		row.LayoutOrder = index
+		row.Size = UDim2.new(1, -4, 0, 24)
+		row.BackgroundColor3 = target and Color3.fromRGB(38, 46, 62) or Color3.fromRGB(56, 38, 38)
+		row.BorderSizePixel = 0
+		row.Font = Enum.Font.Code
+		row.TextSize = 12
+		row.TextColor3 = target and Color3.fromRGB(232, 238, 247) or Color3.fromRGB(244, 150, 150)
+		row.TextXAlignment = Enum.TextXAlignment.Left
+		row.TextTruncate = Enum.TextTruncate.AtEnd
+		row.Text = (target and "  " or "  [?] ") .. path
+		row.AutoButtonColor = true
+		row.Parent = analysisRows
+
+		local rowCorner = Instance.new("UICorner")
+		rowCorner.CornerRadius = UDim.new(0, 6)
+		rowCorner.Parent = row
+
+		row.MouseButton1Click:Connect(function()
+			local instance = findByPath(path)
+			if instance then
+				pcall(function()
+					Selection:Set({ instance })
+				end)
+				analysisStatusLabel.Text = "Selecionado na árvore: " .. path
+			else
+				analysisStatusLabel.Text = "Não encontrado no jogo: " .. path
+			end
+		end)
+	end
+	analysisStatusLabel.Text = string.format("%d arquivo(s) detectado(s). Clique para selecionar na árvore.", #paths)
+end
+
+local function runSyntaxCheck()
+	if type(loadstring) ~= "function" then
+		analysisStatusLabel.Text = "loadstring desabilitado neste Studio: cole a análise manualmente."
+		return
+	end
+	local lines, checked, problems = {}, 0, 0
+	for _, descendant in ipairs(game:GetDescendants()) do
+		if descendant:IsA("LuaSourceContainer") then
+			local ok, source = pcall(function()
+				return descendant.Source
+			end)
+			if ok and type(source) == "string" then
+				checked += 1
+				if source ~= "" then
+					local chunk, compileError = loadstring(source, descendant:GetFullName())
+					if not chunk then
+						problems += 1
+						table.insert(lines, descendant:GetFullName())
+						table.insert(lines, "  Syntax Error: " .. tostring(compileError))
+					end
+				end
+			end
+		end
+	end
+	if problems == 0 then
+		analysisInputBox.Text = string.format("Nenhum erro de sintaxe em %d scripts verificados.", checked)
+	else
+		analysisInputBox.Text = table.concat(lines, "\n")
+	end
+	renderAnalysisRows()
+	analysisStatusLabel.Text = string.format("%d scripts verificados · %d com erro de sintaxe.", checked, problems)
+end
+
+local function sendAnalysisToCodex()
+	local analysis = trim(analysisInputBox.Text or "")
+	if analysis == "" then
+		analysisStatusLabel.Text = "Nada para enviar. Gere ou cole a análise primeiro."
+		return
+	end
+	local paths = {}
+	for _, item in ipairs(Selection:Get()) do
+		table.insert(paths, item:GetFullName())
+	end
+	local selectionText = #paths > 0 and table.concat(paths, "\n") or "(nenhum arquivo selecionado na árvore)"
+	local prompt = table.concat({
+		"Corrija os problemas abaixo no meu jogo do Roblox Studio.",
+		"",
+		"Arquivos selecionados:",
+		selectionText,
+		"",
+		"Análise do script:",
+		analysis,
+	}, "\n")
+	local response = safeRequest("POST", "/api/chat/send", { text = prompt })
+	if response and response.Success then
+		analysisStatusLabel.Text = "Enviado ao Codex. Veja a resposta no card de chat."
+		pcall(refreshChat)
+	else
+		analysisStatusLabel.Text = "Falha ao enviar ao Codex."
+	end
+end
+
+makePillButton(buttonsRow, "Verificar sintaxe", runSyntaxCheck, false, true)
+makePillButton(buttonsRow, "Processar linhas", renderAnalysisRows, false, true)
+makePillButton(buttonsRow, "Enviar ao Codex", sendAnalysisToCodex, true, true)
+makePillButton(buttonsRow, "Limpar", function()
+	analysisInputBox.Text = ""
+	clearGuiRows(analysisRows)
+	analysisStatusLabel.Text = "Pronto."
+end, false, true)
+
+analysisInputBox.FocusLost:Connect(function()
+	renderAnalysisRows()
+end)
+end
 
 local function connectPropertyEditorSignals()
 	if selectionPropertyNameBox then
