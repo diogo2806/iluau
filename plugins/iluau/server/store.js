@@ -171,6 +171,9 @@ function getCapabilities() {
       "iluau.sync_snapshot",
       "iluau.get_tree",
       "iluau.run_luau",
+      "iluau.get_editor_source",
+      "iluau.set_diagnostics",
+      "iluau.clear_diagnostics",
       "iluau.dashboard_url",
       "iluau.queue_job",
       "iluau.list_jobs",
@@ -193,6 +196,9 @@ function getCapabilities() {
       "sync_snapshot",
       "get_tree",
       "run_luau",
+      "get_editor_source",
+      "set_diagnostics",
+      "clear_diagnostics",
     ],
   };
 }
